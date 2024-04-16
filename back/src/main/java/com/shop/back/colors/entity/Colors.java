@@ -1,4 +1,4 @@
-package com.shop.back.product.entity;
+package com.shop.back.colors.entity;
 
 import com.shop.back.common.BaseEntity;
 import jakarta.persistence.Entity;
@@ -6,13 +6,20 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
-@Data
-public class Category extends BaseEntity {
+public class Colors extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	private String name;
+
+	private String code;
+
+	private String rgb;
 }

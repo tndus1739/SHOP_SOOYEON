@@ -1,14 +1,17 @@
-package com.shop.back.product.entity;
+package com.shop.back.size.entity;
 
 
 import com.shop.back.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "product_size")
-public class Size {
+public class Size extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;

@@ -86,16 +86,16 @@ const AppHeader = () => {
         {/*    <div className="vr h-100 mx-2 text-body text-opacity-75"></div>*/}
         {/*  </li>*/}
         {/*  <CDropdown variant="nav-item" placement="bottom-end">*/}
-        {/*    <CDropdownToggle caret={false}>*/}
-        {/*      /!*{colorMode === 'dark' ? (*!/*/}
-        {/*      /!*  <CIcon icon={cilMoon} size="lg" />*!/*/}
-        {/*      /!*) : colorMode === 'auto' ? (*!/*/}
-        {/*      /!*  <CIcon icon={cilContrast} size="lg" />*!/*/}
-        {/*      /!*) : (*!/*/}
-        {/*      /!*  <CIcon icon={cilSun} size="lg" />*!/*/}
-        {/*      /!*)}*!/*/}
-        {/*      <CIcon icon={cilSun} size="lg" />*/}
-        {/*    </CDropdownToggle>*/}
+        {/*    /!*<CDropdownToggle caret={false}>*!/*/}
+        {/*    /!*  /!*{colorMode === 'dark' ? (*!/*!/*/}
+        {/*    /!*  /!*  <CIcon icon={cilMoon} size="lg" />*!/*!/*/}
+        {/*    /!*  /!*) : colorMode === 'auto' ? (*!/*!/*/}
+        {/*    /!*  /!*  <CIcon icon={cilContrast} size="lg" />*!/*!/*/}
+        {/*    /!*  /!*) : (*!/*!/*/}
+        {/*    /!*  /!*  <CIcon icon={cilSun} size="lg" />*!/*!/*/}
+        {/*    /!*  /!*)}*!/*!/*/}
+        {/*    /!*  <CIcon icon={cilSun} size="lg" />*!/*/}
+        {/*    /!*</CDropdownToggle>*!/*/}
         {/*    <CDropdownMenu>*/}
         {/*      <CDropdownItem*/}
         {/*        active={colorMode === 'light'}*/}

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import {
   CButton,
@@ -15,8 +15,17 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
+import axios from "axios";
 
 const Login = () => {
+  useEffect(() => {
+    const param = {
+      test: 'aaa'
+    }
+    axios.get('http://localhost:3011/test', {params:param}).then(res => {
+      console.log(res)
+    })
+  }, []);
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
       <CContainer>

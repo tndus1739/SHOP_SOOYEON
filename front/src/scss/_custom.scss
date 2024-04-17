@@ -1,1 +1,6 @@
 // Here you can add other styles
+
+tbody tr.active {
+  --cui-table-color-state: var(--cui-table-hover-color);
+  --cui-table-bg-state: var(--cui-table-hover-bg);
+}

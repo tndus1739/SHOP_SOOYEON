@@ -15,24 +15,33 @@ import {
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
-const _nav_user = [];
-
-
-
-const _nav = [
+const _nav_dev_admin = [
   {
-    component: CNavItem,
-    name: 'Change',
-    to: '/dashboard',
-    icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
-    badge: {
-      color: 'info',
-      text: 'Admin',
-    },
+    component: CNavTitle,
+    name: 'ADMIN',
   },
   {
     component: CNavItem,
-    name: 'Dashboard',
+    name: 'Member',
+    to: '/admin/member',
+  },
+  {
+    component: CNavItem,
+    name: 'Category',
+    to: '/admin/category',
+  },
+  {
+    component: CNavItem,
+    name: 'Product',
+    to: '/admin/product',
+  },
+]
+
+
+const _nav_dev = [
+  {
+    component: CNavItem,
+    name: 'Home',
     to: '/dashboard',
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
     badge: {
@@ -316,4 +325,4 @@ const _nav = [
   },
 ]
 
-export default _nav
+export default _nav_dev

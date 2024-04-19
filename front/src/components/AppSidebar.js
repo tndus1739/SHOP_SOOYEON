@@ -22,53 +22,22 @@ import _nav_dev_admin from "src/_nav_dev_admin";
 import {AuthModeDispatch, AuthModeInfo} from "src/layout/DefaultLayout";
 import axios from "axios";
 
-const AppSidebar = () => {
+const AppSidebar = ({navi}) => {
     const dispatch = useDispatch()
     const unfoldable = useSelector((state) => state.sidebarUnfoldable)
     const sidebarShow = useSelector((state) => state.sidebarShow)
 
-    const [nav, setNav] = useState([])
     const [category, setCategory] = useState([]);
     const mode = useContext(AuthModeInfo)
-
-    const getCategory = async () => {
-        await axios.get('http://localhost:3011/admin/category/all').then((res) => {
-            // console.log(res.data)
-            const cateList = [];
-            const menu = _nav_dev
-            if (res.data.length > 0) {
-                for (const c of res.data) {
-                    const obj = {}
-                    obj['component'] = CNavGroup;
-                    obj['name'] = c.name;
-                    obj['items'] = []
-                    for (const child of c.childCategories) {
-                        const item = {
-                            component: CNavItem,
-                            name: child.name,
-                            to: '/category/item/' + child.id
-                        }
-                        obj['items'].push(item)
-                    }
-                    menu.push(obj)
-                }
-            }
-            setNav(menu)
-        })
-    }
+    const [nav, setNav] = useState(navi)
 
     useEffect(() => {
-        if (mode === 'ADMIN') {
+        if (mode == 'ADMIN') {
             setNav(_nav_dev_admin)
         } else {
-            setNav(_nav_dev)
+            setNav(navi)
         }
     }, [mode]);
-
-    useEffect(() => {
-        getCategory()
-    }, []);
-
 
     return (
         <CSidebar

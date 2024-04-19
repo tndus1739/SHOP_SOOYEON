@@ -42,8 +42,4 @@ public class CategoryService {
 		category.setDelDate(LocalDateTime.now());
 		categoryRepository.save(category);
 	}
-
-	public List<Category> getAll() {
-		return categoryRepository.findByDel(1);
-	}
 }

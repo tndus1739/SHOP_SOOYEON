@@ -4,3 +4,7 @@ tbody tr.active {
   --cui-table-color-state: var(--cui-table-hover-color);
   --cui-table-bg-state: var(--cui-table-hover-bg);
 }
+
+.card .card-body .form-check.main_image_radio_label label {
+  font-size: 13px;
+}

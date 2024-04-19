@@ -22,18 +22,36 @@ const _nav_dev_admin = [
   },
   {
     component: CNavItem,
-    name: 'Member',
+    name: '회원',
     to: '/admin/member',
   },
   {
     component: CNavItem,
-    name: 'Category',
+    name: '카테고리',
     to: '/admin/category',
   },
   {
-    component: CNavItem,
-    name: 'Product',
-    to: '/admin/product',
+    component: CNavGroup,
+    name: '상품',
+    // to: '/admin/product',
+    items: [
+      {
+        component: CNavItem,
+        name: '상품 등록',
+        to: '/admin/item/form',
+      },
+    ]
+  },
+  {
+    component: CNavGroup,
+    name: '색상',
+    items: [
+      {
+        component: CNavItem,
+        name: '등록',
+        to: '/admin/item/color/form'
+      }
+    ]
   },
 ]
 

@@ -2,8 +2,10 @@ import React, { Suspense, useEffect } from 'react'
 import { HashRouter, Route, Routes } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
-import { CSpinner, useColorModes } from '@coreui/react'
+import {CNavGroup, CNavItem, CSpinner, useColorModes} from '@coreui/react'
 import './scss/style.scss'
+import axios from "axios";
+import _nav_dev from "src/_nav_dev";
 
 // Containers
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
@@ -18,7 +20,35 @@ const App = () => {
   const { isColorModeSet, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
   const storedTheme = useSelector((state) => state.theme)
 
+  const [navi, setNavi] = React.useState(_nav_dev);
+
+  const getCategory = async () => {
+    await axios.get('http://localhost:3011/admin/category/all').then((res) => {
+      console.log(res.data)
+      const menu = _nav_dev
+      if (res.data.length > 0) {
+        for (const c of res.data) {
+          const obj = {}
+          obj['component'] = CNavGroup;
+          obj['name'] = c.name;
+          obj['items'] = []
+          for (const child of c.childCategories) {
+            const item = {
+              component: CNavItem,
+              name: child.name,
+              to: '/category/item/' + child.id
+            }
+            obj['items'].push(item)
+          }
+          menu.push(obj)
+        }
+      }
+      setNavi(menu)
+    })
+  }
+
   useEffect(() => {
+    getCategory()
     const urlParams = new URLSearchParams(window.location.href.split('?')[1])
     const theme = urlParams.get('theme') && urlParams.get('theme').match(/^[A-Za-z0-9\s]+/)[0]
     if (theme) {
@@ -46,7 +76,7 @@ const App = () => {
           <Route exact path="/register" name="Register Page" element={<Register />} />
           <Route exact path="/404" name="Page 404" element={<Page404 />} />
           <Route exact path="/500" name="Page 500" element={<Page500 />} />
-          <Route path="*" name="Home" element={<DefaultLayout />} />
+          <Route path="*" name="Home" element={<DefaultLayout category={navi} />} />
         </Routes>
       </Suspense>
     </HashRouter>

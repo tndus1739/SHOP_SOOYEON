@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, {useContext, useEffect, useRef, useState} from 'react'
 import { NavLink } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import {
@@ -12,7 +12,7 @@ import {
   CHeaderToggler,
   CNavLink,
   CNavItem,
-  useColorModes,
+  useColorModes, CCardText, CButton,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import {
@@ -23,10 +23,12 @@ import {
   cilMenu,
   cilMoon,
   cilSun,
+  cilSync
 } from '@coreui/icons'
 
 import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from './header/index'
+import {AuthModeDispatch, AuthModeInfo} from "src/layout/DefaultLayout";
 
 const AppHeader = () => {
   const headerRef = useRef()
@@ -34,6 +36,17 @@ const AppHeader = () => {
 
   const dispatch = useDispatch()
   const sidebarShow = useSelector((state) => state.sidebarShow)
+
+  const mode = useContext(AuthModeInfo)
+  const {changeMode} = useContext(AuthModeDispatch)
+
+  const change_mode = () => {
+    if(mode === 'ADMIN') {
+      changeMode('USER')
+    } else if(mode === 'USER') {
+      changeMode('ADMIN')
+    }
+  }
 
   useEffect(() => {
     document.addEventListener('scroll', () => {
@@ -62,6 +75,9 @@ const AppHeader = () => {
           </CNavItem>
           <CNavItem>
             <CNavLink href="#">Settings</CNavLink>
+          </CNavItem>
+          <CNavItem>
+            <CButton onClick={change_mode}><CIcon icon={cilSync} size="lg" />{mode}</CButton>
           </CNavItem>
         </CHeaderNav>
         <CHeaderNav className="ms-auto">

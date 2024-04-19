@@ -51,7 +51,15 @@ const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 // admin
+
+//  카테고리
 const AdminCategory = React.lazy(() => import('./views/admin/category/AdminCategory'))
+
+//  상품
+const AdminItemForm = React.lazy(() => import('./views/admin/item/form'))
+
+//  색상
+const AdminItemColor = React.lazy(() => import('./views/admin/color/form'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -99,6 +107,8 @@ const routes = [
   { path: '/notifications/toasts', name: 'Toasts', element: Toasts },
   { path: '/widgets', name: 'Widgets', element: Widgets },
   { path: '/admin/category', name: 'Member', element: AdminCategory },
+  { path: '/admin/item/form', name: 'Member', element: AdminItemForm },
+  { path: '/admin/item/color/form', name: 'Member', element: AdminItemColor },
 ]
 
 export default routes

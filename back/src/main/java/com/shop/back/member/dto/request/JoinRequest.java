@@ -1,6 +1,7 @@
 package com.shop.back.member.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,7 +29,7 @@ public class JoinRequest {
     @NotBlank
     private String gender;
 
-    @NotBlank
+    @NotNull
     private LocalDateTime birth;
 
 

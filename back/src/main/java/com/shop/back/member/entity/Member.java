@@ -36,7 +36,9 @@ public class Member extends BaseEntity {
 
 	private LocalDateTime birth;            //  생년월일
 
+
 	public Member() {
+		this.role = Role.USER;
 	}
 
 	public Member(String name, String nickname, String email, String pwd, String gender, LocalDateTime birth) {

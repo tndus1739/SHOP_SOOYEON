@@ -51,11 +51,11 @@ public class WebSecurityConfig {
 								.anyRequest().permitAll()
 				);
 
-//		http
-//				.exceptionHandling(auth -> auth.authenticationEntryPoint(jwtAuthenticationEntryPoint))
-//						.sessionManagement(ses -> ses.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-//
-//		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+		http
+				.exceptionHandling(auth -> auth.authenticationEntryPoint(jwtAuthenticationEntryPoint))
+						.sessionManagement(ses -> ses.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}

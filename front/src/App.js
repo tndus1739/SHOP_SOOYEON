@@ -24,7 +24,6 @@ const App = () => {
 
   const getCategory = async () => {
     await axios.get('http://localhost:3011/admin/category/all').then((res) => {
-      console.log(res.data)
       const menu = _nav_dev
       if (res.data.length > 0) {
         for (const c of res.data) {

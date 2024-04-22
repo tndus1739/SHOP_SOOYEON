@@ -14,6 +14,7 @@ import {
 } from '@coreui/react'
 import ItemOptions from "src/views/admin/item/ItemOptions";
 import SizeTable from "src/views/admin/item/SizeTable";
+import ItemPreview from "src/views/admin/item/ItemPreview";
 
 const ItemForm = () => {
   const [sort, setSort] = useState([1]);
@@ -22,6 +23,12 @@ const ItemForm = () => {
   const [defaultPrice, setDefaultPrice] = useState(0)
   const [isDiscount, setIsDiscount] = useState(false);
   const [discountRate, setDiscountRate] = useState('0%');
+  const [itemName, setItemName] = useState('');
+  const [images, setImages] = useState([]);
+
+  const inputItemName = (e) => {
+    setItemName(e.target.value)
+  }
 
   const addItem = () => {
     let arr = []
@@ -81,6 +88,16 @@ const ItemForm = () => {
     const frm = new FormData(e.target)
 
     //  이미지========================================================
+    const itemImages = document.querySelectorAll('.item-images')
+    let file_item = [];
+    for(const itemImage of itemImages) {
+      for(const f of images) {
+        if(f.name == itemImage.querySelector('input[name="origin"]').value) {
+          f['isMain'] = (itemImage.querySelector('input[name="isMain"]').checked ? 1 : 0)
+          file_item.push(f)
+        }
+      }
+    }
 
     //  이미지========================================================
 
@@ -89,14 +106,16 @@ const ItemForm = () => {
     let items = []
     for(const io of itemOptions) {
       const item = {
-        name: '',
-        size: io.querySelector('input[name=""]'),
-        cnt: '',
-        status: '',
-        optionPrice: '',
-        total: '',
-        color_id: '',
+        name: itemName,
+        size: io.querySelector('input[name="size"]').value,
+        cnt: io.querySelector('input[name="cnt"]').value,
+        status: io.querySelector('select[name="status"]').value,
+        originPrice: Number(defaultPrice.toString().replace(/[^0-9]/gi, '')),
+        optionPrice: io.querySelector('input[name="optionPrice"]').value,
+        total: Number(defaultPrice.toString().replace(/[^0-9]/gi, '')) + Number((io.querySelector('input[name="optionPrice"]').value).toString().replace(/[^0-9]/gi, '')),
+        color_id: io.querySelector('select[name="color_id"]').value,
       }
+      items.push(item)
     }
     //  상품 옵션========================================================
 
@@ -128,11 +147,26 @@ const ItemForm = () => {
     //  사이즈========================================================
 
     frm.append('sizeTable', JSON.stringify(sizeTable))
+    frm.append('items', items)
+    frm.append('file_item', file_item)
 
     const data = {}
     for(const k of frm.keys()) {
       data[k] = frm.get(k)
     }
+    console.log(file_item)
+  }
+
+  const fileUpload = (e) => {
+    const files = e.target.files
+    for(const file of files) {
+      if (!file.type.startsWith("image/")) {
+        alert("이미지 파일을 선택해주세요.");
+        e.target.value = ''
+        return;
+      }
+    }
+    setImages(Array.from(files))
   }
 
 
@@ -152,6 +186,7 @@ const ItemForm = () => {
                   aria-label="item-name"
                   id={'name'}
                   name={'item_name'}
+                  onChange={inputItemName}
                 />
               </CInputGroup>
               <CRow>
@@ -220,49 +255,17 @@ const ItemForm = () => {
             </CCardHeader>
             <CCardBody>
               <CInputGroup className="mb-3">
-                <CFormInput type="file" id="file"/>
+                <CFormInput type="file" id="file" multiple onChange={fileUpload} accept="image/*" />
                 <CInputGroupText as="label" htmlFor="file">
                   Upload
                 </CInputGroupText>
               </CInputGroup>
               <CRow>
-                <CCol xs={4}>
-                  <CCard>
-                    <CCardImage
-                      src="//image.msscdn.net/images/goods_img/20240404/4026180/4026180_17133191594211_320.jpg"
-                    />
-                    <CCardBody>
-                      <CRow>
-                        <CInputGroup className="mb-3">
-                          <CInputGroupText id="basic-addon1">파일명</CInputGroupText>
-                          <CFormInput
-                            placeholder="원본 파일명"
-                            aria-label="item-name"
-                            readOnly
-                          />
-                        </CInputGroup>
-                      </CRow>
-                      <CRow>
-                        <CCol xs={10}>
-                          <CFormCheck
-                            className={'main_image_radio_label'}
-                            type="radio"
-                            label="대표 이미지 설정"
-                            defaultChecked
-                          />
-                        </CCol>
-                        <CCol xs={2}>
-                          <CButton
-                            color={'danger'}
-                            variant="outline"
-                          >
-                            x
-                          </CButton>
-                        </CCol>
-                      </CRow>
-                    </CCardBody>
-                  </CCard>
-                </CCol>
+                {
+                  images.map((it, index) => (
+                    <ItemPreview file={it} key={index} />
+                  ))
+                }
               </CRow>
             </CCardBody>
           </CCard>

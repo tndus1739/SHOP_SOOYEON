@@ -1,10 +1,13 @@
 import React from 'react'
 
+
+const Login_my = React.lazy(() => import('./views/base/login_my/My_page'))
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
 
 // Base
+const NewAccordion = React.lazy(() => import('./views/base/accordion/NewAccordion'))
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
 const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'))
 const Cards = React.lazy(() => import('./views/base/cards/Cards'))
@@ -109,6 +112,8 @@ const routes = [
   { path: '/admin/category', name: 'Member', element: AdminCategory },
   { path: '/admin/item/form', name: 'Member', element: AdminItemForm },
   { path: '/admin/item/color/form', name: 'Member', element: AdminItemColor },
+  { path: '/base/login_my', name: 'login_my', element: Login_my },
+  { path: '/base/NewAccordion', name: 'Accordion', element: NewAccordion }  
 ]
 
 export default routes

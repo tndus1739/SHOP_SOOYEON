@@ -65,7 +65,7 @@ const Navs = () => {
                 <CNavLink href="#">Link</CNavLink>
                 <CNavLink href="#">Link</CNavLink>
                 <CNavLink href="#" disabled>
-                  Disabled
+                Disabled
                 </CNavLink>
               </CNav>
             </DocsExample>

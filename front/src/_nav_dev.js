@@ -59,6 +59,16 @@ let _nav_dev = [
         items: [
           {
             component: CNavItem,
+            name: '마이페이지',
+            to: '/base/NewAccordion',
+          },
+          {
+            component: CNavItem,
+            name: 'X',
+            to: '/base/login_my',
+          },
+          {
+            component: CNavItem,
             name: 'Accordion',
             to: '/base/accordion',
           },

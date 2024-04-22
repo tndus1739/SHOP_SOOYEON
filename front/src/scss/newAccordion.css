@@ -1,0 +1,22 @@
+/* 마이페이지 CSS */
+.order-filter-period__tab {
+    display: flex;
+    gap: 5px; /* 버튼 사이의 간격을 조절합니다 */
+  }
+  
+  .order-filter-period__input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* 달력 아이콘과 input 사이의 간격을 조절합니다 */
+  }
+  
+  .order-filter-period__input {
+    width: 120px; /* input의 너비를 조절합니다 */
+  }
+  
+  /* 달력 아이콘을 화면에 보이지 않게 합니다 */
+  .order-filter-period__input-wrap svg {
+    display: none;
+  }
+  
+  

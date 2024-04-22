@@ -1,11 +1,11 @@
 import React from 'react';
 import {CFormSelect} from "@coreui/react";
 
-function ItemColorsSelect({colors, event}) {
+function ItemColorsSelect({colors, event, name}) {
 
   return (
     <>
-      <CFormSelect onChange={event}>
+      <CFormSelect onChange={event} name={name}>
         <option>선택</option>
         {
           colors.map((item, index) => (

@@ -28,6 +28,7 @@ function ItemColors({rgb}) {
     backgroundColor: hex,
     border: '1px solid black'
   }
+
   return (
     <>
       <CButton shape={'rounded-pill'} style={customColor}>

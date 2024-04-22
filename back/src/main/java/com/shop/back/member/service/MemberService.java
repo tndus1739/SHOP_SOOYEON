@@ -67,15 +67,15 @@ public class MemberService {
     }
 
     public LoginResponse login(LoginRequest req) {
-        authenticate(req.getEamil(), req.getPwd());
+        authenticate(req.getEmail(), req.getPwd());
 
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(req.getEamil());
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(req.getEmail());
         final String token = jwtTokenUtil.generateToken(userDetails);
 
         System.out.println("인증 성공 토큰 출력: " + token);
-        System.out.println("이메일(아이디) 출력: " + req.getEamil());
+        System.out.println("이메일(아이디) 출력: " + req.getEmail());
 
-        return new LoginResponse(token, req.getEamil());
+        return new LoginResponse(token, req.getEmail());
     }
 
     private void authenticate(String email, String pwd) {
@@ -87,6 +87,7 @@ public class MemberService {
             throw new MemberException("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
         }
     }
+
 
     private void isExistMemberEmail(String email) {
         int result = 0;
@@ -101,4 +102,15 @@ public class MemberService {
             throw new MemberException("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
         }
     }
+
+    //회원 정보 수정
+    public void modify (Member member, String nickname, String pwd) {
+        member.setNickname(nickname);
+        member.setPwd(pwd);
+
+        memberRepository.save(member);
+    }
+
+    //회원 탈퇴
+
 }

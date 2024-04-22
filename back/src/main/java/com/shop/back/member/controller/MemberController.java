@@ -33,19 +33,23 @@ public class MemberController {
         return new ResponseEntity<>(status);
     }
 
+    //회원가입
     @PostMapping("/join")
     public ResponseEntity<JoinResponse> join(@Valid @RequestBody JoinRequest req) {
         System.out.println("MemberController join " + new Date());
 
         return ResponseEntity.ok(service.join(req));
     }
-    
+
+    //로그인
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest req) {
         System.out.println("MemberController login " + new Date());
         
         return ResponseEntity.ok(service.login(req));
     }
+
+
 
     //요청 DTO 검증 예외처리 핸들러
     @ExceptionHandler(MethodArgumentNotValidException.class)

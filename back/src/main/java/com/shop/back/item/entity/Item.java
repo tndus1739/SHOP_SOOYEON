@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Table(name = "Item")
@@ -40,6 +42,10 @@ public class Item extends BaseEntity {
 	private int originPrice;
 
 	private int total;                      //  가격 + 옵션가
+
+	private int del;            // 기본: 1, 삭제됨: 0
+
+	private LocalDateTime delDate;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "colors_id")

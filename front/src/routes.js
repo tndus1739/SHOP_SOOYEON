@@ -1,4 +1,5 @@
 import React from 'react'
+import {useParams} from "react-router-dom";
 
 
 const Login_my = React.lazy(() => import('./views/base/login_my/My_page'))
@@ -64,8 +65,18 @@ const AdminItemForm = React.lazy(() => import('./views/admin/item/form'))
 //  색상
 const AdminItemColor = React.lazy(() => import('./views/admin/color/form'))
 
+
+
+
+//  user
+
+//  index
+const Index = React.lazy(() => import('./views/user/items'))
+const SearchItem = React.lazy(() => import('./views/user/SearchItems'))
+
 const routes = [
-  { path: '/', exact: true, name: 'Home' },
+  { path: '/items', exact: true, element: Index },
+  { path: `/items/search/*`, exact: true, element: SearchItem },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },
@@ -113,7 +124,7 @@ const routes = [
   { path: '/admin/item/form', name: 'Member', element: AdminItemForm },
   { path: '/admin/item/color/form', name: 'Member', element: AdminItemColor },
   { path: '/base/login_my', name: 'login_my', element: Login_my },
-  { path: '/base/NewAccordion', name: 'Accordion', element: NewAccordion }  
+  { path: '/base/NewAccordion', name: 'Accordion', element: NewAccordion }
 ]
 
 export default routes

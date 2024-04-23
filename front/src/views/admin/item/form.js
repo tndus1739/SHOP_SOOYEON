@@ -201,7 +201,7 @@ const ItemForm = () => {
 
     const postItem = (data) => {
         axios.post('http://localhost:3011/test/admin/item', data).then((res) => {
-            console.log(JSON.parse(res.data.sizeTable))
+
         })
     }
 

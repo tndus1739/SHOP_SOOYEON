@@ -150,47 +150,38 @@ const ItemForm = () => {
 
     frm.append('sizeTable', JSON.stringify(sizeTable))
 
-    // for(const i of items) {
-    //   frm.append('items', JSON.stringify(i))
-    // }
-
-    // frm.append('file_item', file_item)
-    // let idx = 0
-    // while(idx < items.length) {
-    //   for (const item of items) {
-    //     for(const k of Object.keys(item)) {
-    //       frm.append('items[' + idx + '].' + k, item[k])
-    //     }
-    //   }
-    //   idx++
-    // }
-
-
-    for(const i of items) {
-      frm.append('item', i)
-    }
-    for(const f of file_item) {
-      frm.append('file_item', f)
-    }
-
     const data = {}
     for(const k of frm.keys()) {
       data[k] = frm.get(k)
     }
-    console.log(items)
+    data['items'] = items;
     console.log(data)
     // return false
 
+    const files = new FormData()
+    for(const f of file_item) {
+      files.append('file_item', f)
+    }
 
-    axios.post('http://localhost:3011/test', frm, {
+    axios.post('http://localhost:3011/test/admin/item/files', files, {
       headers: {
         Accept: '*/*',
         'Content-Type': 'multipart/form-data'
       }
     }).then(res => {
+      console.log(res.data)
+      if(res.data.length > 0) {
+        data['file_id'] = res.data
+        postItem(data)
+      }
+    })
+  }
+
+  const postItem = (data) => {
+    console.log(data)
+    axios.post('http://localhost:3011/test/admin/item', data).then((res) => {
       console.log(res)
     })
-
   }
 
   const fileUpload = (e) => {

@@ -27,7 +27,7 @@ function ItemOptions({num}) {
       <CTableDataCell>
         <CRow>
           <CCol xs={9}>
-            <ItemColorsSelect colors={colors} event={colors_select} name={'color_id'} />
+            <ItemColorsSelect colors={colors} event={colors_select} name={'color_rgb'} />
           </CCol>
           <CCol xs={3}>
             <ItemColors rgb={rgb}/>
@@ -35,21 +35,21 @@ function ItemOptions({num}) {
         </CRow>
       </CTableDataCell>
       <CTableDataCell>
-        <CFormInput placeholder={'사이즈'} name={'size'} />
+        <CFormInput placeholder={'사이즈'} name={'size'} required />
       </CTableDataCell>
       <CTableDataCell>
-        <CFormInput defaultValue={0} type={'number'} name={'cnt'}/>
+        <CFormInput defaultValue={0} type={'number'} name={'cnt'} required />
       </CTableDataCell>
       <CTableDataCell>
         <CFormSelect aria-label="Default select example" name={'status'}>
-          <option>선택</option>
-          <option>
+          <option value='0'>선택</option>
+          <option value='판매'>
             판매
           </option>
-          <option>
+          <option value={'판매중지'}>
             판매중지
           </option>
-          <option>
+          <option value={'품절'}>
             품절
           </option>
         </CFormSelect>

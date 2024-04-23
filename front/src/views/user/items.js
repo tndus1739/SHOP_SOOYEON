@@ -5,19 +5,19 @@ import ReactImg from "src/assets/images/react.jpg";
 import AngularImg from "src/assets/images/angular.jpg";
 import VueImg from "src/assets/images/vue.jpg";
 import {useParams} from "react-router-dom";
+import { freeSet } from '@coreui/icons'
+import CIcon from "@coreui/icons-react";
 
 function Items({props}) {
     const [items, setItems] = useState([])
-    const {params} = useParams();
 
-    const getItems = (params) => {
-        console.log(params)
+    const getItems = () => {
         const mock = [{},{},{},{},{},{},{},{},{},{},{},{},]
         setItems(mock)
     }
 
     useEffect(() => {
-        getItems(params)
+        getItems()
     }, []);
 
     return (

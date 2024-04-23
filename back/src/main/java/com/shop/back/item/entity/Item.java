@@ -6,14 +6,22 @@ import com.shop.back.common.BaseEntity;
 import com.shop.back.member.entity.Member;
 import com.shop.back.size.entity.Size;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @Table(name = "Item")
 @Entity
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Item extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

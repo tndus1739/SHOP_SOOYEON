@@ -57,13 +57,14 @@ public class ItemFormDto {
 
 //	private double discount;                //  할인율
 
+	private int defaultPrice;
+	
 	private int salePrice;                  //  실제 판매가 (디폴트는 price 의 값 isDiscounted가 Y이면 적용)
-
 	
 	private Category category;
 
 	
-	private Size size;
+	private String sizeTable;
 
 	
 	private Colors colors;

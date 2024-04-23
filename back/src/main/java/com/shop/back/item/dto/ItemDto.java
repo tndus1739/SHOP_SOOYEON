@@ -1,14 +1,6 @@
 package com.shop.back.item.dto;
 
-import com.shop.back.category.entity.Category;
-import com.shop.back.colors.entity.Colors;
-import com.shop.back.size.entity.Size;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

@@ -20,7 +20,7 @@ let _nav_dev = [
   {
     component: CNavItem,
     name: 'Home',
-    to: '/dashboard',
+    to: '/items',
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon"/>,
     badge: {
       color: 'info',

@@ -1,7 +1,6 @@
 package com.shop.back.member.service;
 
 import com.shop.back.jwt.JwtTokenUtil;
-import com.shop.back.member.dto.param.CreateMemberParam;
 import com.shop.back.member.dto.request.JoinRequest;
 import com.shop.back.member.dto.request.LoginRequest;
 import com.shop.back.member.dto.response.JoinResponse;
@@ -11,6 +10,7 @@ import com.shop.back.member.exception.MemberException;
 import com.shop.back.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -22,11 +22,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class MemberService {
 
+    @Autowired
     private final MemberRepository memberRepository;
     private final PasswordEncoder encoder;
     private final AuthenticationManager authenticationManager;
@@ -73,7 +76,7 @@ public class MemberService {
         final String token = jwtTokenUtil.generateToken(userDetails);
 
         System.out.println("인증 성공 토큰 출력: " + token);
-        System.out.println("이메일(아이디) 출력: " + req.getEmail());
+        System.out.println("이메일 출력: " + req.getEmail());
 
         return new LoginResponse(token, req.getEmail());
     }
@@ -103,12 +106,25 @@ public class MemberService {
         }
     }
 
-    //회원 정보 수정
-    public void modify (Member member, String nickname, String pwd) {
-        member.setNickname(nickname);
-        member.setPwd(pwd);
+    //정보 수정
+    public boolean updateMember (Long id, String nickname, String pwd, LocalDateTime birth) {
+        if (memberRepository.existsById(id)) {
+            Member member = memberRepository.findById(id).get();
+            if (nickname != null) {
+                member.setNickname(nickname);
+            }
+            if (pwd != null) {
+                member.setPwd(pwd);
+            }
+            if (birth != null) {
+                member.setBirth(birth);
+            }
 
-        memberRepository.save(member);
+            memberRepository.save(member);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     //회원 탈퇴

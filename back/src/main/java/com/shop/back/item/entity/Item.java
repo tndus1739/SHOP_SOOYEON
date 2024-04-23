@@ -39,7 +39,7 @@ public class Item extends BaseEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "itemGroup_id")
-	private ItemGroup Item;
+	private ItemGroup ItemGroup;
 
 
 }

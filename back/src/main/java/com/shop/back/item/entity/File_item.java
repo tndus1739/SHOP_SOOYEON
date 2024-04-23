@@ -21,7 +21,7 @@ public class File_item extends BaseEntity {
 	private int isMain;                     //  (메인 이미지)? 1 : 0
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "item_id")
-	private Item item;
+	@JoinColumn(name = "itemGroup_id")
+	private ItemGroup itemGroup;
 
 }

@@ -15,6 +15,8 @@ import {
 import ItemOptions from "src/views/admin/item/ItemOptions";
 import SizeTable from "src/views/admin/item/SizeTable";
 import ItemPreview from "src/views/admin/item/ItemPreview";
+import axios from "axios";
+import {json} from "react-router-dom";
 
 const ItemForm = () => {
   const [sort, setSort] = useState([1]);
@@ -24,7 +26,7 @@ const ItemForm = () => {
   const [isDiscount, setIsDiscount] = useState(false);
   const [discountRate, setDiscountRate] = useState('0%');
   const [itemName, setItemName] = useState('');
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState(FileList | undefined);
 
   const inputItemName = (e) => {
     setItemName(e.target.value)
@@ -93,7 +95,7 @@ const ItemForm = () => {
     for(const itemImage of itemImages) {
       for(const f of images) {
         if(f.name == itemImage.querySelector('input[name="origin"]').value) {
-          f['isMain'] = (itemImage.querySelector('input[name="isMain"]').checked ? 1 : 0)
+          // f['isMain'] = (itemImage.querySelector('input[name="isMain"]').checked ? 1 : 0)
           file_item.push(f)
         }
       }
@@ -147,14 +149,48 @@ const ItemForm = () => {
     //  사이즈========================================================
 
     frm.append('sizeTable', JSON.stringify(sizeTable))
-    frm.append('items', items)
-    frm.append('file_item', file_item)
+
+    // for(const i of items) {
+    //   frm.append('items', JSON.stringify(i))
+    // }
+
+    // frm.append('file_item', file_item)
+    // let idx = 0
+    // while(idx < items.length) {
+    //   for (const item of items) {
+    //     for(const k of Object.keys(item)) {
+    //       frm.append('items[' + idx + '].' + k, item[k])
+    //     }
+    //   }
+    //   idx++
+    // }
+
+
+    for(const i of items) {
+      frm.append('item', i)
+    }
+    for(const f of file_item) {
+      frm.append('file_item', f)
+    }
 
     const data = {}
     for(const k of frm.keys()) {
       data[k] = frm.get(k)
     }
-    console.log(file_item)
+    console.log(items)
+    console.log(data)
+    // return false
+
+
+    axios.post('http://localhost:3011/test', frm, {
+      headers: {
+        Accept: '*/*',
+        'Content-Type': 'multipart/form-data'
+      }
+    }).then(res => {
+      console.log(res)
+    })
+
   }
 
   const fileUpload = (e) => {
@@ -166,7 +202,9 @@ const ItemForm = () => {
         return;
       }
     }
-    setImages(Array.from(files))
+
+    // setImages(Array.from(files))
+    setImages(files)
   }
 
 
@@ -262,7 +300,7 @@ const ItemForm = () => {
               </CInputGroup>
               <CRow>
                 {
-                  images.map((it, index) => (
+                  Array.from(images).map((it, index) => (
                     <ItemPreview file={it} key={index} />
                   ))
                 }

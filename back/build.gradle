@@ -60,7 +60,6 @@ dependencies {
     //modelmapper 라이브러리   : dto 필드의 값을 Entity 클래스에 매핑
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.9'
 
-
 }
 
 tasks.named('test') {

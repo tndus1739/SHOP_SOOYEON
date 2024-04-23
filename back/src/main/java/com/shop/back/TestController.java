@@ -21,9 +21,11 @@ public class TestController {
 
 	@PostMapping("/test/admin/item/files")
 	public ResponseEntity<?> post(
-			@RequestParam("file_item") List<MultipartFile> aa
+			@RequestParam("file_item") List<MultipartFile> aa,
+			@RequestParam("isMain") int index
 	) {
-		System.out.println(aa.size());
+		System.out.println("리스트 사이즈 : " + aa.size());
+		System.out.println("메인 이미지 index : " + index);
 		List<Object> id = new ArrayList<>();
 		for(int i = 0;i<aa.size();i++) {
 			id.add(i+1);

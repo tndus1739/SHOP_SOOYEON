@@ -114,40 +114,40 @@ public class ItemRepositoryTest {
 	}
 	
 //	@Test
-	@DisplayName("OR 테스트")
-	public void findByNameOrContentTest() {
-	List<Item> itemList = itemRepository.findByNameOrContent("바지2", "바지상세정보10");
-	itemList.forEach((item) -> {
-		System.out.println(item);
-	});      
-	}
+//	@DisplayName("OR 테스트")
+//	public void findByNameOrContentTest() {
+//	List<Item> itemList = itemRepository.findByNameOrContent("바지2", "바지상세정보10");
+//	itemList.forEach((item) -> {
+//		System.out.println(item);
+//	});
+//	}
 	
 	// 상품가격 내림차순 정렬
-//	@Test
-	@DisplayName("Order by 테스트")
-	public void findByPriceLessThanOrderByPriceDesc () {
-	itemRepository.findByPriceLessThanOrderByPriceDesc(100000)
-			.forEach((item -> System.out.println(item)));
-	}
-	
-//	@Test
-	@DisplayName("JPQL 테스트")
-	public void findbyItemContent () {
-		itemRepository.findbyItemContent("1")
-			.forEach((item) -> {
-				System.out.println(item);
-			});
-	}
-	
-	
-//	@Test
-	@DisplayName("Native 테스트")
-	public void findbyItemContentNative () {
-		itemRepository.findbyItemContentNative("1")
-			.forEach((item) -> {
-				System.out.println(item);
-			});
-	}
+////	@Test
+//	@DisplayName("Order by 테스트")
+//	public void findByPriceLessThanOrderByPriceDesc () {
+//	itemRepository.findByPriceLessThanOrderByPriceDesc(100000)
+//			.forEach((item -> System.out.println(item)));
+//	}
+//
+////	@Test
+//	@DisplayName("JPQL 테스트")
+//	public void findbyItemContent () {
+//		itemRepository.findbyItemContent("1")
+//			.forEach((item) -> {
+//				System.out.println(item);
+//			});
+//	}
+//
+//
+////	@Test
+//	@DisplayName("Native 테스트")
+//	public void findbyItemContentNative () {
+//		itemRepository.findbyItemContentNative("1")
+//			.forEach((item) -> {
+//				System.out.println(item);
+//			});
+//	}
 	
 //	@Test
 	@DisplayName("QueryDSL 테스트")

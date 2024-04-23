@@ -77,7 +77,7 @@ const Layout = () => {
                 </CCol>
                 <CCol xs={12}>
                   <CFormLabel htmlFor="inputAddress">Address</CFormLabel>
-                  <CFormInput id="inputAddress" placeholder="1234 Main St" />
+                  <CFormInput id="inputAddress" placeholder="1234 Items St" />
                 </CCol>
                 <CCol xs={12}>
                   <CFormLabel htmlFor="inputAddress2">Address 2</CFormLabel>

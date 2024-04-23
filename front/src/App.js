@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect } from 'react'
-import { HashRouter, Route, Routes } from 'react-router-dom'
+import {HashRouter, Route, Routes, useParams} from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 import {CNavGroup, CNavItem, CSpinner, useColorModes} from '@coreui/react'
@@ -35,7 +35,7 @@ const App = () => {
             const item = {
               component: CNavItem,
               name: child.name,
-              to: '/category/item/' + child.id
+              to: '/items/search/' + child.id
             }
             obj['items'].push(item)
           }

@@ -34,16 +34,16 @@ public class ItemFormDto {
 	private Long id;
 	
 	@NotBlank(message = "상품명을 입력해주세요.")
-	private String name;
+	private String item_name;
 	
 	@NotBlank(message = "상품설명을 입력해주세요.")
 	private String content;
 
 	private String gender;                  //  성별
 
-	private String code;                    //  상품 코드
+//	private String code;                    //  상품 코드
 
-	private int views;                      //  조회수
+//	private int views;                      //  조회수
 
 	private String status;                  //  판매중 Y or 판매 중지 N
 	
@@ -61,20 +61,24 @@ public class ItemFormDto {
 	
 	private int salePrice;                  //  실제 판매가 (디폴트는 price 의 값 isDiscounted가 Y이면 적용)
 	
-	private Category category;
-
+//	private Category category;              //  id값
+	private Long categoryId;
 	
 	private String sizeTable;
 
 	
-	private Colors colors;
+//	private Colors colors;                  //  rgb값
+
+	private String rgb;
 	
 	
 	
-	private List<File_itemDto> itemImgDtoList = new ArrayList<>();;
+//	private List<File_itemDto> itemImgDtoList = new ArrayList<>();;
 	
 	
 	private List<Long> itemImgId = new ArrayList<>();
+
+	private List<ItemDto> itemDtoList = new ArrayList<>();
 	
 	
 	private static ModelMapper modelMapper = new ModelMapper();

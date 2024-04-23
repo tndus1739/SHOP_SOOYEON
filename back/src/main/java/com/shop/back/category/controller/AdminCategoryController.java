@@ -42,7 +42,7 @@ public class AdminCategoryController {
 	}
 
 	@DeleteMapping
-	public ResponseEntity<?> delete(@RequestParam Long id) {
+	public ResponseEntity<?> delete(@RequestParam("id") Long id) {
 		String msg = "error";
 		try {
 			categoryService.delete(id);

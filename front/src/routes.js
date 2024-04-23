@@ -76,7 +76,7 @@ const SearchItem = React.lazy(() => import('./views/user/SearchItems'))
 
 const routes = [
   { path: '/items', exact: true, element: Index },
-  { path: `/items/search/*`, exact: true, element: SearchItem },
+  { path: `/items/search/:category_id`, exact: true, element: SearchItem },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },
@@ -120,9 +120,9 @@ const routes = [
   { path: '/notifications/modals', name: 'Modals', element: Modals },
   { path: '/notifications/toasts', name: 'Toasts', element: Toasts },
   { path: '/widgets', name: 'Widgets', element: Widgets },
-  { path: '/admin/category', name: 'Member', element: AdminCategory },
-  { path: '/admin/item/form', name: 'Member', element: AdminItemForm },
-  { path: '/admin/item/color/form', name: 'Member', element: AdminItemColor },
+  { path: '/admin/category', name: 'Admin', element: AdminCategory },
+  { path: '/admin/item/form', name: '상품 등록', element: AdminItemForm },
+  { path: '/admin/item/color/form', name: 'Admin', element: AdminItemColor },
   { path: '/base/login_my', name: 'login_my', element: Login_my },
   { path: '/base/NewAccordion', name: 'Accordion', element: NewAccordion }
 ]

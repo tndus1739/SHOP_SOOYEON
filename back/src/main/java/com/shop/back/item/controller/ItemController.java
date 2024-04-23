@@ -49,7 +49,7 @@ public class ItemController {
 	        return new ResponseEntity<>(item, HttpStatus.OK);
 	    }
 	    
-//	    // 상품 등록
+	    // 상품 등록
 //	    @PostMapping
 //	    public Item createItem(@RequestBody ItemDto itemDto) {
 //	       return itemService.saveItem(itemDto);

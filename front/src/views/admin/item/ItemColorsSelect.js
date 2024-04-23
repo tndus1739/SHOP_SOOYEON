@@ -6,7 +6,7 @@ function ItemColorsSelect({colors, event, name}) {
   return (
     <>
       <CFormSelect onChange={event} name={name}>
-        <option>선택</option>
+        <option value='0'>선택</option>
         {
           colors.map((item, index) => (
             <option value={item.rgb} key={index}>

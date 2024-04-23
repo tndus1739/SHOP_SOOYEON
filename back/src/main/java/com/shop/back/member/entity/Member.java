@@ -3,7 +3,6 @@ package com.shop.back.member.entity;
 import com.shop.back.Role;
 import com.shop.back.common.BaseEntity;
 import com.shop.back.member.dto.request.JoinRequest;
-import com.shop.back.member.service.MemberService;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -58,6 +57,12 @@ public class Member extends BaseEntity {
 		this.pwd = encodePassword;
 		this.gender = req.getGender();
 		this.birth = req.getBirth();
+	}
+
+	public void modify(String nickname, String pwd, LocalDateTime birth) {
+		this.nickname = nickname;
+		this.pwd = pwd;
+		this.birth = birth;
 	}
 
 

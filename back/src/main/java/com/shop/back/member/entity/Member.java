@@ -35,12 +35,14 @@ public class Member extends BaseEntity {
 
 	private LocalDateTime birth;            //  생년월일
 
+	private String phone;            //  휴대폰 번호
+
 
 	public Member() {
 		this.role = Role.USER;
 	}
 
-	public Member(String name, String nickname, String email, String pwd, String gender, LocalDateTime birth) {
+	public Member(String name, String nickname, String email, String pwd, String gender, LocalDateTime birth, String phone) {
 		super();
 		this.name = name;
 		this.nickname = nickname;
@@ -48,6 +50,7 @@ public class Member extends BaseEntity {
 		this.pwd = pwd;
 		this.gender = gender;
 		this.birth = birth;
+		this.phone = phone;
 	}
 
 	public void CreateMemberParam(JoinRequest req, String encodePassword) {
@@ -57,13 +60,7 @@ public class Member extends BaseEntity {
 		this.pwd = encodePassword;
 		this.gender = req.getGender();
 		this.birth = req.getBirth();
+		this.phone = req.getPhone();
 	}
-
-	public void modify(String nickname, String pwd, LocalDateTime birth) {
-		this.nickname = nickname;
-		this.pwd = pwd;
-		this.birth = birth;
-	}
-
 
 }

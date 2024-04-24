@@ -13,6 +13,7 @@ import com.shop.back.member.service.MemberService;
 import com.shop.back.security.WebSecurityConfig;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import oracle.jdbc.proxy.annotation.Post;
 import org.springframework.beans.factory.annotation.Autowired;

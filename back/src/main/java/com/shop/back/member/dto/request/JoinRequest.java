@@ -32,5 +32,8 @@ public class JoinRequest {
     @NotNull
     private LocalDateTime birth;
 
+    @NotBlank
+    private String phone;
+
 
 }

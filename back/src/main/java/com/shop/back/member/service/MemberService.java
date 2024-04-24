@@ -11,6 +11,7 @@ import com.shop.back.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -35,6 +36,8 @@ public class MemberService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
     private final UserDetailsService userDetailsService;
+    private final RedisTemplate redisTemplate;
+
 
     public HttpStatus checkEmailDuplicate(String email) {
         isExistMemberEmail(email);
@@ -78,6 +81,8 @@ public class MemberService {
         System.out.println("인증 성공 토큰 출력: " + token);
         System.out.println("이메일 출력: " + req.getEmail());
 
+//        redisTemplate.opsForValue().set("jwt 토큰: " + req.getEmail(), token);
+
         return new LoginResponse(token, req.getEmail());
     }
 
@@ -106,7 +111,14 @@ public class MemberService {
         }
     }
 
-    
+    //로그아웃
+//    public void logout() {
+//
+//        if (redisTemplate.opsForValue().get("jwt 토큰: " + ));
+//
+//    }
+
+
 
     //정보 수정
     public boolean updateMember (Long id, String nickname, String pwd, LocalDateTime birth) {

@@ -80,6 +80,10 @@ public class MemberController {
 //        return ResponseEntity.ok().build();
 //    }
 
+
+    //비밀번호 확인
+    
+
     //정보 수정
     @PutMapping("/{id}")
     public ResponseEntity<String> updateMember(@PathVariable Long id, @RequestBody MemberUpdateRequest req, @RequestHeader("Authorization") String token) {
@@ -129,6 +133,9 @@ public class MemberController {
         }
 
     }
+
+    //회원 탈퇴 (Role: UNREGISTER)
+
 
     //클라이언트 요청의 유효성을 검증하는 메서드
     private ResponseEntity<String> validateRequest(MemberUpdateRequest req) {

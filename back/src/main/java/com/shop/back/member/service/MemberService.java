@@ -1,5 +1,6 @@
 package com.shop.back.member.service;
 
+import com.shop.back.Role;
 import com.shop.back.jwt.JwtTokenUtil;
 import com.shop.back.member.dto.request.JoinRequest;
 import com.shop.back.member.dto.request.LoginRequest;
@@ -84,6 +85,12 @@ public class MemberService {
     }
 
     public LoginResponse login(LoginRequest req) {
+
+        Member member = memberRepository.findByEmail(req.getEmail());
+        if (member.getRole() == Role.UNREGISTER) {
+            throw new MemberException("탈퇴한 사용자입니다.", HttpStatus.FORBIDDEN);
+        }
+
         authenticate(req.getEmail(), req.getPwd());
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(req.getEmail());

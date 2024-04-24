@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.shop.back.item.dto.ItemDto;
 import com.shop.back.item.dto.ItemFormDto;
+import com.shop.back.item.dto.ItemGroupDto;
 import com.shop.back.item.entity.Item;
 import com.shop.back.item.repository.ItemRepository;
 import com.shop.back.item.service.ItemService;
@@ -28,8 +29,8 @@ import com.shop.back.item.service.ItemService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-//@RequestMapping("/item")
-@CrossOrigin("*")  //모든 도메인, 모든 요청방식' 에 대해 허용
+@RequestMapping("/item")
+//@CrossOrigin("*")  //모든 도메인, 모든 요청방식' 에 대해 허용
 @RequiredArgsConstructor
 public class ItemController {
 
@@ -52,23 +53,49 @@ public class ItemController {
 	        return new ResponseEntity<>(item, HttpStatus.OK);
 	    }
 	    
-	    // 상품 이미지 등록
-//	    @PostMapping ("/test/admin/item/files")
-//	    public ResponseEntity<?> saveItemImg(
-//	    		@RequestParam("file_item") List<MultipartFile> imgList ,
-//				@RequestParam("isMain") int index
-//	    		) {
-//	    			System.out.println("리스트 사이즈 : " + imgList.size());
-//	    			System.out.println("메인 이미지 index : " + index);
-//	    			List<Object> id = new ArrayList<>();
-//	    			for(int i = 0; i < imgList.size(); i++) {
-//	    				id.add(i+1);
-//	    			}
-//
-//	    			return ResponseEntity.ok(id);
-//	    		}
-//	 
+	 // 상품 등록
+	    @PostMapping
+		public ResponseEntity<?> post(
+				@RequestBody ItemFormDto itemFormDto 
+				
+		) {
+	    	
 	    
+	    	List<ItemDto> itemList = itemFormDto.getItemDtoList();
+	    	  
+	    	
+	    	System.out.println("List 에서 끄집어내서 출력 : " + itemList.get(0));
+	    	
+	    	
+	    	ItemGroupDto itemGroupDto = new ItemGroupDto();
+
+		    System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
+//			System.out.println(itemFormDto);
+			 try {
+				 
+				 itemService.saveItem (itemFormDto, itemGroupDto);
+				 
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			
+			return ResponseEntity.ok(itemFormDto);
+		}
+	    
+	    // 상품 이미지 
+		@PostMapping("/files")
+		public ResponseEntity<?> post(
+				@RequestParam("file_item") List<MultipartFile> itemImgFileList,
+				@RequestParam("isMain") int index,
+				@RequestParam("itemGroupId") Long itemGroupId
+		) {
+			System.out.println("리스트 사이즈 : " + itemImgFileList.size());
+			System.out.println("메인 이미지 index : " + index);
+			System.out.println("아이템 그룹 Id : " + itemGroupId);
+
+			return ResponseEntity.ok(itemGroupId);
+		}
 	    
 	    
 	    

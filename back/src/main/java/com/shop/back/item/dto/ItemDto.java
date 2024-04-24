@@ -1,6 +1,10 @@
 package com.shop.back.item.dto;
 
 
+import org.modelmapper.ModelMapper;
+
+import com.shop.back.item.entity.Item;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,5 +41,13 @@ public class ItemDto {
 	private String rgb;
 
 	private String size;
+	
+	private static ModelMapper modelMapper = new ModelMapper();
 
+	// Dto -> Entity
+	
+		public Item createItem () {
+		
+			return modelMapper.map(this, Item.class);
+		}
 }

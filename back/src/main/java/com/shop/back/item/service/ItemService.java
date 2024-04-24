@@ -7,11 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.shop.back.category.entity.Category;
+import com.shop.back.category.repository.CategoryRepository;
+import com.shop.back.colors.repository.ColorsRepository;
 import com.shop.back.item.dto.ItemDto;
 import com.shop.back.item.dto.ItemFormDto;
+import com.shop.back.item.dto.ItemGroupDto;
 import com.shop.back.item.entity.File_item;
 import com.shop.back.item.entity.Item;
+import com.shop.back.item.entity.ItemGroup;
 import com.shop.back.item.repository.File_itemRepository;
+import com.shop.back.item.repository.ItemGroupRepository;
 import com.shop.back.item.repository.ItemRepository;
 
 import jakarta.transaction.Transactional;
@@ -25,6 +31,10 @@ public class ItemService {
 	private final ItemRepository itemRepository;
 	private final File_itemService file_itemService;
 	private final File_itemRepository file_itemRepository;
+	private final ItemGroupRepository itemGroupRepository;
+	private final CategoryRepository categoryRepository;
+	private final ColorsRepository colorsRepository;
+	
 	
 	// 상품리스트
 	public List<Item> getItemList() {
@@ -38,32 +48,32 @@ public class ItemService {
 	}
 	
 	
-	
-	public Long saveItem (ItemFormDto itemFormDto , List<MultipartFile> itemImgFileList) 
-			throws IOException{
+public ItemGroup saveItem (ItemFormDto itemFormDto , ItemGroupDto itemGroupDto  ) throws IOException{
 		
 		
 		// 상품 등록
-		Item item = itemFormDto.createItem();    // createItem() : Dto -> Entity
-//		System.out.println("상품등록성공");
-		itemRepository.save(item);
+		ItemGroup itemGroup = new ItemGroup();    // createItem() : Dto -> Entity
+		Category category = categoryRepository.findById(itemFormDto.getCategoryId()).get();
 		
-		// 이미지 등록
-		for (int i = 0; i < itemImgFileList.size(); i++) {
-			File_item file_item = new File_item();
-//			file_item.setItemGroup(item);
-			
-			if(i==0) {
-				file_item.setIsMain(1);
-			} else {
-				file_item.setIsMain(0);
-			}
-			
-			file_itemService.saveItemImg(file_item, itemImgFileList.get(i));
-		}
-			return item.getId();
-	}
+//		Colors colors = colorsRepository.findByRgbAndDel(itemFormDto.getRgb(), 1);
+		itemGroup.saveItemGroup(itemFormDto);
+		itemGroup.setCategory(category);
+		
+		System.out.println("상품등록성공");
+		System.out.println(itemGroupDto);
+		System.out.println(itemFormDto);
+		ItemGroup itemGroup2 = itemGroupRepository.save(itemGroup);
+		
+		 for (ItemDto itemDto : itemFormDto.getItemDtoList()) {
+			 
+			 Item item = itemDto.createItem();
+			 item.setItemGroup(itemGroup2);
+			 itemRepository.save(item);
+		 }
+		
 	
+			return itemGroup2;
+	}
 	// 상품수정하기
 	public Item updateItem (Long id , Item updateItem) {
 		Item item = getItemById(id);

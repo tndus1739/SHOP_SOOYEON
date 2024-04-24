@@ -6,14 +6,24 @@ import com.shop.back.common.BaseEntity;
 import com.shop.back.member.entity.Member;
 import com.shop.back.size.entity.Size;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Table(name = "Item")
 @Entity
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Item extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,13 +43,17 @@ public class Item extends BaseEntity {
 
 	private int total;                      //  가격 + 옵션가
 
+	private int del;            // 기본: 1, 삭제됨: 0
+
+	private LocalDateTime delDate;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "colors_id")
 	private Colors colors;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "itemGroup_id")
-	private ItemGroup Item;
+	private ItemGroup ItemGroup;
 
 
 }

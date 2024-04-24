@@ -31,7 +31,7 @@ public class AdminCategoryController {
 	}
 
 	@GetMapping
-	public ResponseEntity<?> getList(@RequestParam(required = false) Long parentId) {
+	public ResponseEntity<?> getList(@RequestParam(name = "parentId" ,required = false) Long parentId) {
 		List<Category> list = new ArrayList<>();
 		try {
 			list = categoryService.getList(parentId, 1);
@@ -42,7 +42,7 @@ public class AdminCategoryController {
 	}
 
 	@DeleteMapping
-	public ResponseEntity<?> delete(@RequestParam Long id) {
+	public ResponseEntity<?> delete(@RequestParam("id") Long id) {
 		String msg = "error";
 		try {
 			categoryService.delete(id);

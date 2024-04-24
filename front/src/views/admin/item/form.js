@@ -136,9 +136,10 @@ const ItemForm = () => {
                 size: io.querySelector('input[name="size"]').value,
                 cnt: io.querySelector('input[name="cnt"]').value,
                 status: io.querySelector('select[name="status"]').value,
-                originPrice: isDiscounted ? (Number(document.querySelector('input[name="realPrice"]').value.toString().replace(/[^0-9]/gi, ''))) : (Number(defaultPrice.toString().replace(/[^0-9]/gi, ''))),
-                realPrice: io.querySelector('input[name="optionPrice"]').value,
-                total: Number(defaultPrice.toString().replace(/[^0-9]/gi, '')) + Number((io.querySelector('input[name="optionPrice"]').value).toString().replace(/[^0-9]/gi, '')),
+                optionPrice: (Number((io.querySelector('input[name="optionPrice"]').value).toString().replace(/[^0-9]/gi, ''))),
+                defaultPrice: (Number(defaultPrice.toString().replace(/[^0-9]/gi, ''))),
+                salePrice: isDiscounted ? Number(realPrice.toString().replace(/\D/g, '')) : Number(defaultPrice.toString().replace(/\D/g, '')),
+                total: isDiscounted ? Number(realPrice.toString().replace(/\D/g, '')) + Number((io.querySelector('input[name="optionPrice"]').value).toString().replace(/[^0-9]/gi, '')) : Number(defaultPrice.toString().replace(/[^0-9]/gi, '')) + Number((io.querySelector('input[name="optionPrice"]').value).toString().replace(/[^0-9]/gi, '')),
                 rgb: io.querySelector('select[name="color_rgb"]').value,
             }
             items.push(item)
@@ -192,7 +193,7 @@ const ItemForm = () => {
             'defaultPrice', 'salePrice', 'categoryId', 'sizeTable', 'rgb', 'itemImgList',
             'itemDtoList',
         ]
-        console.log(data)
+        // console.log(data)
         const dp = Number(data.originPrice.toString().replace(/[^0-9]/gi, ''))
         const sp = Number(data.realPrice.toString().replace(/[^0-9]/gi, ''))
 
@@ -212,15 +213,16 @@ const ItemForm = () => {
             isView: data.isView,
         }
 
-        for(let rq of required) {
-            for(const k of Object.keys(itemForm)) {
-                if(rq == k && !itemForm[k]) {
-                    return
-                }
-            }
-        }
+        // for(let rq of required) {
+        //     for(const k of Object.keys(itemForm)) {
+        //         if(rq == k && !itemForm[k]) {
+        //             return
+        //         }
+        //     }
+        // }
 
         console.log(itemForm)
+        return
         axios.post('http://localhost:3011/item', itemForm).then((res) => {
             console.log(res)
             if(res.data.id) {

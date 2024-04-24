@@ -190,9 +190,9 @@ public class ItemRepositoryTest {
 //			
 //			itemRepository.save(i1);
 //			
-//		}
-//	}
-//	
+		}
+	}
+	
 //	
 ////	@Test
 //	@DisplayName("상품명 검색 테스트")

@@ -1,6 +1,7 @@
 package com.shop.back.item.service;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,7 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.util.StringUtils;
 
+import com.shop.back.item.dto.ItemFormDto;
 import com.shop.back.item.entity.File_item;
+import com.shop.back.item.entity.Item;
 import com.shop.back.item.repository.File_itemRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -44,4 +47,54 @@ public class File_itemService {
         
 
 	}
+	
+	
+//	public Long saveFilesWithProduct(List<MultipartFile> itemImgFileList , int Index, Item item) throws IOException {
+//        
+//        for (int i = 0; i < itemImgFileList.size(); i++) {
+//            File_item fileItem = new File_item();
+//            fileItem.setItemGroup(item); // 상품 연결 설정
+//
+//            // 파일 저장 로직
+//            String fileName = uploadFile(itemImgFileList.get(i));
+//            fileItem.setFileName(fileName);
+//
+//            // 대표 이미지 설정
+//            if (i == Index) {
+//                fileItem.setIsMain(1);  
+//            } else {
+//                fileItem.setIsMain(0);  
+//            }
+//
+//            fileItemRepository.save(fileItem);
+//        }
+//        return item.getId(); // 연관된 상품 ID 반환
+//    }
+//
+//   
+//	
+//	public Long saveItemImg ( List<MultipartFile> itemImgFileList , int index) 
+//			throws IOException{
+//		
+//
+//		// 이미지 등록
+//		for (int i = 0; i < itemImgFileList.size(); i++) {
+//			File_item file_item = new File_item();
+////			file_item.setItemGroup(item);
+//			
+//			
+//			if(i==index) {
+//				file_item.setIsMain(1);
+//			} else {
+//				file_item.setIsMain(0);
+//			}
+//			
+//			file_itemService.saveItemImg(file_item, itemImgFileList.get(i));
+//		}
+//			return item.getId();
+//	}
+//	
+//	
+	
+	
 }

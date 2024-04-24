@@ -1,5 +1,6 @@
 package com.shop.back.member.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -29,8 +30,10 @@ public class JoinRequest {
     @NotBlank
     private String gender;
 
-    @NotNull
+
     private LocalDateTime birth;
+
+    private String birthString;
 
     @NotBlank
     private String phone;

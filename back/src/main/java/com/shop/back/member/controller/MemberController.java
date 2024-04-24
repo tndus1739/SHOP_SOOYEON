@@ -11,6 +11,7 @@ import com.shop.back.member.exception.MemberException;
 import com.shop.back.member.repository.MemberRepository;
 import com.shop.back.member.service.MemberService;
 import com.shop.back.security.WebSecurityConfig;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import oracle.jdbc.proxy.annotation.Post;
@@ -27,17 +28,20 @@ import java.util.Date;
 
 @RestController
 @RequestMapping("/member")
-@RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService service;
+    private final MemberRepository memberRepository;
+    private final JwtTokenUtil jwtTokenUtil;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
-    @Autowired
-    private MemberRepository memberRepository;
-    @Autowired
-    private BCryptPasswordEncoder encodePassword;
+    public MemberController(MemberService service, MemberRepository memberRepository, JwtTokenUtil jwtTokenUtil, BCryptPasswordEncoder passwordEncoder) {
+        this.service = service;
+        this.memberRepository = memberRepository;
+        this.jwtTokenUtil = jwtTokenUtil;
+        this.passwordEncoder = passwordEncoder;
+    }
+
 
     @GetMapping
     public ResponseEntity<?> checkEmailDuplicate(@RequestParam("email") String email) {
@@ -64,39 +68,73 @@ public class MemberController {
         return ResponseEntity.ok(service.login(req));
     }
 
+    //로그아웃
+//    @PostMapping("/logout")
+//    public ResponseEntity<void> logout(HttpServletRequest servletRequest) {
+//        MemberService.logout();
+//        return ResponseEntity.ok().build();
+//    }
+
     //정보 수정
     @PutMapping("/{id}")
     public ResponseEntity<String> updateMember(@PathVariable Long id, @RequestBody MemberUpdateRequest req, @RequestHeader("Authorization") String token) {
-        // JWT 토큰에서 사용자 이름을 추출
-        String username = jwtTokenUtil.getUsernameFromToken(token.substring(7));
+        System.out.println(req.getBirth());
+        System.out.println(req.getNickname());
+        System.out.println(req.getPwd());
+        System.out.println(req.getCurrentPwd());
 
-        // 사용자의 존재 여부 확인
+        System.out.println("토큰 출력 : "  + token);
+
+        //클라이언트 요청의 유효성 검증
+        ResponseEntity<String> validationResponse = validateRequest(req);
+        if (validationResponse != null) {
+            return validationResponse;
+        }
+
+        System.out.println("토큰 출력 : " + token.substring(7));
+
+        //JWT 토큰에서 사용자 이름을 추출
+        String username = jwtTokenUtil.getUsernameFromToken(token);
+
+        //사용자의 존재 여부 확인
         Member member = memberRepository.findByEmail(username);
         if (member == null) {
             return new ResponseEntity<>("사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
         }
 
-        // 정보 수정 권한 확인
+        //정보 수정 권한 확인
         if (!member.getId().equals(id)) {
             return new ResponseEntity<>("해당 사용자의 정보를 수정할 수 있는 권한이 없습니다.", HttpStatus.FORBIDDEN);
         }
 
-        // 기존 비밀번호 확인
-        if (!encodePassword.matches(req.getCurrentPwd(), member.getPwd())) {
+        //기존 비밀번호 확인
+        if (!passwordEncoder.matches(req.getCurrentPwd(), member.getPwd())) {
             return new ResponseEntity<>("기존 비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
         }
 
-        // 회원 정보 수정
-        boolean update = service.updateMember(id, req.getNickname(), req.getPwd(), req.getBirth());
+        //수정된 비밀번호를 BCrypt 알고리즘을 사용하여 해싱
+        String hashedPassword = passwordEncoder.encode(req.getPwd());
+
+        //회원 정보 수정
+        boolean update = service.updateMember(id, req.getNickname(), hashedPassword, req.getBirth());
         if (update) {
             return new ResponseEntity<>("정보 수정이 완료되었습니다.", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("정보 수정을 실패하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
     }
 
+    //클라이언트 요청의 유효성을 검증하는 메서드
+    private ResponseEntity<String> validateRequest(MemberUpdateRequest req) {
+        // 닉네임, 비밀번호, 생년월일 중 적어도 하나가 변경되어야 합니다.
+        if (req.getNickname() == null && req.getPwd() == null && req.getBirth() == null) {
+            return new ResponseEntity<>("변경할 필드가 전송되지 않았습니다.", HttpStatus.BAD_REQUEST);
+        }
 
-
+        // 모든 검증을 통과했다면 null을 반환하여 요청이 유효함을 나타냄
+        return null;
+    }
 
     //요청 DTO 검증 예외처리 핸들러
     @ExceptionHandler(MethodArgumentNotValidException.class)

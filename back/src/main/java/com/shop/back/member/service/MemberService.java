@@ -106,6 +106,8 @@ public class MemberService {
         }
     }
 
+    
+
     //정보 수정
     public boolean updateMember (Long id, String nickname, String pwd, LocalDateTime birth) {
         if (memberRepository.existsById(id)) {

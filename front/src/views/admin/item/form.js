@@ -185,32 +185,10 @@ const ItemForm = () => {
         }
         // return false
 
-        const files = new FormData()
-        let file_index = 0;
-        for (const f of file_item) {
-            files.append('file_item', f)
-            if (f.isMain == 1) {
-                files.append('isMain', file_index)
-            }
-            file_index++
-        }
 
-        axios.post('http://localhost:3011/item/files', files, {
-            headers: {
-                Accept: '*/*',
-                'Content-Type': 'multipart/form-data'
-            }
-        }).then(res => {
-            if (res.data.length > 0) {
-                data['itemImgId'] = res.data
-                postItem(data)
-            }
-        })
-    }
-
-    const postItem = (data) => {
+        // 저장
         const required = [
-            'item_name', 'content', 'gender', 'status', 'cnt', 'price', 'isDiscounted',
+            'itemName', 'content', 'gender', 'status', 'cnt', 'price', 'isDiscounted',
             'defaultPrice', 'salePrice', 'categoryId', 'sizeTable', 'rgb', 'itemImgList',
             'itemDtoList',
         ]
@@ -233,8 +211,44 @@ const ItemForm = () => {
             itemDtoList: data.items,
             isView: data.isView,
         }
+
+        for(let rq of required) {
+            for(const k of Object.keys(itemForm)) {
+                if(rq == k && !itemForm[k]) {
+                    return
+                }
+            }
+        }
+
         console.log(itemForm)
         axios.post('http://localhost:3011/item', itemForm).then((res) => {
+            console.log(res)
+            if(res.data.id) {
+                postItemImages(file_item, res.data.id)
+            }
+        })
+
+
+    }
+
+    const postItemImages = (file_item, itemGroupId) => {
+        const files = new FormData()
+        let file_index = 0;
+        for (const f of file_item) {
+            files.append('file_item', f)
+            if (f.isMain == 1) {
+                files.append('isMain', file_index)
+            }
+            file_index++
+        }
+        files.append("itemGroupId", itemGroupId)
+
+        axios.post('http://localhost:3011/item/files', files, {
+            headers: {
+                Accept: '*/*',
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then(res => {
             console.log(res)
         })
     }

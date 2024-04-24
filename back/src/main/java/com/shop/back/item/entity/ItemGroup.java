@@ -23,7 +23,7 @@ public class ItemGroup {
 
 	private String sizeTable;
 
-	private int views;
+	private int views;          //  조회수
 
 	private String status;
 
@@ -36,6 +36,8 @@ public class ItemGroup {
 	private int del;            // 기본: 1, 삭제됨: 0
 
 	private LocalDateTime delDate;
+
+	private int isView;         //  노출 여부 1 : 0
 
 	@ManyToOne(fetch = FetchType.LAZY)      //  카테고리
 	@JoinColumn(name = "category_id")

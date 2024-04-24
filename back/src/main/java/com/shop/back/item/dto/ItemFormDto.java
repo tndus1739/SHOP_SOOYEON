@@ -21,6 +21,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -34,7 +35,7 @@ public class ItemFormDto {
 	private Long id;
 	
 	@NotBlank(message = "상품명을 입력해주세요.")
-	private String item_name;
+	private String itemName;
 	
 	@NotBlank(message = "상품설명을 입력해주세요.")
 	private String content;
@@ -47,13 +48,13 @@ public class ItemFormDto {
 
 	private String status;                  //  판매중 Y or 판매 중지 N
 	
-	@NotNull (message = "수량을 입력해주세요.")
-	private int cnt;                        //  수량
+//	@NotNull (message = "수량을 입력해주세요.")
+//	private int cnt;                        //  수량
 
-	@NotNull (message = "가격을 입력해주세요.")
-	private int price;                      //  가격
+//	@NotNull (message = "가격을 입력해주세요.")
+//	private int price;                      //  가격
 
-	private String isDiscounted;            //  Y : N
+	private int isDiscounted;            //  1 : 0
 
 //	private double discount;                //  할인율
 
@@ -69,16 +70,17 @@ public class ItemFormDto {
 	
 //	private Colors colors;                  //  rgb값
 
-	private String rgb;
+//	private String rgb;
+
+	private int isView;                 //  조회수
 	
 	
 	
 //	private List<File_itemDto> itemImgDtoList = new ArrayList<>();;
 	
-	
-	private List<Long> itemImgId = new ArrayList<>();
+	private List<Long> itemImgId;
 
-	private List<ItemDto> itemDtoList = new ArrayList<>();
+	private List<ItemDto> itemDtoList;
 	
 	
 	private static ModelMapper modelMapper = new ModelMapper();

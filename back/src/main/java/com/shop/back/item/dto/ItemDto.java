@@ -28,10 +28,12 @@ public class ItemDto {
 
 	private int optionPrice;                //  옵션가
 
-	private int price;                      //  가격 (itemGroup의 실제 판매가)
+	private int price;               //  가격 (itemGroup의 실제 판매가)
 
 	private int total;                      //  가격 + 옵션가
 
-	
-	
+	private String rgb;
+
+	private String size;
+
 }

@@ -7,7 +7,7 @@ import {
     CCol, CForm,
     CFormCheck,
     CFormInput,
-    CFormSelect,
+    CFormSelect, CFormTextarea,
     CInputGroup,
     CInputGroupText,
     CRow, CTable, CTableBody, CTableHead, CTableHeaderCell, CTableRow,
@@ -18,6 +18,7 @@ import ItemPreview from "src/views/admin/item/ItemPreview";
 import axios from "axios";
 import {json} from "react-router-dom";
 import CategoryOptions from "src/views/admin/item/Categorys";
+import {Editor} from "@tinymce/tinymce-react";
 
 const ItemForm = () => {
     const [sort, setSort] = useState([1]);
@@ -25,12 +26,17 @@ const ItemForm = () => {
     const [realPrice, setRealPrice] = useState(0)
     const [defaultPrice, setDefaultPrice] = useState(0)
     const [isDiscount, setIsDiscount] = useState(false);
+    const [isDiscounted, setIsDiscounted] = useState(0);
     const [discountRate, setDiscountRate] = useState('0%');
     const [itemName, setItemName] = useState('');
     const [images, setImages] = useState(FileList | undefined);
 
     const [depth1, setDepth1] = useState([])
     const [depth2, setDepth2] = useState([])
+
+    const [content, setContent] = useState('')  //  상품 설명
+
+    const [id, setId] = useState()  //  상품그룹id(상세,수정페이지 사용)
 
     const inputItemName = (e) => {
         setItemName(e.target.value)
@@ -49,10 +55,12 @@ const ItemForm = () => {
         if (e.target.checked) {
             setIsDiscount(true)
             setReadOnly1(false)
+            setIsDiscounted(1)
         } else {
             setIsDiscount(false)
             setReadOnly1(true)
             setRealPrice(0)
+            setIsDiscounted(0)
         }
     }
 
@@ -104,7 +112,7 @@ const ItemForm = () => {
                 }
             }
         }
-        if(!file_item.length) {
+        if (!file_item.length) {
             alert("상품 이미지는 1개 이상 등록해야합니다.")
             return false
         }
@@ -115,11 +123,11 @@ const ItemForm = () => {
         const itemOptions = document.querySelectorAll('tr.options')
         let items = []
         for (const io of itemOptions) {
-            if(io.querySelector('select[name="status"]').value == 0) {
+            if (io.querySelector('select[name="status"]').value == 0) {
                 alert("판매 상태를 선택해주세요")
                 return false
             }
-            if(io.querySelector('select[name="color_rgb"]').value == 0) {
+            if (io.querySelector('select[name="color_rgb"]').value == 0) {
                 alert("색상을 선택해주세요")
                 return false
             }
@@ -128,10 +136,10 @@ const ItemForm = () => {
                 size: io.querySelector('input[name="size"]').value,
                 cnt: io.querySelector('input[name="cnt"]').value,
                 status: io.querySelector('select[name="status"]').value,
-                originPrice: Number(defaultPrice.toString().replace(/[^0-9]/gi, '')),
-                optionPrice: io.querySelector('input[name="optionPrice"]').value,
+                originPrice: isDiscounted ? (Number(document.querySelector('input[name="realPrice"]').value.toString().replace(/[^0-9]/gi, ''))) : (Number(defaultPrice.toString().replace(/[^0-9]/gi, ''))),
+                realPrice: io.querySelector('input[name="optionPrice"]').value,
                 total: Number(defaultPrice.toString().replace(/[^0-9]/gi, '')) + Number((io.querySelector('input[name="optionPrice"]').value).toString().replace(/[^0-9]/gi, '')),
-                color_id: io.querySelector('select[name="color_rgb"]').value,
+                rgb: io.querySelector('select[name="color_rgb"]').value,
             }
             items.push(item)
         }
@@ -170,7 +178,8 @@ const ItemForm = () => {
             data[k] = frm.get(k)
         }
         data['items'] = items;
-        if(data.category_id == 0) {
+        data['content'] = content
+        if (data.category_id == 0) {
             alert('카테고리를 선택해주세요')
             return false
         }
@@ -186,22 +195,47 @@ const ItemForm = () => {
             file_index++
         }
 
-        axios.post('http://localhost:3011/test/admin/item/files', files, {
+        axios.post('http://localhost:3011/item/files', files, {
             headers: {
                 Accept: '*/*',
                 'Content-Type': 'multipart/form-data'
             }
         }).then(res => {
             if (res.data.length > 0) {
-                data['file_id'] = res.data
+                data['itemImgId'] = res.data
                 postItem(data)
             }
         })
     }
 
     const postItem = (data) => {
-        axios.post('http://localhost:3011/test/admin/item', data).then((res) => {
+        const required = [
+            'item_name', 'content', 'gender', 'status', 'cnt', 'price', 'isDiscounted',
+            'defaultPrice', 'salePrice', 'categoryId', 'sizeTable', 'rgb', 'itemImgList',
+            'itemDtoList',
+        ]
+        console.log(data)
+        const dp = Number(data.originPrice.toString().replace(/[^0-9]/gi, ''))
+        const sp = Number(data.realPrice.toString().replace(/[^0-9]/gi, ''))
 
+        const itemForm = {
+            id: id ? id : 0,
+            itemName: data.itemName,
+            content: data.content,
+            gender: data.gender,
+            status: data.status,
+            defaultPrice: dp,
+            isDiscounted: isDiscounted,
+            salePrice: isDiscounted == 1 ? sp : dp,
+            categoryId: data.categoryId,
+            sizeTable: data.sizeTable,
+            itemImgId: data.itemImgId,
+            itemDtoList: data.items,
+            isView: data.isView,
+        }
+        console.log(itemForm)
+        axios.post('http://localhost:3011/item', itemForm).then((res) => {
+            console.log(res)
         })
     }
 
@@ -254,7 +288,7 @@ const ItemForm = () => {
                                     placeholder="item"
                                     aria-label="item-name"
                                     id={'name'}
-                                    name={'item_name'}
+                                    name={'itemName'}
                                     onChange={inputItemName}
                                     required
                                 />
@@ -273,7 +307,7 @@ const ItemForm = () => {
                                     <p className="text-body-secondary small">
                                         2차 카테고리
                                     </p>
-                                    <CFormSelect aria-label="Default select example" name={'category_id'}>
+                                    <CFormSelect aria-label="Default select example" name={'categoryId'}>
                                         <option value='0'>2차 카테고리</option>
                                         <CategoryOptions categorys={depth2}/>
                                     </CFormSelect>
@@ -336,12 +370,56 @@ const ItemForm = () => {
                         </CCardBody>
                     </CCard>
                 </CCol>
+                <CCol>
+                    <CCard>
+                        <CCardHeader>
+                            <strong>상품 설명</strong>
+                        </CCardHeader>
+                        <CCardBody>
+                            <Editor
+                                apiKey={'62zv596fx8u6gixu2wpvvm12vvi0n9za1ke1m5pdq8hn3ldp'}
+                                init={{
+                                    plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
+                                    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                                }}
+                                name={'content'}
+                                placeholder={'상품 상세 설명'}
+                                onEditorChange={setContent}
+                            >
+
+                            </Editor>
+                        </CCardBody>
+                    </CCard>
+                </CCol>
                 <CCol xs={12}>
                     <CCard className="mb-4">
                         <CCardHeader>
                             <strong>옵션</strong>
                         </CCardHeader>
                         <CCardBody>
+                            <CRow>
+                                <p className="text-body-secondary small">
+                                    노출 여부
+                                </p>
+                                <CCol xs={1}>
+                                    <CFormCheck
+                                        type="radio"
+                                        name="isView"
+                                        label="노출"
+                                        value={1}
+                                        defaultChecked
+                                    />
+                                </CCol>
+                                <CCol xs={2}>
+                                    <CFormCheck
+                                        type="radio"
+                                        name="isView"
+                                        label="미노출"
+                                        value={0}
+                                    />
+                                </CCol>
+                            </CRow>
+                            <br/>
                             <CRow>
                                 <CCol xs={6}>
                                     <CInputGroup className="mb-3">
@@ -360,7 +438,7 @@ const ItemForm = () => {
                                         label="할인적용"
                                         onChange={discEvent}
                                         checked={isDiscount}
-                                        value={isDiscount ? 'Y' : 'N'}
+                                        value={isDiscount ? 1 : 0}
                                     />
                                     <CInputGroup className="mb-3">
                                         <CInputGroupText id="basic-addon1">할인율</CInputGroupText>
@@ -420,7 +498,7 @@ const ItemForm = () => {
                             <strong>사이즈표</strong>
                         </CCardHeader>
                         <CCardBody className={'sizeInfo'}>
-                            <SizeTable />
+                            <SizeTable/>
                         </CCardBody>
                     </CCard>
                 </CCol>

@@ -54,16 +54,17 @@ dependencies {
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
 
     // xml bind
-//    implementation group: 'jakarta.xml.bind', name: 'jakarta.xml.bind-api', version: '2.3.2'
     implementation group: 'jakarta.xml.bind', name: 'jakarta.xml.bind-api', version: '3.0.1'
     implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '3.0.1'
-
 
     //Spring 유효성 검사 라이브러리
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     //modelmapper 라이브러리   : dto 필드의 값을 Entity 클래스에 매핑
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.9'
+
+    //Redis - 로그인 시 token 저장
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
 
 }

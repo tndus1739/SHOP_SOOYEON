@@ -2,6 +2,8 @@ package com.shop.back.jwt;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,6 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
+
         String header = req.getHeader(HEADER_STRING);
         String userId = null;
         String authToken = null;
@@ -69,4 +72,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         chain.doFilter(req, res);
     }
+
 }

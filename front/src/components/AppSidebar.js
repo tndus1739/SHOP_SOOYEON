@@ -62,11 +62,11 @@ const AppSidebar = ({navi}) => {
                 />
             </CSidebarHeader>
             <AppSidebarNav items={nav}/>
-            <CSidebarFooter className="border-top d-none d-lg-flex">
-                <CSidebarToggler
-                    onClick={() => dispatch({type: 'set', sidebarUnfoldable: !unfoldable})}
-                />
-            </CSidebarFooter>
+            {/*<CSidebarFooter className="border-top d-none d-lg-flex">*/}
+            {/*    <CSidebarToggler*/}
+            {/*        onClick={() => dispatch({type: 'set', sidebarUnfoldable: !unfoldable})}*/}
+            {/*    />*/}
+            {/*</CSidebarFooter>*/}
         </CSidebar>
     )
 }

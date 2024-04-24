@@ -1,165 +1,212 @@
 import React from 'react'
 import {
-  CButton,
-  CCard,
-  CCardBody,
-  CCol,
-  CContainer,
-  CForm,
-  CFormInput,
-  CInputGroup,
-  CInputGroupText,
-  CRow,
+    CButton,
+    CCard,
+    CCardBody,
+    CCol,
+    CContainer,
+    CForm, CFormCheck,
+    CFormInput,
+    CInputGroup,
+    CInputGroupText,
+    CRow,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilLockLocked, cilUser } from '@coreui/icons'
+import {cilLockLocked, cilUser} from '@coreui/icons'
 import axios from "axios";
-import { useState } from "react";
-import { useNavigate } from "react-router";
 
-function Join() {
-  const [name, setName] = useState("");
-  const [gender, setgender] = useState("");
-	const [birth, setbirth] = useState("");
-  const [email, setEmail] = useState("");
-	const [Pwd, setPwd] = useState("");
-	const [checkPwd, setCheckPwd] = useState("");
-	
-  const navigate = useNavigate();
-  
-  const changeName = (event) => {
-		setName(event.target.value);
-	}
+const Register = () => {
 
-  const changegender = (event) => {
-		setgender(event.target.value);
-	}
-
-  const changebirth = (event) => {
-		setbirth(event.target.value);
-	}
-
-  const changeEmail = (event) => {
-		setEmail(event.target.value);
-	}
-
-  const changePwd = (event) => {
-		setPwd(event.target.value);
-	}
-
-  const changecheckPwd = (event) => {
-		setCheckPwd(event.target.value);
-	}
-
-}
-
-const Register = /* async */() => {
-    /* 회원가입 로컬*/
-    /* 
-    const req = {
-      name: name,
-      gender: gender,
-      birth: birth,
-      Email: Email,
-      Pwd: Pwd;
-      CheckPwd: CheckPwd
+    const number = (e) => {
+        const val = e.target.value
+        e.target.value = val.replace(/\D/gi, '')
     }
-    
-    await axios.post("http://localhost:3011/user/join", req)
-			.then((resp) => {
-				console.log("[Join.js] join() success :D");
-				console.log(resp.data);
 
-        alert(resp.data.id + "님 회원가입을 축하드립니다 🎊");
-				navigate("/login");
-    
-    }).catch((err) => {
-				console.log("[Join.js] join() error :<");
-				console.log(err);
+    const phone = (e) => {
+        const val = e.target.value
+        e.target.value = val.replace(/\D/gi, '')
+        if(e.target.value.length >= 9) {
+            let numbers = val.replace(/[^0-9]/g, "")
+                .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+            e.target.value = numbers
+        }
+    }
 
-				// alert(err.response.data);
+    const postMember = (e) => {
+        e.preventDefault()
+        const frm = new FormData(e.target)
+        const data = {}
+        for (const k of frm.keys()) {
+            data[k] = frm.get(k)
+        }
+        data.phone = data.phone.replace(/\D/g, '')
 
-				const resp = err.response;
-				if (resp.status == 400) {
-					alert(resp.data);
-				}
-			});    
-        
-    */
-         /* / 오류날수있음                네트워크 통신  주석처리*/
-   
+        if(data.pwd != data.checkPwd) {
+            alert('비밀번호를 확인해주세요')
+            document.querySelector('input[name="pwd"]').focus()
+            return
 
+        }
 
+        if(data.phone.length < 9) {
+            alert("전화번호를 확인해주세요")
+            return
+        }
 
+        if(data.birth.length != 8) {
+            alert('생년월일을 확인해주세요')
+            return
+        } else {
+            const year = data.birth.slice(0, 4)
+            const month = data.birth.slice(4, 6)
+            const day = data.birth.slice(6, 8)
 
-  return (
-    <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
-      <CContainer>
-        <CRow className="justify-content-center">
-          <CCol md={9} lg={7} xl={6}>
-            <CCard className="mx-4">
-              <CCardBody className="p-4">
-                <CForm>
-                  <h1>회원가입</h1>
-                  <p className="text-body-secondary"></p>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilUser} />
-                    </CInputGroupText>
-                    <CFormInput placeholder="이름" autoComplete="username" />
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                {/* 성별 입력 */}
-                  <CInputGroup className="mb-3">
-                <CInputGroupText>
-                  <CIcon icon={cilUser} />
-                </CInputGroupText>
-                <CFormInput placeholder="성별" autoComplete="gender" />
-              </CInputGroup>
-                     {/* 생년월일 입력 */}
-                     <CInputGroup className="mb-3">
-                <CInputGroupText>
-                  <CIcon icon={cilUser} />
-                </CInputGroupText>
-                <CFormInput placeholder="생년월일" autoComplete="birth" />
-              </CInputGroup>
-                    <CInputGroupText>@</CInputGroupText>
-                    <CFormInput placeholder="이메일" autoComplete="email" />
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon={cilLockLocked} />
-                    </CInputGroupText>
-                    <CFormInput
-                      type="password"
-                      placeholder="비밀번호"
-                      autoComplete="new-password"
-                    />
-                  </CInputGroup>
-                  <CInputGroup className="mb-4">
-                    <CInputGroupText>
-                      <CIcon icon={cilLockLocked} />
-                    </CInputGroupText>
-                    <CFormInput
-                      type="checkpassword"
-                      placeholder="비밀번호 확인"
-                      autoComplete="new-password"
-                    />
-                  </CInputGroup>
-           
+            if(Number(year) > Number(new Date().getFullYear()) || Number(year) < 1900 || Number(month) == 0 || Number(month) > 12 || Number(day) == 0 || Number(day) > 31) {
+                alert('생년월일을 확인해주세요')
+                return
+            }
 
-          
-                  <div className="d-grid">
-                    <CButton color="success">회원가입</CButton>
-                  </div>
-                </CForm>
-              </CCardBody>
-            </CCard>
-          </CCol>
-        </CRow>
-      </CContainer>
-    </div>
-  )
+            const birth = new Date(year, month, day)
+            data['birth'] = birth
+        }
+        console.log(data)
+        // return
+
+        axios.post('http://localhost:3011/member/join', data).then((res) => {
+            console.log(res)
+        })
+    }
+
+    return (
+        <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
+            <CContainer>
+                <CRow className="justify-content-center">
+                    <CCol md={9} lg={7} xl={6}>
+                        <CCard className="mx-4">
+                            <CCardBody className="p-4">
+                                <CForm onSubmit={postMember}>
+                                    <h1>Register</h1>
+                                    <p className="text-body-secondary">Create your account</p>
+                                    <CInputGroup className="mb-3">
+                                        <CInputGroupText>@</CInputGroupText>
+                                        <CFormInput
+                                            placeholder="Email"
+                                            autoComplete="email"
+                                            type={'email'}
+                                            name={'email'}
+                                            required
+                                        />
+                                    </CInputGroup>
+                                    <CInputGroup className="mb-3">
+                                        <CInputGroupText>
+                                            <CIcon icon={cilLockLocked}/>
+                                        </CInputGroupText>
+                                        <CFormInput
+                                            type="password"
+                                            placeholder="Password"
+                                            autoComplete="new-password"
+                                            name={'pwd'}
+                                            required
+                                        />
+                                    </CInputGroup>
+                                    <CInputGroup className="mb-4">
+                                        <CInputGroupText>
+                                            <CIcon icon={cilLockLocked}/>
+                                        </CInputGroupText>
+                                        <CFormInput
+                                            type="password"
+                                            placeholder="Repeat password"
+                                            autoComplete="new-password"
+                                            name={'checkPwd'}
+                                            required
+                                        />
+                                    </CInputGroup>
+                                    <CInputGroup className="mb-3">
+                                        <CInputGroupText>
+                                            <CIcon icon={cilUser}/>
+                                        </CInputGroupText>
+                                        <CFormInput
+                                            placeholder="이름"
+                                            autoComplete="name"
+                                            name={'name'}
+                                            required
+                                        />
+                                    </CInputGroup>
+                                    <CInputGroup className="mb-3">
+                                        <CInputGroupText>
+                                            <CIcon icon={cilUser}/>
+                                        </CInputGroupText>
+                                        <CFormInput
+                                            placeholder="닉네임"
+                                            autoComplete="nickname"
+                                            name={'nickname'}
+                                            required
+                                        />
+                                    </CInputGroup>
+                                    <CInputGroup className="mb-3">
+                                        <CInputGroupText>
+                                            <CIcon icon={cilUser}/>
+                                        </CInputGroupText>
+                                        <CFormInput
+                                            placeholder="전화번호"
+                                            autoComplete="phone"
+                                            name={'phone'}
+                                            type={'phone'}
+                                            maxLength={13}
+                                            onInput={phone}
+                                            required
+                                        />
+                                    </CInputGroup>
+                                    <CInputGroup className="mb-3">
+                                        <CRow>
+                                            <CCol xs={6}>
+                                                <CFormCheck
+                                                    type="radio"
+                                                    name="gender"
+                                                    label="선택안함"
+                                                    defaultChecked
+                                                    value={'X'}
+                                                /></CCol>
+                                            <CCol xs={3}>
+                                                <CFormCheck
+                                                    type="radio"
+                                                    name="gender"
+                                                    label="남"
+                                                    value={'M'}
+                                                /></CCol>
+                                            <CCol xs={3}>
+                                                <CFormCheck
+                                                    type="radio"
+                                                    name="gender"
+                                                    label="여"
+                                                    value={'W'}
+                                                /></CCol>
+                                        </CRow>
+                                    </CInputGroup>
+                                    <CInputGroup className="mb-3">
+                                        <CInputGroupText>
+                                            <CIcon icon={cilUser}/>
+                                        </CInputGroupText>
+                                        <CFormInput
+                                            placeholder="생년월일 8자리"
+                                            autoComplete="birth"
+                                            name={'birth'}
+                                            maxLength={8}
+                                            onChange={number}
+                                            required
+                                        />
+                                    </CInputGroup>
+                                    <div className="d-grid">
+                                        <CButton color="success" type={'submit'}>Create Account</CButton>
+                                    </div>
+                                </CForm>
+                            </CCardBody>
+                        </CCard>
+                    </CCol>
+                </CRow>
+            </CContainer>
+        </div>
+    )
 }
 
 export default Register

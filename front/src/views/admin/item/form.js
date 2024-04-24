@@ -219,7 +219,7 @@ const ItemForm = () => {
         const sp = Number(data.realPrice.toString().replace(/[^0-9]/gi, ''))
 
         const itemForm = {
-            id: id ? id : 0,
+            id: id ? id : null,
             itemName: data.itemName,
             content: data.content,
             gender: data.gender,

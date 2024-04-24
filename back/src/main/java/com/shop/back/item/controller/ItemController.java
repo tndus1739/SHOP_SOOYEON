@@ -1,5 +1,6 @@
 package com.shop.back.item.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.shop.back.item.dto.ItemDto;
 import com.shop.back.item.dto.ItemFormDto;
@@ -25,7 +28,7 @@ import com.shop.back.item.service.ItemService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/item")
+//@RequestMapping("/item")
 @CrossOrigin("*")  //모든 도메인, 모든 요청방식' 에 대해 허용
 @RequiredArgsConstructor
 public class ItemController {
@@ -49,13 +52,22 @@ public class ItemController {
 	        return new ResponseEntity<>(item, HttpStatus.OK);
 	    }
 	    
-	    // 상품 등록
-//	    @PostMapping
-//	    public Item createItem(@RequestBody ItemDto itemDto) {
-//	       return itemService.saveItem(itemDto);
-//	    }
-	    
-	 
+	    // 상품 이미지 등록
+//	    @PostMapping ("/test/admin/item/files")
+//	    public ResponseEntity<?> saveItemImg(
+//	    		@RequestParam("file_item") List<MultipartFile> imgList ,
+//				@RequestParam("isMain") int index
+//	    		) {
+//	    			System.out.println("리스트 사이즈 : " + imgList.size());
+//	    			System.out.println("메인 이미지 index : " + index);
+//	    			List<Object> id = new ArrayList<>();
+//	    			for(int i = 0; i < imgList.size(); i++) {
+//	    				id.add(i+1);
+//	    			}
+//
+//	    			return ResponseEntity.ok(id);
+//	    		}
+//	 
 	    
 	    
 	    

@@ -1,6 +1,7 @@
 package com.shop.back.item.entity;
 
 import com.shop.back.category.entity.Category;
+import com.shop.back.common.BaseEntity;
 import com.shop.back.item.dto.ItemFormDto;
 import com.shop.back.member.entity.Member;
 import jakarta.persistence.*;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @Data
 @Entity
-public class ItemGroup {
+public class ItemGroup extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;

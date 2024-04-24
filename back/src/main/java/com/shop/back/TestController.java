@@ -29,28 +29,28 @@ public class TestController {
 		return ResponseEntity.ok("test : " + test);
 	}
 
-	@PostMapping("/item")
-	public ResponseEntity<?> post(
-			@RequestBody ItemFormDto itemFormDto
-	) {
-		System.out.println(itemFormDto);
-		ItemGroup itemGroup = new ItemGroup();
-		itemGroup.setId(1L);
-		return ResponseEntity.ok(itemGroup);
-	}
-
-	@PostMapping("/item/files")
-	public ResponseEntity<?> post(
-			@RequestParam("file_item") List<MultipartFile> aa,
-			@RequestParam("isMain") int index,
-			@RequestParam("itemGroupId") Long itemGroupId
-	) {
-		System.out.println("리스트 사이즈 : " + aa.size());
-		System.out.println("메인 이미지 index : " + index);
-		System.out.println("아이템 그룹 Id : " + itemGroupId);
-
-		return ResponseEntity.ok(itemGroupId);
-	}
+//	@PostMapping("/item")
+//	public ResponseEntity<?> post(
+//			@RequestBody ItemFormDto itemFormDto
+//	) {
+//		System.out.println(itemFormDto);
+//		ItemGroup itemGroup = new ItemGroup();
+//		itemGroup.setId(1L);
+//		return ResponseEntity.ok(itemGroup);
+//	}
+//
+//	@PostMapping("/item/files")
+//	public ResponseEntity<?> post(
+//			@RequestParam("file_item") List<MultipartFile> aa,
+//			@RequestParam("isMain") int index,
+//			@RequestParam("itemGroupId") Long itemGroupId
+//	) {
+//		System.out.println("리스트 사이즈 : " + aa.size());
+//		System.out.println("메인 이미지 index : " + index);
+//		System.out.println("아이템 그룹 Id : " + itemGroupId);
+//
+//		return ResponseEntity.ok(itemGroupId);
+//	}
 
 	//회원가입
 //	@PostMapping("/member/join/test")

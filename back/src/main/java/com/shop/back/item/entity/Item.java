@@ -39,7 +39,9 @@ public class Item extends BaseEntity {
 
 	private int optionPrice;                //  옵션가
 
-	private int originPrice;
+	private int defaultPrice;               //  기본 가격
+
+	private int salePrice;                  //  실제 가격
 
 	private int total;                      //  가격 + 옵션가
 

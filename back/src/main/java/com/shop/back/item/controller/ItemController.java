@@ -29,8 +29,8 @@ import com.shop.back.item.service.ItemService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-//@RequestMapping("/item")
-@CrossOrigin("*")  //모든 도메인, 모든 요청방식' 에 대해 허용
+@RequestMapping("/item")
+//@CrossOrigin("*")  //모든 도메인, 모든 요청방식' 에 대해 허용
 @RequiredArgsConstructor
 public class ItemController {
 
@@ -61,16 +61,16 @@ public class ItemController {
 		) {
 	    	
 	    
-	    	List itemList = itemFormDto.getItemDtoList();
+	    	List<ItemDto> itemList = itemFormDto.getItemDtoList();
 	    	  
 	    	
 	    	System.out.println("List 에서 끄집어내서 출력 : " + itemList.get(0));
 	    	
 	    	
-	    	ItemGroupDto itemGroupDto = new ItemGroupDto()  ; 
-	    	
-	    	
-			System.out.println(itemFormDto);
+	    	ItemGroupDto itemGroupDto = new ItemGroupDto();
+
+		    System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
+//			System.out.println(itemFormDto);
 			 try {
 				 
 				 itemService.saveItem (itemFormDto, itemGroupDto);

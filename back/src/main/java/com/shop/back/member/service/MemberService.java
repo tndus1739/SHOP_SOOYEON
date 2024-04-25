@@ -40,7 +40,7 @@ public class MemberService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
     private final UserDetailsService userDetailsService;
-    private final RedisTemplate redisTemplate;
+//    private final RedisTemplate redisTemplate;
 
 
     public HttpStatus checkEmailDuplicate(String email) {

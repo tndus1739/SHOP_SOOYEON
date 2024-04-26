@@ -64,11 +64,6 @@ dependencies {
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.9'
 
 
-    //Redis - 로그인 시 token 저장
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-
-
-
 	// thymeleaf - 라이브러리 2개
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'

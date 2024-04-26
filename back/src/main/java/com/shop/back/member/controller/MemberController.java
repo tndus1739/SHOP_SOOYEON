@@ -12,6 +12,7 @@ import com.shop.back.member.repository.MemberRepository;
 import com.shop.back.member.service.MemberService;
 import com.shop.back.security.WebSecurityConfig;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -70,15 +71,14 @@ public class MemberController {
     }
 
     //로그아웃
-//    @PostMapping("/logout")
-//    public ResponseEntity<void> logout(HttpServletRequest servletRequest) {
-//        MemberService.logout();
-//        return ResponseEntity.ok().build();
-//    }
-
+    @PostMapping("/logout")
+    public ResponseEntity logout(HttpServletRequest request , HttpServletResponse response){
+//        refreshService.logout(request, response);
+        return ResponseEntity.ok().build();
+    }
 
     //비밀번호 확인
-    
+
 
     //정보 수정
     @PutMapping("/{id}")
@@ -96,13 +96,11 @@ public class MemberController {
             return validationResponse;
         }
 
-        System.out.println("토큰 출력 : " + token.substring(7));
-
         //JWT 토큰에서 사용자 이름을 추출
-        String username = jwtTokenUtil.getUsernameFromToken(token);
+        String memberEmail = jwtTokenUtil.getUsernameFromToken(token);
 
         //사용자의 존재 여부 확인
-        Member member = memberRepository.findByEmail(username);
+        Member member = memberRepository.findByEmail(memberEmail);
         if (member == null) {
             return new ResponseEntity<>("사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
         }
@@ -130,9 +128,6 @@ public class MemberController {
 
     }
 
-    //회원 탈퇴 (Role: UNREGISTER)
-
-
     //클라이언트 요청의 유효성을 검증하는 메서드
     private ResponseEntity<String> validateRequest(MemberUpdateRequest req) {
         // 닉네임, 비밀번호, 생년월일 중 적어도 하나가 변경되어야 합니다.
@@ -141,6 +136,46 @@ public class MemberController {
         }
 
         // 모든 검증을 통과했다면 null을 반환하여 요청이 유효함을 나타냄
+        return null;
+    }
+
+    //회원 탈퇴 (Role: UNREGISTER으로 변경)
+    @PatchMapping("/withdraw/{email}")
+    public ResponseEntity<String> withdrawMember(@PathVariable String email, @RequestHeader("Authorization") String token) {
+
+        //JWT 토큰에서 사용자 이메일 추출
+        String memberEmail = jwtTokenUtil.getUsernameFromToken(token);
+        System.out.println("token: " + token);
+
+        //사용자의 존재 여부 확인
+        Member member = memberRepository.findByEmail(memberEmail);
+        if (member == null) {
+            return new ResponseEntity<>("사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+        }
+        System.out.println("memberEmail: " + memberEmail);
+
+        ResponseEntity<String> validationResponse = validateWithdrawRequest(memberEmail, email);
+            if (validationResponse != null) {
+                return validationResponse;
+        }
+
+        System.out.println("email: " + email);
+
+        if (service.withdrawMember(email)) {
+            return ResponseEntity.ok("회원 탈퇴가 완료되었습니다");
+        } else {
+            return new ResponseEntity<>("사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    //탈퇴 검증
+    public ResponseEntity<String> validateWithdrawRequest(String memberEmail, String requestEmail) {
+
+        System.out.println("requestEmail: " + requestEmail);
+
+        if (!memberEmail.equals(requestEmail)) {
+            return new ResponseEntity<>("탈퇴할 권한이 없습니다.", HttpStatus.FORBIDDEN);
+        }
         return null;
     }
 

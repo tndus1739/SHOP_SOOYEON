@@ -76,7 +76,7 @@ public class TestController {
 //	}
 
 	@GetMapping("/items/test/{categoryId}")
-	public ResponseEntity<?> itemsTest(@PathVariable Long categoryId) {
+	public ResponseEntity<?> itemsTest(@PathVariable("categoryId") Long categoryId) {
 		System.out.println("=====================================================");
 		System.out.println(categoryId);
 		Category category = categoryRepository.findById(categoryId).get();

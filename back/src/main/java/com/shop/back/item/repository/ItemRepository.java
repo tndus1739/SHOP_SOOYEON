@@ -2,6 +2,8 @@ package com.shop.back.item.repository;
 
 import java.util.List;
 
+import com.shop.back.category.entity.Category;
+import com.shop.back.item.entity.ItemGroup;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
@@ -35,5 +37,5 @@ public interface ItemRepository extends JpaRepository<Item, Long> ,QuerydslPredi
 //	@Query(value = "select * from Item i where i.content like %:content% order by i.price asc" , nativeQuery = true)
 //	List<Item> findbyItemContentNative (@Param("content") String content);
 //	
-	
+
 }

@@ -20,15 +20,6 @@ import axios from "axios";
 const Signin = () => {
     const navigator = useNavigate()
 
-    const test = () => {
-        const params = {
-
-        }
-        axios.post('http://localhost:3011/test').then((res) => {
-            console.log(res)
-        })
-    }
-
     const login = (e) => {
         e.preventDefault()
         const frm = new FormData(e.target)
@@ -59,7 +50,7 @@ const Signin = () => {
     }
 
     useEffect(() => {
-        test()
+
     }, []);
 
     return (

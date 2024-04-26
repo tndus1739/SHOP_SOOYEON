@@ -85,7 +85,7 @@ const Signin = React.lazy(() => import('./views/user/Signin'))
 
 const routes = [
   { path: '/items', exact: true, element: Index },
-  { path: `/items/search/:category_id`, exact: true, element: SearchItem },
+  { path: `/items/search/:category_id`, name: 'Search', exact: true, element: SearchItem },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },

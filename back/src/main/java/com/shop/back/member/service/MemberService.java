@@ -26,9 +26,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+
 import java.util.Objects;
 import java.util.Optional;
+
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
 @Transactional
@@ -40,7 +45,9 @@ public class MemberService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
     private final UserDetailsService userDetailsService;
+
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
 
 
     public HttpStatus checkEmailDuplicate(String email) {
@@ -58,6 +65,14 @@ public class MemberService {
     }
 
     private void saveMember(JoinRequest req) {
+
+        //  생년월일 String -> LocalDateTime
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDate localDate = LocalDate.parse(req.getBirthString(), formatter);
+
+        LocalDateTime localDateTime = localDate.atTime(LocalTime.MIDNIGHT);
+        req.setBirth(localDateTime);
+
         //이메일(아이디) 중복 확인
         isExistMemberEmail(req.getEmail());
 

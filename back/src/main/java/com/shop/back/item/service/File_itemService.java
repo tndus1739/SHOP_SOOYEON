@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.util.StringUtils;
 
+import com.shop.back.item.dto.File_itemDto;
 import com.shop.back.item.dto.ItemFormDto;
 import com.shop.back.item.entity.File_item;
 import com.shop.back.item.entity.Item;
@@ -55,18 +56,17 @@ public class File_itemService {
 	
 	
 	// 이미지 등록
-	public Long saveItemImg(List<MultipartFile> itemImgFileList, int index, Long itemGroupId) throws IOException {
+	public Long saveItemImg(List<MultipartFile> file_item, int index, Long itemGroupId ) throws IOException {
         
+		
 		ItemGroup itemGroup = itemGroupRepository.findById(itemGroupId).get();
 		
-        for (int i = 0; i < itemImgFileList.size(); i++) {
+        for (int i = 0; i < file_item.size(); i++) {
         	
-        	
-        	
-            File_item fileItem = new File_item();
-            
-           fileItem.setItemGroup(itemGroup); 
-
+           MultipartFile file = file_item.get(i); 
+           File_item fileItem = new File_item();
+           fileItem.setItemGroup(itemGroup);
+           
            // 대표 이미지 설정
             if (i == index) {
                 fileItem.setIsMain(1);  // 대표이미지
@@ -75,11 +75,14 @@ public class File_itemService {
                 fileItem.setIsMain(0);  
             }
 
-            saveItemImage(fileItem , itemImgFileList.get(i));
+            saveItemImage(fileItem , file);
+
         }
-        return  itemGroup.getId();
+        return  itemGroupId;
     }
 
+
+	
 
 	
 

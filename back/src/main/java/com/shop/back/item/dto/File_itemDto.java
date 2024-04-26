@@ -1,9 +1,13 @@
 package com.shop.back.item.dto;
 
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.shop.back.item.entity.File_item;
 import com.shop.back.item.entity.Item;
+import com.shop.back.item.entity.ItemGroup;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -26,16 +30,13 @@ public class File_itemDto {
 	
 	private Long id;
 
-	private String path;   
-
-	private String name;
-
-	private String origin;
-
 	private int isMain;                     //  (메인 이미지)? 1 : 0
+	
+	private Long itemGroupId;
+	
+	private List<MultipartFile> file_item;
 
 	private static ModelMapper modelMapper = new ModelMapper();
-	
 	
 	// DTO -> Entity
 	

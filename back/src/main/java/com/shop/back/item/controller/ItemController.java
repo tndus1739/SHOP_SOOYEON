@@ -1,5 +1,6 @@
 package com.shop.back.item.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,21 +22,28 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.shop.back.item.dto.ItemDto;
 import com.shop.back.item.dto.ItemFormDto;
+import com.shop.back.item.dto.ItemGroupDto;
+import com.shop.back.item.entity.File_item;
 import com.shop.back.item.entity.Item;
+import com.shop.back.item.entity.ItemGroup;
+import com.shop.back.item.repository.File_itemRepository;
 import com.shop.back.item.repository.ItemRepository;
+import com.shop.back.item.service.File_itemService;
 import com.shop.back.item.service.ItemService;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
-//@RequestMapping("/item")
-@CrossOrigin("*")  //모든 도메인, 모든 요청방식' 에 대해 허용
+@RequestMapping("/item")
+//@CrossOrigin("*")  //모든 도메인, 모든 요청방식' 에 대해 허용
 @RequiredArgsConstructor
 public class ItemController {
 
 	 @Autowired
 	    private final ItemService itemService;
 	 	private final ItemRepository itemRepository;
+	 	private final File_itemService file_itemService;
+	 	
 	 	
 	 	// 상품 전체 리스트 조회 
 	    @GetMapping
@@ -52,25 +60,70 @@ public class ItemController {
 	        return new ResponseEntity<>(item, HttpStatus.OK);
 	    }
 	    
+	 // 상품 등록
+	    @PostMapping
+		public ResponseEntity<?> post(
+				@RequestBody ItemFormDto itemFormDto 
+				
+		) {
+	    	
+	    
+	    	List<ItemDto> itemList = itemFormDto.getItemDtoList();
+	    	  
+	    	
+	    	System.out.println("List 에서 출력 : " + itemList.get(0));
+	    	
+	    	
+	    	ItemGroupDto itemGroupDto = new ItemGroupDto();
+
+			 try {
+				 
+				
+				 
+				// 이미지 유무에 따라서 ID 설정 or null 설정
+//				 itemService.isThisImg(itemFormDto);
+				 
+				 // 상품 정보 저장
+				 itemService.saveItem (itemFormDto);
+				 
+			} catch (Exception e) {
+				e.printStackTrace();
+//				return ResponseEntity.badRequest().body("상품 등록 실패: " + e.getMessage());
+			}
+			
+			// 임시로 작동 : 이미지가 넘오는 경우, 그렇지 않는 경우 : null 
+//			itemFormDto.setId(1L);
+			
+			return ResponseEntity.ok(itemFormDto);
+		}
+	    
 	    // 상품 이미지 등록
-//	    @PostMapping ("/test/admin/item/files")
-//	    public ResponseEntity<?> saveItemImg(
-//	    		@RequestParam("file_item") List<MultipartFile> imgList ,
-//				@RequestParam("isMain") int index
-//	    		) {
-//	    			System.out.println("리스트 사이즈 : " + imgList.size());
-//	    			System.out.println("메인 이미지 index : " + index);
-//	    			List<Object> id = new ArrayList<>();
-//	    			for(int i = 0; i < imgList.size(); i++) {
-//	    				id.add(i+1);
-//	    			}
-//
-//	    			return ResponseEntity.ok(id);
-//	    		}
-//	 
+		@PostMapping("/files")
+		public ResponseEntity<?> post(
+				@RequestParam("file_item") List<MultipartFile> itemImgFileList,
+				@RequestParam("isMain") int index,
+				@RequestParam("itemGroupId") Long itemGroupId
+		) {
+			
+			
+			System.out.println("리스트 사이즈 : " + itemImgFileList.size());
+			System.out.println("메인 이미지 index : " + index);
+			System.out.println("아이템 그룹 Id : " + itemGroupId);
+			
+			
+			try {
+				
+				file_itemService.saveItemImg( itemImgFileList , index ,itemGroupId);
+				
+			} catch (IOException e) {
+				
+				e.printStackTrace();
+			}
+
+			return ResponseEntity.ok(itemGroupId);
+		}
 	    
-	    
-	    
+	     
 	    
 	    
 	    // 상품 수정 

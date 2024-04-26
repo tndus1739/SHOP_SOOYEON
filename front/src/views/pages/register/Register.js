@@ -14,9 +14,10 @@ import {
 import CIcon from '@coreui/icons-react'
 import {cilLockLocked, cilUser} from '@coreui/icons'
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 const Register = () => {
-
+    const navigator = useNavigate()
     const number = (e) => {
         const val = e.target.value
         e.target.value = val.replace(/\D/gi, '')
@@ -66,14 +67,19 @@ const Register = () => {
                 return
             }
 
-            const birth = new Date(year, month, day)
-            data['birth'] = birth
+            const birth = new Date(year, month - 1, day)
+            data['birthString'] = data['birth']
+            // data['birth'] = birth
+            delete data.birth
+
         }
         console.log(data)
         // return
 
         axios.post('http://localhost:3011/member/join', data).then((res) => {
             console.log(res)
+            alert('회원가입이 완료되었습니다.')
+            navigator('/login')
         })
     }
 
@@ -95,6 +101,7 @@ const Register = () => {
                                             type={'email'}
                                             name={'email'}
                                             required
+                                            // defaultValue={'test@test.com'}
                                         />
                                     </CInputGroup>
                                     <CInputGroup className="mb-3">
@@ -107,6 +114,7 @@ const Register = () => {
                                             autoComplete="new-password"
                                             name={'pwd'}
                                             required
+                                            // defaultValue={'pwd'}
                                         />
                                     </CInputGroup>
                                     <CInputGroup className="mb-4">
@@ -119,6 +127,7 @@ const Register = () => {
                                             autoComplete="new-password"
                                             name={'checkPwd'}
                                             required
+                                            // defaultValue={'pwd'}
                                         />
                                     </CInputGroup>
                                     <CInputGroup className="mb-3">
@@ -130,6 +139,7 @@ const Register = () => {
                                             autoComplete="name"
                                             name={'name'}
                                             required
+                                            // defaultValue={'방민혁'}
                                         />
                                     </CInputGroup>
                                     <CInputGroup className="mb-3">
@@ -141,6 +151,7 @@ const Register = () => {
                                             autoComplete="nickname"
                                             name={'nickname'}
                                             required
+                                            // defaultValue={'nickname'}
                                         />
                                     </CInputGroup>
                                     <CInputGroup className="mb-3">
@@ -155,6 +166,7 @@ const Register = () => {
                                             maxLength={13}
                                             onInput={phone}
                                             required
+                                            // defaultValue={'010-2065-5900'}
                                         />
                                     </CInputGroup>
                                     <CInputGroup className="mb-3">
@@ -194,6 +206,7 @@ const Register = () => {
                                             maxLength={8}
                                             onChange={number}
                                             required
+                                            // defaultValue={'19951023'}
                                         />
                                     </CInputGroup>
                                     <div className="d-grid">

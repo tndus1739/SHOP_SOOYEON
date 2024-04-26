@@ -1,6 +1,10 @@
 package com.shop.back.item.dto;
 
 
+import org.modelmapper.ModelMapper;
+
+import com.shop.back.item.entity.Item;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,14 +30,24 @@ public class ItemDto {
 
 	private int cnt;                        //  수량
 
-	private int optionPrice;                //  옵션가
+	private int defaultPrice;                //  기본가격
 
-	private int price;               //  가격 (itemGroup의 실제 판매가)
+	private int salePrice;                      //  가격 (itemGroup의 실제 판매가 realPrice)
+
+	private int optionPrice;                //  옵션가
 
 	private int total;                      //  가격 + 옵션가
 
 	private String rgb;
 
 	private String size;
+	
+	private static ModelMapper modelMapper = new ModelMapper();
 
+	// Dto -> Entity
+	
+		public Item createItem () {
+		
+			return modelMapper.map(this, Item.class);
+		}
 }

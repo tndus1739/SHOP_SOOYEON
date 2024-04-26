@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useRef, useState} from 'react'
-import { NavLink } from 'react-router-dom'
+import {NavLink, useNavigate} from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   CContainer,
@@ -39,7 +39,7 @@ const AppHeader = () => {
 
   const mode = useContext(AuthModeInfo)
   const {changeMode} = useContext(AuthModeDispatch)
-
+  const navigator = useNavigate()
   const change_mode = () => {
     if(mode === 'ADMIN') {
       changeMode('USER')
@@ -76,6 +76,12 @@ const AppHeader = () => {
           <CNavItem>
             <CNavLink href="#">Settings</CNavLink>
           </CNavItem>
+          <CNavItem>
+            <CNavLink onClick={() => {navigator('/signup')}} style={{cursor: 'pointer'}}>SignUp</CNavLink>
+          </CNavItem>
+            <CNavItem>
+                <CNavLink onClick={() => {navigator('/signin')}} style={{cursor: 'pointer'}}>SignIn</CNavLink>
+            </CNavItem>
           <CNavItem>
             <CButton onClick={change_mode}><CIcon icon={cilSync} size="lg" />{mode}</CButton>
           </CNavItem>

@@ -72,7 +72,16 @@ const AdminItemColor = React.lazy(() => import('./views/admin/color/form'))
 
 //  index
 const Index = React.lazy(() => import('./views/user/items'))
+
+// 상품 검색
 const SearchItem = React.lazy(() => import('./views/user/SearchItems'))
+
+//  회원가입
+const Signup = React.lazy(() => import('./views/user/Signup'))
+
+//  로그인
+const Signin = React.lazy(() => import('./views/user/Signin'))
+
 
 const routes = [
   { path: '/items', exact: true, element: Index },
@@ -124,7 +133,9 @@ const routes = [
   { path: '/admin/item/form', name: '상품 등록', element: AdminItemForm },
   { path: '/admin/item/color/form', name: 'Admin', element: AdminItemColor },
   { path: '/base/login_my', name: 'login_my', element: Login_my },
-  { path: '/base/NewAccordion', name: 'Accordion', element: NewAccordion }
+  { path: '/base/NewAccordion', name: 'Accordion', element: NewAccordion },
+  { path: '/signup', name: '회원가입', element: Signup},
+  { path: '/signin', name: '로그인', element: Signin}
 ]
 
 export default routes

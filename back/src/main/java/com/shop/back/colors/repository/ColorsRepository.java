@@ -9,4 +9,6 @@ public interface ColorsRepository extends JpaRepository<Colors, Long> {
 
 
 	List<Colors> findByDelOrderById(int del);
+	
+	Colors findByRgbAndDel(String rgb, int del);
 }

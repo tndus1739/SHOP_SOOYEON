@@ -44,7 +44,7 @@ public class ItemFormDto {
 
 //	private String code;                    //  상품 코드
 
-//	private int views;                      //  조회수
+	private int views;                      //  조회수
 
 	private String status;                  //  판매중 Y or 판매 중지 N
 	
@@ -72,7 +72,7 @@ public class ItemFormDto {
 
 //	private String rgb;
 
-	private int isView;                 //  조회수
+	private int isView;                 	//  노출여부
 	
 	
 	

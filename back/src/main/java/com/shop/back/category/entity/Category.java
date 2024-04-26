@@ -5,12 +5,16 @@ import com.shop.back.category.dto.CategoryFormDto;
 import com.shop.back.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Data
+//@Data
+@Setter
+@Getter
 public class Category extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,5 +44,17 @@ public class Category extends BaseEntity {
 		this.del = cc.getDel();
 		this.delDate = cc.getDelDate();
 		this.depth = cc.getDepth();
+	}
+
+	@Override
+	public String toString() {
+		return "Category{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", depth=" + depth +
+				", deleteBy='" + deleteBy + '\'' +
+				", del=" + del +
+				", delDate=" + delDate +
+				'}';
 	}
 }

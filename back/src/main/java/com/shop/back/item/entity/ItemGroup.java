@@ -1,5 +1,6 @@
 package com.shop.back.item.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shop.back.category.entity.Category;
 import com.shop.back.colors.entity.Colors;
 import com.shop.back.common.BaseEntity;
@@ -56,6 +57,7 @@ public class ItemGroup extends BaseEntity {
 	private Member member;
 
 	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name = "itemGroup_id")
 	private List<File_item> images;
 	
 	public void saveItemGroup(ItemFormDto form) {

@@ -8,6 +8,9 @@ import {useLocation, useParams} from "react-router-dom";
 import CIcon from "@coreui/icons-react";
 import CoreUIIcons from "src/views/icons/coreui-icons/CoreUIIcons";
 import {freeSet} from "@coreui/icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faStar, faStarHalf} from "@fortawesome/free-solid-svg-icons"
+import axios from "axios";
 
 function Items({props}) {
     const [items, setItems] = useState([])
@@ -30,12 +33,12 @@ function Items({props}) {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
-    const getItems = () => {
+    const getItemsTest = () => {
 
         // 테스트
         let mock = []
         let mock_idx = 0;
-        while (Number(category_id) > mock.length) {
+        while (30 > mock.length) {
             mock.push(
                 {
                     id: mock_idx,
@@ -64,7 +67,15 @@ function Items({props}) {
         setItems(mock)
     }
 
+    const getItems = () => {
+        axios.get('http://localhost:3011/items/test/' + category_id).then((res) => {
+            console.log(res.data)
+            setItems(res.data)
+        })
+    }
+
     useEffect(() => {
+        // getItemsTest()
         getItems()
     }, [category_id]);
 
@@ -92,7 +103,7 @@ function Items({props}) {
                                         {
                                             it.images.map((img, img_idx) => (
                                                 <CCarouselItem key={img_idx}>
-                                                    <img className="d-block w-100" src={img.url}
+                                                    <img className="d-block w-100" src={'http://localhost:3011' + img.path}
                                                          alt={img.isMain ? "slide 1" : "slide " + img_idx + 1}
                                                          height={200}/>
                                                 </CCarouselItem>
@@ -123,17 +134,17 @@ function Items({props}) {
                                         </CCol>
                                     </CRow>
                                     {
-                                        it.isDisCounted ?
+                                        it.isDiscounted ?
                                             <>
                                                 <CRow>
-                                                    <CCol style={{textDecoration: 'line-through'}}>
+                                                    <CCol style={{textDecoration: 'line-through', color: 'gray'}}>
                                                         {addCommas(it.defaultPrice)}
                                                     </CCol>
                                                 </CRow>
                                                 <CRow>
-                                                    <CCol xs={6}>
+                                                    <CCol xs={6} style={{color: 'red'}}>
                                                         {
-                                                            (it.salePrice / it.defaultPrice * 100).toFixed(1) + '%'
+                                                            ((1 - (it.salePrice / it.defaultPrice)) * 100).toFixed(1) + '%'
                                                         }
                                                     </CCol>
                                                     <CCol xs={6} style={{textAlign: 'right'}}>
@@ -150,6 +161,14 @@ function Items({props}) {
                                                 </CRow>
                                             </>
                                     }
+                                    <CRow>
+                                        <CCol style={{color: 'gold'}}>
+                                            <FontAwesomeIcon icon={faStar} />
+                                            <FontAwesomeIcon icon={faStar} />
+                                            <FontAwesomeIcon icon={faStar} />
+                                            <FontAwesomeIcon icon={faStarHalf} />
+                                        </CCol>
+                                    </CRow>
                                 </CCardBody>
                             </CCard>
                         </CCol>

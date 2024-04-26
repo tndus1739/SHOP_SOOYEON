@@ -1,10 +1,14 @@
 package com.shop.back;
 
+import com.shop.back.category.entity.Category;
+import com.shop.back.category.repository.CategoryRepository;
 import com.shop.back.item.dto.ItemFormDto;
 import com.shop.back.item.entity.ItemGroup;
+import com.shop.back.item.repository.ItemGroupRepository;
 import com.shop.back.member.dto.request.JoinRequest;
 import com.shop.back.member.dto.response.JoinResponse;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +26,10 @@ import java.util.Map;
 
 @Controller
 @RestController
+@RequiredArgsConstructor
 public class TestController {
+	private final CategoryRepository categoryRepository;
+	private final ItemGroupRepository itemGroupRepository;
 
 //	@PostMapping("/test")
 //	public ResponseEntity<?> test() {
@@ -67,4 +74,15 @@ public class TestController {
 //
 //		return ResponseEntity.ok(req);
 //	}
+
+	@GetMapping("/items/test/{categoryId}")
+	public ResponseEntity<?> itemsTest(@PathVariable Long categoryId) {
+		System.out.println("=====================================================");
+		System.out.println(categoryId);
+		Category category = categoryRepository.findById(categoryId).get();
+
+		List<ItemGroup> itemGroupList = itemGroupRepository.findByCategory(category);
+
+		return ResponseEntity.ok(itemGroupList);
+	}
 }

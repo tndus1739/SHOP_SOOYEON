@@ -1,4 +1,4 @@
-package com.shop.back.member.dto.param;
+package com.shop.back.member.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +11,5 @@ public class MemberUpdateRequest {
 
     private String nickname;
     private String pwd;
-    private String currentPwd;
     private LocalDateTime birth;
 }

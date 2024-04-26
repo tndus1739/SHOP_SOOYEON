@@ -128,6 +128,7 @@ public class MemberService {
         }
     }
 
+    //회원가입 시 비밀번호 일치 확인
     private void checkPwd(String pwd, String checkPwd) {
         if (!pwd.equals(checkPwd)) {
             throw new MemberException("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
@@ -149,6 +150,13 @@ public class MemberService {
 //        refreshTokenRepository.deleteById(userEmail);
 //    }
 
+    // 정보수정/탈퇴 - DB에 저장된 비밀번호 일치 확인
+    public boolean checkPassword(Long id, String pwd) {
+        Member member = memberRepository.findById(id).orElseThrow(() ->
+                new MemberException("회원을 찾을 수 없습니다.", HttpStatus.NOT_FOUND));
+
+        return encoder.matches(pwd, member.getPwd());
+    }
 
     //정보 수정
     public boolean updateMember (Long id, String nickname, String pwd, LocalDateTime birth) {
@@ -183,6 +191,8 @@ public class MemberService {
             return false;
         }
     }
+
+
 }
 
 

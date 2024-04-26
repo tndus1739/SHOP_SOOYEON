@@ -1,7 +1,7 @@
 package com.shop.back.member.controller;
 
 import com.shop.back.jwt.JwtTokenUtil;
-import com.shop.back.member.dto.param.MemberUpdateRequest;
+import com.shop.back.member.dto.request.MemberUpdateRequest;
 import com.shop.back.member.dto.request.JoinRequest;
 import com.shop.back.member.dto.request.LoginRequest;
 import com.shop.back.member.dto.response.JoinResponse;
@@ -10,17 +10,11 @@ import com.shop.back.member.entity.Member;
 import com.shop.back.member.exception.MemberException;
 import com.shop.back.member.repository.MemberRepository;
 import com.shop.back.member.service.MemberService;
-import com.shop.back.security.WebSecurityConfig;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import oracle.jdbc.proxy.annotation.Post;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -81,8 +75,27 @@ public class MemberController {
         return ResponseEntity.ok().build();
     }
 
-    //비밀번호 확인
+    //비밀번호 일치 확인
+    @GetMapping("/checkPwd")
+    public ResponseEntity<String> checkPassword(@RequestParam("insertPwd") String insertPwd, @RequestHeader("Authorization") String token) {
+        //JWT 토큰에서 사용자 이메일 추출
+        String memberEmail = jwtTokenUtil.getUsernameFromToken(token);
 
+        //사용자의 존재 여부 확인
+        Member member = memberRepository.findByEmail(memberEmail);
+        if (member == null) {
+            return new ResponseEntity<>("사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+        }
+
+        //기존 비밀번호 확인
+        if (!passwordEncoder.matches(insertPwd, member.getPwd())) {
+            return new ResponseEntity<>("기존 비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
+        }
+
+        //비밀번호 일치
+        return new ResponseEntity<>("비밀번호가 일치합니다.", HttpStatus.OK);
+
+    }
 
     //정보 수정
     @PutMapping("/{id}")
@@ -90,7 +103,6 @@ public class MemberController {
         System.out.println(req.getBirth());
         System.out.println(req.getNickname());
         System.out.println(req.getPwd());
-        System.out.println(req.getCurrentPwd());
 
         System.out.println("토큰 출력 : "  + token);
 
@@ -100,7 +112,7 @@ public class MemberController {
             return validationResponse;
         }
 
-        //JWT 토큰에서 사용자 이름을 추출
+        //JWT 토큰에서 사용자 이메일 추출
         String memberEmail = jwtTokenUtil.getUsernameFromToken(token);
 
         //사용자의 존재 여부 확인
@@ -112,11 +124,6 @@ public class MemberController {
         //정보 수정 권한 확인
         if (!member.getId().equals(id)) {
             return new ResponseEntity<>("해당 사용자의 정보를 수정할 수 있는 권한이 없습니다.", HttpStatus.FORBIDDEN);
-        }
-
-        //기존 비밀번호 확인
-        if (!passwordEncoder.matches(req.getCurrentPwd(), member.getPwd())) {
-            return new ResponseEntity<>("기존 비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
         }
 
         //수정된 비밀번호를 BCrypt 알고리즘을 사용하여 해싱

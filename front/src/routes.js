@@ -82,6 +82,9 @@ const Signup = React.lazy(() => import('./views/user/Signup'))
 //  로그인
 const Signin = React.lazy(() => import('./views/user/Signin'))
 
+// 로그아웃
+const Logout = React.lazy(() => import('./views/user/Logout'))
+
 
 const routes = [
   { path: '/items', exact: true, element: Index },
@@ -135,7 +138,8 @@ const routes = [
   { path: '/base/login_my', name: 'login_my', element: Login_my },
   { path: '/base/NewAccordion', name: 'Accordion', element: NewAccordion },
   { path: '/signup', name: '회원가입', element: Signup},
-  { path: '/signin', name: '로그인', element: Signin}
+  { path: '/signin', name: '로그인', element: Signin},
+  { path: '/logout', name: '로그아웃', element: Logout}
 ]
 
 export default routes

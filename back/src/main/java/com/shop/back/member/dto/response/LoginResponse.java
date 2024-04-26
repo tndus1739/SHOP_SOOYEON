@@ -2,21 +2,31 @@ package com.shop.back.member.dto.response;
 
 public class LoginResponse {
 
-    private String jwt;
+    private String accessToken;
+    private String refreshToken;
     private String email;
 
-    public LoginResponse(String jwt, String email) {
-        this.jwt = jwt;
+    public LoginResponse(String accessToken, String refreshToken, String email) {
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
         this.email = email;
     }
 
-    public String getJwt() {
-        return jwt;
+    public String getAccessToken() {
+        return accessToken;
     }
 
-    public void setJwt(String jwt) {
-        this.jwt = jwt;
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
 
     public String getEmail() {
         return email;

@@ -1,6 +1,7 @@
 package com.shop.back.member.service;
 
 import com.shop.back.Role;
+import com.shop.back.jwt.JwtAuthenticationFilter;
 import com.shop.back.jwt.JwtTokenUtil;
 import com.shop.back.member.dto.request.JoinRequest;
 import com.shop.back.member.dto.request.LoginRequest;
@@ -9,10 +10,11 @@ import com.shop.back.member.dto.response.LoginResponse;
 import com.shop.back.member.entity.Member;
 import com.shop.back.member.exception.MemberException;
 import com.shop.back.member.repository.MemberRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -26,6 +28,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import java.util.Objects;
+import java.util.Optional;
+
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
@@ -34,13 +40,14 @@ import java.time.format.DateTimeFormatter;
 @RequiredArgsConstructor
 public class MemberService {
 
-    @Autowired
     private final MemberRepository memberRepository;
     private final PasswordEncoder encoder;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
     private final UserDetailsService userDetailsService;
-//    private final RedisTemplate redisTemplate;
+
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
 
 
     public HttpStatus checkEmailDuplicate(String email) {
@@ -99,8 +106,6 @@ public class MemberService {
         System.out.println("인증 성공 토큰 출력: " + token);
         System.out.println("이메일 출력: " + req.getEmail());
 
-//        redisTemplate.opsForValue().set("jwt 토큰: " + req.getEmail(), token);
-
         return new LoginResponse(token, req.getEmail());
     }
 
@@ -130,12 +135,19 @@ public class MemberService {
     }
 
     //로그아웃
-//    public void logout() {
+//    public void logout(HttpServletRequest request, HttpServletResponse response) {
 //
-//        if (redisTemplate.opsForValue().get("jwt 토큰: " + ));
-//
+//        JwtAuthenticationFilter accessToken = authTokenProvider.convertAuthToken(getAccessToken(request));
+//        //Access Token 검증
+//        if (!accessToken.validate()) throw new CustomLogicException(ExceptionCode.TOKEN_INVALID);
+//        String userEmail = accessToken.getTokenClaims().getSubject();
+//        long time = accessToken.getTokenClaims().getExpiration().getTime() - System.currentTimeMillis();
+//        //Access Token blacklist에 등록하여 만료시키기
+//        //해당 엑세스 토큰의 남은 유효시간을 얻음
+//        redisUtils.setBlackList(accessToken.getToken(), userEmail, time);
+//        //DB에 저장된 Refresh Token 제거
+//        refreshTokenRepository.deleteById(userEmail);
 //    }
-
 
 
     //정보 수정
@@ -159,6 +171,18 @@ public class MemberService {
         }
     }
 
-    //회원 탈퇴
-
+    //회원 탈퇴 (Role: UNREGISTER으로 변경)
+    public boolean withdrawMember(String email) {
+        //회원 정보 조회
+        Member member = memberRepository.findByEmail(email);
+        if (member != null) {
+            member.setRole(Role.UNREGISTER);
+            memberRepository.save(member);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
+
+

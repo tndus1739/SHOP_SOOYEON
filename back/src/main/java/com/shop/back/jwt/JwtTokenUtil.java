@@ -28,6 +28,13 @@ public class JwtTokenUtil implements Serializable {
     @Value("${jwt.secret}")
     private String secret;
 
+    @Value("${jwt.accessExpirationMs}")
+    private int accessExpirationMs;
+
+    @Value("${jwt.refreshExpirationMs}")
+    private int refreshExpirationMs;
+
+
     public void setSecret(String secret) {
         this.secret = secret;
     }
@@ -99,6 +106,28 @@ public class JwtTokenUtil implements Serializable {
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+
+    //access token
+    public String generateAccessToken(UserDetails userDetails) {
+        return Jwts.builder()
+                .setClaims(new HashMap<>())
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + accessExpirationMs))
+                .signWith(SignatureAlgorithm.HS512, secret)
+                .compact();
+    }
+
+    //refresh token
+    public String generateRefreshToken(UserDetails userDetails) {
+        return Jwts.builder()
+                .setClaims(new HashMap<>())
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + refreshExpirationMs))
+                .signWith(SignatureAlgorithm.HS512, secret)
+                .compact();
     }
 
 }

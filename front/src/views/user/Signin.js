@@ -39,12 +39,18 @@ const Signin = () => {
         console.log(data)
 
         axios.post('http://localhost:3011/member/login', data).then((res) => {
-            console.log(res)
-            if(res.data.email && res.data.jwt) {
-                localStorage.setItem('jwt', res.data.jwt)
-                localStorage.setItem('email', res.data.email)
-                navigator('/')
+          console.log(res)
+
+          const { email, accessToken, refreshToken } = res.data;
+
+          if(email && accessToken && refreshToken) {
+            localStorage.setItem('accessToken', accessToken)
+            // Refresh Token은 쿠키에 저장
+            document.cookie = `refreshToken=${refreshToken}; Secure; HttpOnly; SameSite=Strict`
+            localStorage.setItem('email', email)
+            navigator('/')
             }
+
         }).catch((err) => {
             console.log(err)
             alert('로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요')

@@ -69,11 +69,11 @@ public class MemberController {
     }
 
     //로그아웃
-    @PostMapping("/logout")
-    public ResponseEntity logout(HttpServletRequest request , HttpServletResponse response){
+//    @PostMapping("/logout")
+//    public ResponseEntity logout(HttpServletRequest request , HttpServletResponse response){
 //        refreshService.logout(request, response);
-        return ResponseEntity.ok().build();
-    }
+//        return ResponseEntity.ok().build();
+//    }
 
     //비밀번호 일치 확인
     @GetMapping("/checkPwd")

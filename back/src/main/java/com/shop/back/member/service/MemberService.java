@@ -28,10 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-import java.util.Objects;
-import java.util.Optional;
-
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
@@ -101,12 +97,14 @@ public class MemberService {
         authenticate(req.getEmail(), req.getPwd());
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(req.getEmail());
-        final String token = jwtTokenUtil.generateToken(userDetails);
+        final String accessToken = jwtTokenUtil.generateAccessToken(userDetails);
+        final String refreshToken = jwtTokenUtil.generateRefreshToken(userDetails);
 
-        System.out.println("인증 성공 토큰 출력: " + token);
-        System.out.println("이메일 출력: " + req.getEmail());
+        System.out.println("Access Token: " + accessToken);
+        System.out.println("Refresh Token: " + refreshToken);
+        System.out.println("Email: " + req.getEmail());
 
-        return new LoginResponse(token, req.getEmail());
+        return new LoginResponse(accessToken, refreshToken, req.getEmail());
     }
 
     private void authenticate(String email, String pwd) {
@@ -134,21 +132,6 @@ public class MemberService {
             throw new MemberException("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
         }
     }
-
-    //로그아웃
-//    public void logout(HttpServletRequest request, HttpServletResponse response) {
-//
-//        JwtAuthenticationFilter accessToken = authTokenProvider.convertAuthToken(getAccessToken(request));
-//        //Access Token 검증
-//        if (!accessToken.validate()) throw new CustomLogicException(ExceptionCode.TOKEN_INVALID);
-//        String userEmail = accessToken.getTokenClaims().getSubject();
-//        long time = accessToken.getTokenClaims().getExpiration().getTime() - System.currentTimeMillis();
-//        //Access Token blacklist에 등록하여 만료시키기
-//        //해당 엑세스 토큰의 남은 유효시간을 얻음
-//        redisUtils.setBlackList(accessToken.getToken(), userEmail, time);
-//        //DB에 저장된 Refresh Token 제거
-//        refreshTokenRepository.deleteById(userEmail);
-//    }
 
     // 정보수정/탈퇴 - DB에 저장된 비밀번호 일치 확인
     public boolean checkPassword(Long id, String pwd) {

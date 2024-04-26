@@ -15,6 +15,13 @@ public interface ItemRepository extends JpaRepository<Item, Long> ,QuerydslPredi
 
 	List<Item> findByName(String name);
 
+	// 시퀀스 값 가져오기
+    @Query(value = "SELECT item_id_seq.NEXTVAL FROM dual", nativeQuery = true)
+    Long getNextItemId();	
+	
+	
+	
+	
 //	List<Item> findByNameOrContent(String name, String content);
 	
 //	// 상품가격 내림차순 정렬

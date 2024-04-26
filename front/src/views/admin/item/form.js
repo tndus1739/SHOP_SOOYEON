@@ -199,6 +199,7 @@ const ItemForm = () => {
 
         const itemForm = {
             id: id ? id : null,
+            // id: images ? 1 : null,
             itemName: data.itemName,
             content: data.content,
             gender: data.gender,

@@ -23,11 +23,11 @@ import java.util.Map;
 @RestController
 public class TestController {
 
-	@GetMapping("/test")
-	public ResponseEntity<?> test(@RequestParam("test") String test) {
-		System.out.println("test : " + test);
-		return ResponseEntity.ok("test : " + test);
-	}
+//	@GetMapping("/test")
+//	public ResponseEntity<?> test(@RequestParam("test") String test) {
+//		System.out.println("test : " + test);
+//		return ResponseEntity.ok("test : " + test);
+//	}
 
 //	@PostMapping("/item")
 //	public ResponseEntity<?> post(

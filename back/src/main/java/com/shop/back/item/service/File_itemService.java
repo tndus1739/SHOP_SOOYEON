@@ -13,7 +13,9 @@ import org.thymeleaf.util.StringUtils;
 import com.shop.back.item.dto.ItemFormDto;
 import com.shop.back.item.entity.File_item;
 import com.shop.back.item.entity.Item;
+import com.shop.back.item.entity.ItemGroup;
 import com.shop.back.item.repository.File_itemRepository;
+import com.shop.back.item.repository.ItemGroupRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,14 +24,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class File_itemService {
 	
+	
+
 	@Value("${itemImgLocation}")
 	private String itemImgLocation;	    // C:/shop/item 
 	
 	private final File_itemRepository file_itemRepository;
 	private final FileService fileService;
+	private final ItemGroupRepository itemGroupRepository;
 	
-	
-	public void saveItemImg ( File_item file_item , MultipartFile itemImgFile) throws IOException {
+	public void saveItemImage ( File_item file_item , MultipartFile itemImgFile) throws IOException {
 		
 		// oriImgName : MultipartFile에서 넘어오는 원본이미지 이름을 
         String originImgName = itemImgFile.getOriginalFilename();		// 원본 이미지 파일 이름 
@@ -42,6 +46,7 @@ public class File_itemService {
         	imgUrl = "/images/item/" + imgName;
         }
         
+        // 상품 이미지 정보 저장
         file_item.updateItemImg(imgName, imgUrl, originImgName);
         file_itemRepository.save(file_item);
         
@@ -49,52 +54,34 @@ public class File_itemService {
 	}
 	
 	
-//	public Long saveFilesWithProduct(List<MultipartFile> itemImgFileList , int Index, Item item) throws IOException {
-//        
-//        for (int i = 0; i < itemImgFileList.size(); i++) {
-//            File_item fileItem = new File_item();
-//            fileItem.setItemGroup(item); // 상품 연결 설정
-//
-//            // 파일 저장 로직
-//            String fileName = uploadFile(itemImgFileList.get(i));
-//            fileItem.setFileName(fileName);
-//
-//            // 대표 이미지 설정
-//            if (i == Index) {
-//                fileItem.setIsMain(1);  
-//            } else {
-//                fileItem.setIsMain(0);  
-//            }
-//
-//            fileItemRepository.save(fileItem);
-//        }
-//        return item.getId(); // 연관된 상품 ID 반환
-//    }
-//
-//   
-//	
-//	public Long saveItemImg ( List<MultipartFile> itemImgFileList , int index) 
-//			throws IOException{
-//		
-//
-//		// 이미지 등록
-//		for (int i = 0; i < itemImgFileList.size(); i++) {
-//			File_item file_item = new File_item();
-////			file_item.setItemGroup(item);
-//			
-//			
-//			if(i==index) {
-//				file_item.setIsMain(1);
-//			} else {
-//				file_item.setIsMain(0);
-//			}
-//			
-//			file_itemService.saveItemImg(file_item, itemImgFileList.get(i));
-//		}
-//			return item.getId();
-//	}
-//	
-//	
+	// 이미지 등록
+	public Long saveItemImg(List<MultipartFile> itemImgFileList, int index, Long itemGroupId) throws IOException {
+        
+		ItemGroup itemGroup = itemGroupRepository.findById(itemGroupId).get();
+		
+        for (int i = 0; i < itemImgFileList.size(); i++) {
+        	
+        	
+        	
+            File_item fileItem = new File_item();
+            
+           fileItem.setItemGroup(itemGroup); 
+
+           // 대표 이미지 설정
+            if (i == index) {
+                fileItem.setIsMain(1);  // 대표이미지
+            
+            } else {
+                fileItem.setIsMain(0);  
+            }
+
+            saveItemImage(fileItem , itemImgFileList.get(i));
+        }
+        return  itemGroup.getId();
+    }
+
+
 	
+
 	
 }

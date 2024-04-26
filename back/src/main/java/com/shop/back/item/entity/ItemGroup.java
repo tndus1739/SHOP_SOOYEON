@@ -1,18 +1,24 @@
 package com.shop.back.item.entity;
 
 import com.shop.back.category.entity.Category;
+import com.shop.back.colors.entity.Colors;
 import com.shop.back.common.BaseEntity;
 import com.shop.back.item.dto.ItemFormDto;
 import com.shop.back.member.entity.Member;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 @Entity
+@NoArgsConstructor
 public class ItemGroup extends BaseEntity {
+	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;

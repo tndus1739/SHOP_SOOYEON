@@ -66,54 +66,31 @@ public class ItemController {
 				@RequestBody ItemFormDto itemFormDto 
 				
 		) {
-	    	
-	    
-	    	List<ItemDto> itemList = itemFormDto.getItemDtoList();
-	    	  
-	    	
-	    	System.out.println("List 에서 출력 : " + itemList.get(0));
-	    	
-	    	
-	    	ItemGroupDto itemGroupDto = new ItemGroupDto();
-
+	    	ItemGroup itemGroup = new ItemGroup();
 			 try {
-				 
-				
-				 
-				// 이미지 유무에 따라서 ID 설정 or null 설정
-//				 itemService.isThisImg(itemFormDto);
-				 
 				 // 상품 정보 저장
-				 itemService.saveItem (itemFormDto);
+				itemGroup = itemService.saveItem (itemFormDto);
 				 
 			} catch (Exception e) {
 				e.printStackTrace();
-//				return ResponseEntity.badRequest().body("상품 등록 실패: " + e.getMessage());
 			}
 			
-			// 임시로 작동 : 이미지가 넘오는 경우, 그렇지 않는 경우 : null 
-//			itemFormDto.setId(1L);
-			
-			return ResponseEntity.ok(itemFormDto);
+			return ResponseEntity.ok(itemGroup);
 		}
 	    
 	    // 상품 이미지 등록
 		@PostMapping("/files")
 		public ResponseEntity<?> post(
-				@RequestParam("file_item") List<MultipartFile> itemImgFileList,
+				@RequestParam("file_item") List<MultipartFile> file_item,
 				@RequestParam("isMain") int index,
 				@RequestParam("itemGroupId") Long itemGroupId
 		) {
 			
 			
-			System.out.println("리스트 사이즈 : " + itemImgFileList.size());
-			System.out.println("메인 이미지 index : " + index);
-			System.out.println("아이템 그룹 Id : " + itemGroupId);
-			
 			
 			try {
 				
-				file_itemService.saveItemImg( itemImgFileList , index ,itemGroupId);
+				file_itemService.saveItemImg( file_item , index ,itemGroupId);
 				
 			} catch (IOException e) {
 				
@@ -124,7 +101,6 @@ public class ItemController {
 		}
 	    
 	     
-	    
 	    
 	    // 상품 수정 
 	    @PutMapping("/{id}")

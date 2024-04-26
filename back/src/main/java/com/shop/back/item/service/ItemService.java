@@ -86,28 +86,6 @@ public class ItemService {
 			return itemGroup2;
 	}
 	
-	// 시퀀스를 사용하여 ID 생성
-    private Long generateIdItem() {
-        return itemRepository.getNextItemId();
-    }
-
-	
-	// Form에서 이미지가 있는 경우와 없는 경우를 처리하는 메소드
-	public void  isThisImg (ItemFormDto itemFormDto) {
-		
-	    if ( !itemFormDto.getItemImgId().isEmpty()) {
-	        // 이미지가 존재하는 경우 새로운 ID 생성 (예시 로직)
-	        itemFormDto.setId(generateIdItem());
-	    } else {
-	        // 이미지가 없는 경우 ID를 null로 설정
-	        itemFormDto.setId(null);
-	    }
-	    
-	 
-	}
-	
-	
-	
 	
 
 	// 상품수정하기

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -23,10 +24,12 @@ import java.util.Map;
 @RestController
 public class TestController {
 
-//	@GetMapping("/test")
-//	public ResponseEntity<?> test(@RequestParam("test") String test) {
-//		System.out.println("test : " + test);
-//		return ResponseEntity.ok("test : " + test);
+//	@PostMapping("/test")
+//	public ResponseEntity<?> test() {
+//		System.out.println("test=============================================== ");
+//		System.out.println("test : ");
+//		System.out.println("test=============================================== ");
+//		return ResponseEntity.ok("test");
 //	}
 
 //	@PostMapping("/item")

@@ -62,8 +62,6 @@ public class ItemService {
 		itemGroup.saveItemGroup(itemFormDto);
 		itemGroup.setCategory(category);
 		
-		
-		System.out.println("상품등록성공");
 		System.out.println("RGB 출력 : " + itemFormDto.getItemDtoList().get(0).getRgb());
 
 
@@ -82,7 +80,8 @@ public class ItemService {
 			 itemRepository.save(item);
 		 }
 		
-	
+		 System.out.println("상품등록성공");
+		 
 			return itemGroup2;
 	}
 	

@@ -8,6 +8,7 @@ import com.shop.back.member.dto.request.JoinRequest;
 import com.shop.back.member.dto.request.LoginRequest;
 import com.shop.back.member.dto.response.JoinResponse;
 import com.shop.back.member.dto.response.LoginResponse;
+import com.shop.back.member.dto.response.MemberResponse;
 import com.shop.back.member.entity.Member;
 import com.shop.back.member.exception.MemberException;
 import com.shop.back.member.repository.MemberRepository;
@@ -17,6 +18,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -174,7 +178,26 @@ public class MemberService {
     }
 
     //마이페이지 회원 조회
+    public MemberResponse getMemberEmail(String eamil) {
+        Member member = memberRepository.findByEmail(eamil);
+        if (member == null) {
+            //회원 정보가 없을 경우 예외 처리
+            throw new RuntimeException("회원을 찾을 수 없습니다.");
+        }
 
+        //조회된 회원 정보 반환
+        return new MemberResponse(
+                member.getId(),
+                member.getName(),
+                member.getNickname(),
+                member.getEmail(),
+                member.getPwd(),
+                member.getRole(),
+                member.getGender(),
+                member.getBirth(),
+                member.getPhone()
+        );
+    }
 
     //Member Role 조회
     public List<Member> getMemberbyRole(Role role) {

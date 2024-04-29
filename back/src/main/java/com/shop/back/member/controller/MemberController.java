@@ -7,6 +7,7 @@ import com.shop.back.member.dto.request.JoinRequest;
 import com.shop.back.member.dto.request.LoginRequest;
 import com.shop.back.member.dto.response.JoinResponse;
 import com.shop.back.member.dto.response.LoginResponse;
+import com.shop.back.member.dto.response.MemberResponse;
 import com.shop.back.member.entity.Member;
 import com.shop.back.member.exception.MemberException;
 import com.shop.back.member.repository.MemberRepository;
@@ -18,6 +19,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,6 +32,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/member")
@@ -79,21 +83,21 @@ public class MemberController {
 //        return ResponseEntity.ok().build();
 //    }
 
-    //정보 조회
+
+    //마이페이지 회원 조회
     @GetMapping("/mypage")
-    public String myPage(Model model) {
+    public ResponseEntity<MemberResponse> getMemberInfo(@RequestHeader("Authorization") String token) {
+        //JWT 토큰에서 사용자 이메일 추출
+        String memberEmail = jwtTokenUtil.getUsernameFromToken(token);
+        System.out.println("token: " + token);
 
-        //현재 사용자의 인증 정보
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        // 서비스를 통해 회원 정보 조회
+        MemberResponse memberInfo = service.getMemberEmail(memberEmail);
+        System.out.println("email: " + memberEmail);
 
-        //인증 정보에서 사용자의 정보 출력
-        String nickname = authentication.getName();
-
-        model.addAttribute("nickname", nickname);
-
-        return "mypage";
+        // 조회된 회원 정보가 없는 경우를 위한 예외 처리는 서비스 내부에서 처리
+        return new ResponseEntity<>(memberInfo, HttpStatus.OK);
     }
-
 
 
     //비밀번호 일치 확인
@@ -119,7 +123,7 @@ public class MemberController {
     }
 
     //정보 수정
-    @PutMapping("/update/{id}")
+    @PutMapping("/mypage/update/{id}")
     public ResponseEntity<String> updateMember(@PathVariable Long id, @RequestBody MemberUpdateRequest req, @RequestHeader("Authorization") String token) {
         System.out.println(req.getBirth());
         System.out.println(req.getNickname());

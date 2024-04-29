@@ -1,6 +1,7 @@
 package com.shop.back.member.controller;
 
 import com.shop.back.jwt.JwtTokenUtil;
+import com.shop.back.member.dto.request.AdminMemberUpdateRequest;
 import com.shop.back.member.dto.request.MemberUpdateRequest;
 import com.shop.back.member.dto.request.JoinRequest;
 import com.shop.back.member.dto.request.LoginRequest;
@@ -15,7 +16,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -75,6 +79,23 @@ public class MemberController {
 //        return ResponseEntity.ok().build();
 //    }
 
+    //정보 조회
+    @GetMapping("/mypage")
+    public String myPage(Model model) {
+
+        //현재 사용자의 인증 정보
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        //인증 정보에서 사용자의 정보 출력
+        String nickname = authentication.getName();
+
+        model.addAttribute("nickname", nickname);
+
+        return "mypage";
+    }
+
+
+
     //비밀번호 일치 확인
     @GetMapping("/checkPwd")
     public ResponseEntity<String> checkPassword(@RequestParam("insertPwd") String insertPwd, @RequestHeader("Authorization") String token) {
@@ -98,7 +119,7 @@ public class MemberController {
     }
 
     //정보 수정
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<String> updateMember(@PathVariable Long id, @RequestBody MemberUpdateRequest req, @RequestHeader("Authorization") String token) {
         System.out.println(req.getBirth());
         System.out.println(req.getNickname());

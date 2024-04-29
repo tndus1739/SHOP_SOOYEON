@@ -1,5 +1,9 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {
+  CAccordion,
+  CAccordionBody,
+  CAccordionHeader,
+  CAccordionItem,
   CButton, CButtonGroup,
   CCard,
   CCardBody,
@@ -12,8 +16,12 @@ import {
   CRow, CTable, CTableBody, CTableDataCell, CTableHead, CTableHeaderCell, CTableRow
 } from "@coreui/react";
 import axios from "axios";
-import {useParams} from "react-router-dom";
-import ItemOption from "src/views/user/ItemOption";
+import {json, useParams} from "react-router-dom";
+import ItemOption from "src/views/user/item/ItemOption";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faHeart} from "@fortawesome/free-solid-svg-icons";
+import {cilBasket, cilHeart} from "@coreui/icons";
+import CIcon from "@coreui/icons-react";
 
 function Item() {
   const [group, setGroup] = useState({images: [], category: {name: ''}, items: []})
@@ -23,6 +31,8 @@ function Item() {
   const sizeRef = useRef(null)
   const [selectedItem, setSelectedItem] = useState([])
   const [total, setTotal] = useState(0)
+  const [sizeInfo, setSizeInfo] = useState([[]])
+  const [colors, setColors] = useState([])
 
   const addCommas = (number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -31,7 +41,18 @@ function Item() {
   const getItem = () => {
     axios.get(`http://localhost:3011/item/test/${itemGroupId}`).then((res) => {
       console.log(res.data)
+      setSizeInfo(JSON.parse(res.data.sizeTable))
       setGroup(res.data)
+      let colorsInfo = []
+      for (const c of res.data.items) {
+        colorsInfo.push(c.colors)
+      }
+      const arr = colorsInfo.filter((item, index, self) =>
+          index === self.findIndex(obj => (
+            obj.id === item.id && obj.name === item.name // 중복 여부를 판별할 조건
+          ))
+      )
+      setColors(arr)
     })
   }
 
@@ -76,29 +97,28 @@ function Item() {
         }
       }
     }
-    console.log(selItems)
     setSelectedItem(selItems)
   }
 
   const deleteItem = (id) => {
     let idx = 0
     let arr = []
-    for(const item of selectedItem) {
-      if(selectedItem[idx].id != id) {
+    for (const item of selectedItem) {
+      if (selectedItem[idx].id != id) {
         arr.push(selectedItem[idx])
       }
       idx++
     }
     setSelectedItem(arr)
-    if(!arr.length) {
+    if (!arr.length) {
       sizeRef.current.options[0].selected = true
     }
   }
 
   const calculate_total = (id, count) => {
     let totalPrice = 0
-    for(const item of selectedItem) {
-      if(item.id == id) {
+    for (const item of selectedItem) {
+      if (item.id == id) {
         item.count = count
       }
       totalPrice += (item.salePrice + item.optionPrice) * item.count
@@ -106,9 +126,25 @@ function Item() {
     setTotal(totalPrice)
   }
 
+  const buyNow = () => {
+    if(!selectedItem.length) {
+      alert('상품 옵션을 선택해주세요')
+      return
+    } else {
+      console.log(selectedItem)
+    }
+  }
+
+  const addView = () => {
+    return
+    axios.put(`http://localhost:3011/item/views/${itemGroupId}`).then((res) => {
+      console.log(res)
+    })
+  }
+
   useEffect(() => {
-    // item['images'] = []
     getItem()
+    addView()
   }, []);
 
   return (
@@ -130,6 +166,52 @@ function Item() {
               </CCarousel>
             </CCardBody>
           </CCard>
+          <CRow>
+            <CCol>
+              <CCard>
+                <CCardHeader>
+                  <strong>Size Info</strong>&nbsp;&nbsp;
+                  <small>
+                    <p className="text-body-secondary small" style={{display: "inline-block", marginBottom: 0}}>
+                      사이즈 정보
+                    </p>
+                  </small>
+                </CCardHeader>
+                <CCardBody>
+                  <CTable hover style={{textAlign: 'center'}}>
+                    <CTableHead>
+                      <CTableRow>
+                        <CTableHeaderCell scope="col">#</CTableHeaderCell>
+                        {
+                          sizeInfo.map((it, index) => (
+                            index === 0 && (
+                              it.map((si, idx) => (
+                                <CTableHeaderCell scope="col" key={idx}>{si.value}</CTableHeaderCell>
+                              ))
+                            )
+                          ))
+                        }
+                      </CTableRow>
+                    </CTableHead>
+                    <CTableBody>
+                      {
+                        sizeInfo.map((it, index) => (
+                          <CTableRow key={index}>
+                            {
+                              index !== 0 && (
+                                it.map((si, idx) => (
+                                  <CTableDataCell key={idx}>{si.value}</CTableDataCell>
+                                )))
+                            }
+                          </CTableRow>
+                        ))
+                      }
+                    </CTableBody>
+                  </CTable>
+                </CCardBody>
+              </CCard>
+            </CCol>
+          </CRow>
         </CCol>
         <CCol>
           <CCard>
@@ -237,9 +319,9 @@ function Item() {
                   <CFormSelect size="sm" onChange={selectColor}>
                     <option value={0}>색상</option>
                     {
-                      group.items.map((it, index) => (
-                        <option value={it.colors.id} key={index}>
-                          {it.colors.name}
+                      colors.map((it, index) => (
+                        <option value={it.id} key={index}>
+                          {it.name}
                         </option>
                       ))
                     }
@@ -282,7 +364,8 @@ function Item() {
                     <CTableBody>
                       {
                         selectedItem.map((it, index) => (
-                          <ItemOption it={it} index={index} key={index} deleteItem={deleteItem} total={calculate_total} />
+                          <ItemOption it={it} index={index} key={index} deleteItem={deleteItem}
+                                      total={calculate_total}/>
                         ))
                       }
                     </CTableBody>
@@ -306,6 +389,51 @@ function Item() {
               }
             </CCardBody>
           </CCard>
+          <CCard>
+            <CCardBody>
+              <CRow>
+                <CCol xs={8}>
+                  <CButton color={'primary'} style={{width: '100%'}} onClick={buyNow}>바로 구매</CButton>
+                </CCol>
+                <CCol xs={2} style={{textAlign: 'right'}}>
+                  <CButton color={'danger'} variant={'outline'}>
+                    <CIcon icon={cilHeart}/>
+                  </CButton>
+                </CCol>
+                <CCol xs={2} style={{textAlign: 'left'}}>
+                  <CButton color={'info'} variant={'outline'}>
+                    <CIcon icon={cilBasket} />
+                  </CButton>
+                </CCol>
+              </CRow>
+            </CCardBody>
+          </CCard>
+        </CCol>
+      </CRow>
+      <p/>
+      <CRow>
+        <CCol>
+          <CAccordion alwaysOpen>
+            <CAccordionItem itemKey={1}>
+              <CAccordionHeader>상품 상세 설명</CAccordionHeader>
+              <CAccordionBody>
+                <div dangerouslySetInnerHTML={{__html: group.content}} style={{textAlign: 'center'}}/>
+              </CAccordionBody>
+            </CAccordionItem>
+            <p/>
+            <CAccordionItem itemKey={2}>
+              <CAccordionHeader>리뷰 및 평점</CAccordionHeader>
+              <CAccordionBody>
+                <strong>This is the second item&#39;s accordion body.</strong> It is hidden by
+                default, until the collapse plugin adds the appropriate classes that we use to
+                style each element. These classes control the overall appearance, as well as the
+                showing and hiding via CSS transitions. You can modify any of this with custom
+                CSS or overriding our default variables. It&#39;s also worth noting that just
+                about any HTML can go within the <code>.accordion-body</code>, though the
+                transition does limit overflow.
+              </CAccordionBody>
+            </CAccordionItem>
+          </CAccordion>
         </CCol>
       </CRow>
     </>

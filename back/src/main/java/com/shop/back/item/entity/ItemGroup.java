@@ -59,6 +59,10 @@ public class ItemGroup extends BaseEntity {
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "itemGroup_id")
 	private List<File_item> images;
+
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name = "itemGroup_id")
+	private List<Item> items;
 	
 	public void saveItemGroup(ItemFormDto form) {
     	this.name = form.getItemName();

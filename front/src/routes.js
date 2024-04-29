@@ -76,6 +76,9 @@ const Index = React.lazy(() => import('./views/user/items'))
 // 상품 검색
 const SearchItem = React.lazy(() => import('./views/user/SearchItems'))
 
+//  상품 상세
+const Item = React.lazy(() => import('./views/user/Item'))
+
 //  회원가입
 const Signup = React.lazy(() => import('./views/user/Signup'))
 
@@ -89,6 +92,7 @@ const Logout = React.lazy(() => import('./views/user/Logout'))
 const routes = [
   { path: '/items', exact: true, element: Index },
   { path: `/items/search/:category_id`, name: 'Search', exact: true, element: SearchItem },
+  { path: `/item/:itemGroupId`, name: '상품', exact: true, element: Item },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },

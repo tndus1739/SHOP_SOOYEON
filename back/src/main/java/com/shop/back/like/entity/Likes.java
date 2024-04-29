@@ -2,6 +2,7 @@ package com.shop.back.like.entity;
 
 import com.shop.back.common.BaseEntity;
 import com.shop.back.item.entity.Item;
+import com.shop.back.item.entity.ItemGroup;
 import com.shop.back.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -15,9 +16,11 @@ public class Likes extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	private int del;
+
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "item_id")
-	private Item item;
+	@JoinColumn(name = "itemGroup_id")
+	private ItemGroup item;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")

@@ -133,7 +133,7 @@ const ItemForm = () => {
             }
             const item = {
                 name: itemName,
-                size: io.querySelector('input[name="size"]').value,
+                itemSize: io.querySelector('input[name="size"]').value,
                 cnt: io.querySelector('input[name="cnt"]').value,
                 status: io.querySelector('select[name="status"]').value,
                 optionPrice: (Number((io.querySelector('input[name="optionPrice"]').value).toString().replace(/[^0-9]/gi, ''))),

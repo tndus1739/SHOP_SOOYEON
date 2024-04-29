@@ -49,6 +49,8 @@ public class Item extends BaseEntity {
 
 	private LocalDateTime delDate;
 
+	private String itemSize;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "colors_id")
 	private Colors colors;

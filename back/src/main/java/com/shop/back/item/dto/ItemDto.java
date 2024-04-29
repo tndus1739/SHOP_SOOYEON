@@ -40,7 +40,7 @@ public class ItemDto {
 
 	private String rgb;
 
-	private String size;
+	private String itemSize;
 	
 	private static ModelMapper modelMapper = new ModelMapper();
 

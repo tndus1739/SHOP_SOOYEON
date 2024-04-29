@@ -49,6 +49,7 @@ public class WebSecurityConfig {
 				.authorizeHttpRequests(authorize ->
 						authorize
 								.anyRequest().permitAll()
+//								.anyRequest().authenticated()
 				);
 
 		http

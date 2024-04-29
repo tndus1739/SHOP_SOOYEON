@@ -3,6 +3,7 @@ package com.shop.back;
 import com.shop.back.category.entity.Category;
 import com.shop.back.category.repository.CategoryRepository;
 import com.shop.back.item.dto.ItemFormDto;
+import com.shop.back.item.entity.Item;
 import com.shop.back.item.entity.ItemGroup;
 import com.shop.back.item.repository.ItemGroupRepository;
 import com.shop.back.member.dto.request.JoinRequest;
@@ -82,7 +83,26 @@ public class TestController {
 		Category category = categoryRepository.findById(categoryId).get();
 
 		List<ItemGroup> itemGroupList = itemGroupRepository.findByCategory(category);
+		for(ItemGroup itemGroup : itemGroupList) {
+			for(Item item : itemGroup.getItems()) {
+				item.setItemGroup(null);
+			}
+		}
 
 		return ResponseEntity.ok(itemGroupList);
+	}
+
+	@GetMapping("/item/test/{itemGroupId}")
+	public ResponseEntity<?> itemTest(@PathVariable("itemGroupId") Long itemGroupId) {
+		System.out.println("=====================================================");
+		System.out.println(itemGroupId);
+
+		ItemGroup itemGroup = itemGroupRepository.findById(itemGroupId).get();
+		for(Item item : itemGroup.getItems()) {
+			item.setItemGroup(null);
+		}
+		System.out.println(itemGroup);
+
+		return ResponseEntity.ok(itemGroup);
 	}
 }

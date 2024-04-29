@@ -100,7 +100,7 @@ function Item() {
     setSelectedItem(selItems)
   }
 
-  const deleteItem = (id) => {
+  const deleteItem = async (id) => {
     let idx = 0
     let arr = []
     for (const item of selectedItem) {
@@ -113,15 +113,22 @@ function Item() {
     if (!arr.length) {
       sizeRef.current.options[0].selected = true
     }
+    await calculate_total(null, null, arr)
   }
 
-  const calculate_total = (id, count) => {
+  const calculate_total = (id, count, arr) => {
     let totalPrice = 0
-    for (const item of selectedItem) {
-      if (item.id == id) {
-        item.count = count
+    if(id == null && count == null) {
+      for (const item of arr) {
+        totalPrice += (item.salePrice + item.optionPrice) * item.count
       }
-      totalPrice += (item.salePrice + item.optionPrice) * item.count
+    } else {
+      for (const item of selectedItem) {
+        if (id && count && item.id == id) {
+          item.count = count
+        }
+        totalPrice += (item.salePrice + item.optionPrice) * item.count
+      }
     }
     setTotal(totalPrice)
   }
@@ -159,7 +166,7 @@ function Item() {
                     <CCarouselItem key={img_idx}>
                       <img className="d-block w-100" src={'http://localhost:3011' + img.path}
                            alt={img.isMain ? "slide 1" : "slide " + img_idx + 1}
-                           height={500}/>
+                           height={700}/>
                     </CCarouselItem>
                   ))
                 }
@@ -335,9 +342,14 @@ function Item() {
                     <option value={'0'}>사이즈</option>
                     {
                       itemOption.map((io, index) => (
+                        io.status == '판매' ?
                         <option value={io.id} key={index}>
                           {io.itemSize}&nbsp;{`(+${addCommas(io.optionPrice)})`}
                         </option>
+                          :
+                          <option value={io.id} key={index} disabled>
+                            {io.itemSize}&nbsp;{`(+${addCommas(io.optionPrice)}) ${io.status}`}
+                          </option>
                       ))
                     }
                   </CFormSelect>

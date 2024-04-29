@@ -92,6 +92,7 @@ public class TestController {
 		return ResponseEntity.ok(itemGroupList);
 	}
 
+	//  상품 상세 페이지
 	@GetMapping("/item/test/{itemGroupId}")
 	public ResponseEntity<?> itemTest(@PathVariable("itemGroupId") Long itemGroupId) {
 		System.out.println("=====================================================");

@@ -74,16 +74,16 @@ const AdminItemColor = React.lazy(() => import('./views/admin/color/form'))
 const Index = React.lazy(() => import('./views/user/items'))
 
 // 상품 검색
-const SearchItem = React.lazy(() => import('./views/user/SearchItems'))
+const SearchItem = React.lazy(() => import('./views/user/item/SearchItems'))
 
 //  상품 상세
-const Item = React.lazy(() => import('./views/user/Item'))
+const Item = React.lazy(() => import('./views/user/item/Item'))
 
 //  회원가입
-const Signup = React.lazy(() => import('./views/user/Signup'))
+const Signup = React.lazy(() => import('./views/user/member/Signup'))
 
 //  로그인
-const Signin = React.lazy(() => import('./views/user/Signin'))
+const Signin = React.lazy(() => import('./views/user/member/Signin'))
 
 // 로그아웃
 const Logout = React.lazy(() => import('./views/user/Logout'))

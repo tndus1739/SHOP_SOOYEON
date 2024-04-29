@@ -17,7 +17,7 @@ import {
 } from "@coreui/react";
 import axios from "axios";
 import {json, useParams} from "react-router-dom";
-import ItemOption from "src/views/user/ItemOption";
+import ItemOption from "src/views/user/item/ItemOption";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faHeart} from "@fortawesome/free-solid-svg-icons";
 import {cilBasket, cilHeart} from "@coreui/icons";

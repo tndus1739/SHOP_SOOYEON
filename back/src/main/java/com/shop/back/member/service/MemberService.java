@@ -3,6 +3,7 @@ package com.shop.back.member.service;
 import com.shop.back.Role;
 import com.shop.back.jwt.JwtAuthenticationFilter;
 import com.shop.back.jwt.JwtTokenUtil;
+import com.shop.back.member.dto.request.AdminMemberUpdateRequest;
 import com.shop.back.member.dto.request.JoinRequest;
 import com.shop.back.member.dto.request.LoginRequest;
 import com.shop.back.member.dto.response.JoinResponse;
@@ -10,11 +11,7 @@ import com.shop.back.member.dto.response.LoginResponse;
 import com.shop.back.member.entity.Member;
 import com.shop.back.member.exception.MemberException;
 import com.shop.back.member.repository.MemberRepository;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -30,6 +27,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -41,7 +40,6 @@ public class MemberService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
     private final UserDetailsService userDetailsService;
-
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
 
@@ -173,6 +171,14 @@ public class MemberService {
         } else {
             return false;
         }
+    }
+
+    //마이페이지 회원 조회
+
+
+    //Member Role 조회
+    public List<Member> getMemberbyRole(Role role) {
+        return memberRepository.findByRole(role);
     }
 
 

@@ -20,7 +20,7 @@ public class Likes extends BaseEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "itemGroup_id")
-	private ItemGroup item;
+	private ItemGroup itemGroup;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")

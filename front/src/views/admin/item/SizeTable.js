@@ -50,7 +50,6 @@ function SizeTable({data}) {
       for(const v in val[1]) {
         ac.push(Number(v))
       }
-      console.log(val)
       setRow(ar)
       setCol(ac)
       setInfo(val)

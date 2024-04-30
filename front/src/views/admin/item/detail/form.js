@@ -236,7 +236,7 @@ const ItemForm = () => {
     // }
 
     console.log(itemForm)
-    return
+
     axios.post('http://localhost:3011/item', itemForm).then((res) => {
       console.log(res)
       if (res.data.id) {

@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
 import routes from '../routes'
 
-import { CBreadcrumb, CBreadcrumbItem } from '@coreui/react'
+import { CBreadcrumb, CBreadcrumbItem ,  CFormInput,CButton} from '@coreui/react'
+// import { CIcon } from '@coreui/icons-react';
+// import {cilSearch}  from '@coreui/icons';
 
 const AppBreadcrumb = () => {
   const currentLocation = useLocation().pathname
@@ -31,6 +33,13 @@ const AppBreadcrumb = () => {
 
   const breadcrumbs = getBreadcrumbs(currentLocation)
 
+  // 검색
+  const [search , setSearch] = useState("");
+  const onChange = (e) =>{
+    setSearch(e.target.value);
+  }
+
+
   return (
     <CBreadcrumb className="my-0">
       {/*<CBreadcrumbItem href="/">Home</CBreadcrumbItem>*/}
@@ -44,6 +53,15 @@ const AppBreadcrumb = () => {
       {/*    </CBreadcrumbItem>*/}
       {/*  )*/}
       {/*})}*/}
+    
+      
+
+      <CFormInput type="search" placeholder="    검색어를 입력하세요" aria-label="default input example" style={{width:'78vw' , marginRight: '18px'}}/>
+      {/* <CButton as="as" type="button" color="primary" shape="rounded-pill" value="Input"/> */}
+      <CButton type="submit" color="primary" shape="rounded-pill" style={{width:'90px'}}> 
+      {/* <CIcon icon={cilSearch} size="xl" style={{'--ci-primary-color': 'yellow'}} /> */}
+      Search 
+      </CButton>
     </CBreadcrumb>
   )
 }

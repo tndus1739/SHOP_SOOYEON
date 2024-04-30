@@ -7,7 +7,9 @@ import com.shop.back.item.entity.ItemGroup;
 
 import java.util.List;
 
-public interface ItemGroupRepository extends JpaRepository<ItemGroup, Long>{
-
+public interface ItemGroupRepository extends JpaRepository<ItemGroup, Long> ,ItemGroupRepositoryCustom{
+ 
 	List<ItemGroup> findByCategory(Category category);
+
+	List<ItemGroup> findByCategoryAndDelAndIsView(Long categoryId);
 }

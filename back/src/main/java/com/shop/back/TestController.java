@@ -82,7 +82,7 @@ public class TestController {
 		System.out.println(categoryId);
 		Category category = categoryRepository.findById(categoryId).get();
 
-		List<ItemGroup> itemGroupList = itemGroupRepository.findByCategory(category);
+		List<ItemGroup> itemGroupList = itemGroupRepository.findByCategoryAndDelAndIsView(categoryId);
 		for(ItemGroup itemGroup : itemGroupList) {
 			for(Item item : itemGroup.getItems()) {
 				item.setItemGroup(null);

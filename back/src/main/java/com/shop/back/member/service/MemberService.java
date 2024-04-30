@@ -204,6 +204,8 @@ public class MemberService {
         return memberRepository.findByRole(role);
     }
 
+    // 관리자 페이지 검색
+
 
 }
 

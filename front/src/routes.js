@@ -61,6 +61,11 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 const AdminUserList = React.lazy(() => import('./views/admin/member/UserList'))
 const AdminAdminList = React.lazy(() => import('./views/admin/member/AdminList'))
 const AdminUnregisterList = React.lazy(() => import('./views/admin/member/UnregisterList'))
+// 회원 수정
+const AdminUserDetail = React.lazy(() => import('./views/admin/member/UserDetail'))
+const AdminAdminDetail = React.lazy(() => import('./views/admin/member/AdminDetail'))
+const AdminUnregisterDetail = React.lazy(() => import('./views/admin/member/UnregisterDetail'))
+
 
 //  카테고리
 const AdminCategory = React.lazy(() => import('./views/admin/category/AdminCategory'))
@@ -145,8 +150,11 @@ const routes = [
   { path: '/notifications/toasts', name: 'Toasts', element: Toasts },
   { path: '/widgets', name: 'Widgets', element: Widgets },
   { path: '/admin/member/userList', name:'AdminUserList', element: AdminUserList},
+  { path: '/admin/member/userDetail', name:'AdminUserDetail', element: AdminUserDetail},
   { path: '/admin/member/adminList', name:'AdminAdminList', element: AdminAdminList},
+  { path: '/admin/member/adminDetail', name:'AdminAdminDetail', element: AdminAdminDetail},
   { path: '/admin/member/unregisterList', name:'AdminUnregisterList', element: AdminUnregisterList},
+  { path: '/admin/member/unregisterDetail', name:'AdminUnregisterDetail', element: AdminUnregisterDetail},
   { path: '/admin/category', name: 'Admin', element: AdminCategory },
   { path: '/admin/item/form', name: '상품 등록', element: AdminItemForm },
   { path: '/admin/item/list', name: '상품 리스트', element: AdminItemList },

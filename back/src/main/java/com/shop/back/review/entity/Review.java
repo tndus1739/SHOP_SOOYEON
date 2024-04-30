@@ -2,6 +2,7 @@ package com.shop.back.review.entity;
 
 import com.shop.back.common.BaseEntity;
 import com.shop.back.item.entity.Item;
+import com.shop.back.item.entity.ItemGroup;
 import com.shop.back.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -19,11 +20,11 @@ public class Review extends BaseEntity {
 
 	private String content;
 
-	private int grade;
+	private int grade;              //  별점
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "item_id")
-	private Item item;
+	@JoinColumn(name = "itemGroup_id")
+	private ItemGroup itemGroup;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")

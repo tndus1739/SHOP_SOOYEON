@@ -33,6 +33,7 @@ function Item() {
   const [total, setTotal] = useState(0)
   const [sizeInfo, setSizeInfo] = useState([[]])
   const [colors, setColors] = useState([])
+  const [isLike, setIsLike] = useState('outline')
 
   const addCommas = (number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -147,6 +148,18 @@ function Item() {
     axios.put(`http://localhost:3011/item/views/${itemGroupId}`).then((res) => {
       console.log(res)
     })
+  }
+
+  const like = () => {
+    const itemGroupId = group.id
+    axios.post(`http://localhost:3011/test/likes/${itemGroupId}`).then((res) => {
+      console.log(res)
+    })
+  }
+
+  const basket = () => {
+    const items = selectedItem
+    console.log(items)
   }
 
   useEffect(() => {
@@ -408,12 +421,12 @@ function Item() {
                   <CButton color={'primary'} style={{width: '100%'}} onClick={buyNow}>바로 구매</CButton>
                 </CCol>
                 <CCol xs={2} style={{textAlign: 'right'}}>
-                  <CButton color={'danger'} variant={'outline'}>
+                  <CButton color={'danger'} variant={'outline'} onClick={like}>
                     <CIcon icon={cilHeart}/>
                   </CButton>
                 </CCol>
                 <CCol xs={2} style={{textAlign: 'left'}}>
-                  <CButton color={'info'} variant={'outline'}>
+                  <CButton color={'info'} variant={isLike} onClick={basket}>
                     <CIcon icon={cilBasket} />
                   </CButton>
                 </CCol>

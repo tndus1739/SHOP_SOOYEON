@@ -23,6 +23,19 @@ public class AdminMemberController {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
+
+    // 회원 조회
+    @GetMapping("/{id}")
+    public ResponseEntity<Member> getMemberById(@PathVariable Long id) {
+        Optional<Member> optionalMember = memberRepository.findById(id);
+        if (optionalMember.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Member member = optionalMember.get();
+        return ResponseEntity.ok(member);
+    }
+
     //USER 리스트
     @GetMapping("/userList")
     public ResponseEntity<List<Member>> userList() {
@@ -87,15 +100,18 @@ public class AdminMemberController {
         member.setGender(req.getGender());
         member.setBirth(req.getBirth());
         member.setRole(req.getRole());
+        member.setAddress(req.getAddress());
 
         memberRepository.save(member);
 
         System.out.println("수정 후 비밀번호: " + req.getPwd());
         System.out.println("수정 후 이름: " + req.getName());
+        System.out.println("수정 후 닉네임: " + req.getNickname());
         System.out.println("수정 후 전화번호: " + req.getPhone());
         System.out.println("수정 후 성별: " + req.getGender());
         System.out.println("수정 후 생년월일: " + req.getBirth());
         System.out.println("수정 후 권한: " + req.getRole());
+        System.out.println("수정 후 주소: " + req.getAddress());
 
 
         return ResponseEntity.ok(member);

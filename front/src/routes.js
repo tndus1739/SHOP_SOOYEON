@@ -150,7 +150,7 @@ const routes = [
   { path: '/notifications/toasts', name: 'Toasts', element: Toasts },
   { path: '/widgets', name: 'Widgets', element: Widgets },
   { path: '/admin/member/userList', name:'AdminUserList', element: AdminUserList},
-  { path: '/admin/member/userDetail', name:'AdminUserDetail', element: AdminUserDetail},
+  { path: '/admin/member/userDetail/:id', name:'AdminUserDetail', element: AdminUserDetail},
   { path: '/admin/member/adminList', name:'AdminAdminList', element: AdminAdminList},
   { path: '/admin/member/adminDetail', name:'AdminAdminDetail', element: AdminAdminDetail},
   { path: '/admin/member/unregisterList', name:'AdminUnregisterList', element: AdminUnregisterList},

@@ -57,6 +57,11 @@ const _nav_dev_admin = [
         name: '상품 등록',
         to: '/admin/item/form',
       },
+      {
+        component: CNavItem,
+        name: '상품 리스트',
+        to: '/admin/item/list',
+      },
     ]
   },
   {

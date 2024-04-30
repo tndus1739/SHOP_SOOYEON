@@ -67,6 +67,8 @@ const AdminCategory = React.lazy(() => import('./views/admin/category/AdminCateg
 
 //  상품
 const AdminItemForm = React.lazy(() => import('./views/admin/item/form'))
+const AdminItemList = React.lazy(() => import('./views/admin/item/list/ItemList'))
+const AdminItem = React.lazy(() => import('./views/admin/item/detail/form'))
 
 //  색상
 const AdminItemColor = React.lazy(() => import('./views/admin/color/form'))
@@ -147,6 +149,8 @@ const routes = [
   { path: '/admin/member/unregisterList', name:'AdminUnregisterList', element: AdminUnregisterList},
   { path: '/admin/category', name: 'Admin', element: AdminCategory },
   { path: '/admin/item/form', name: '상품 등록', element: AdminItemForm },
+  { path: '/admin/item/list', name: '상품 리스트', element: AdminItemList },
+  { path: '/admin/item/:itemGroupId', name: '상품 상세', element: AdminItem },
   { path: '/admin/item/color/form', name: 'Admin', element: AdminItemColor },
   { path: '/base/login_my', name: 'login_my', element: Login_my },
   { path: '/base/NewAccordion', name: 'Accordion', element: NewAccordion },

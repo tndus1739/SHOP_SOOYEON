@@ -125,4 +125,26 @@ public class TestController {
 
 		return ResponseEntity.ok(itemGroup);
 	}
+
+	@GetMapping("/admin/items/test")
+	public ResponseEntity<?> adminItemsTest() {
+		System.out.println("=====================================================");
+
+		List<ItemGroup> itemGroupList = itemGroupRepository.findAll();
+		for(ItemGroup itemGroup : itemGroupList) {
+			for(Item item : itemGroup.getItems()) {
+				item.setItemGroup(null);
+			}
+		}
+
+		return ResponseEntity.ok(itemGroupList);
+	}
+
+	@GetMapping("/admin/category/parent/{categoryId}")
+	public ResponseEntity<?> adminCategoryTest(@PathVariable("categoryId") Long categoryId) {
+		Category child = categoryRepository.findById(categoryId).get();
+		Category parent = child.getParentCategory();
+
+		return ResponseEntity.ok(parent);
+	}
 }

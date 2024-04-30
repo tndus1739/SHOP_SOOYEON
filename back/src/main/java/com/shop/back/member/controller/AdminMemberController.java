@@ -31,7 +31,7 @@ public class AdminMemberController {
     }
 
     //USER 수정
-    @PutMapping("/updateUser/{id}")
+    @PutMapping("/userDetail/{id}")
     public ResponseEntity<Member> updateUser(@PathVariable Long id, @RequestBody AdminMemberUpdateRequest req) {
         return updateMember(id, req);
     }
@@ -43,11 +43,12 @@ public class AdminMemberController {
     @GetMapping("/adminList")
     public ResponseEntity<List<Member>> adminList() {
         List<Member> adminList = service.getMemberbyRole(Role.ADMIN);
+        System.out.println("adminList: " + adminList);
         return new ResponseEntity<>(adminList, HttpStatus.OK);
     }
 
     //ADMIN 수정
-    @PutMapping("/updateAdmin/{id}")
+    @PutMapping("/adminDetail/{id}")
     public ResponseEntity<Member> updateAdmin(@PathVariable Long id, @RequestBody AdminMemberUpdateRequest req) {
         return updateMember(id, req);
     }
@@ -62,7 +63,7 @@ public class AdminMemberController {
     }
 
     //UNREGISTER 수정
-    @PutMapping("/updateUnregister/{id}")
+    @PutMapping("/unregisterDetail/{id}")
     public ResponseEntity<Member> updateUnregister(@PathVariable Long id, @RequestBody AdminMemberUpdateRequest req) {
         return updateMember(id, req);
     }

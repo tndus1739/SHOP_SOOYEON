@@ -21,9 +21,26 @@ const _nav_dev_admin = [
     name: 'ADMIN',
   },
   {
-    component: CNavItem,
+    component: CNavGroup,
     name: '회원',
-    to: '/admin/member',
+    // to: '/admin/member',
+    items: [
+      {
+        component: CNavItem,
+        name: '회원 목록',
+        to: '/admin/member/userList',
+      },
+      {
+        component: CNavItem,
+        name: '관리자 목록',
+        to: '/admin/member/adminList',
+      },
+      {
+        component: CNavItem,
+        name: '탈퇴 목록',
+        to: '/admin/member/unregisterList',
+      },
+    ]
   },
   {
     component: CNavItem,

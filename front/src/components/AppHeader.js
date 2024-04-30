@@ -1,3 +1,4 @@
+import { AuthContext } from "../context/AuthProvider";
 import React, {useContext, useEffect, useRef, useState} from 'react'
 import {NavLink, useNavigate} from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
@@ -23,7 +24,9 @@ import {
   cilMenu,
   cilMoon,
   cilSun,
-  cilSync
+  cilSync,
+  cilCart,
+  cilHeart
 } from '@coreui/icons'
 
 import { AppBreadcrumb } from './index'
@@ -31,6 +34,7 @@ import { AppHeaderDropdown } from './header/index'
 import {AuthModeDispatch, AuthModeInfo} from "src/layout/DefaultLayout";
 
 const AppHeader = () => {
+  const { auth, setAuth } = useContext(AuthContext);
   const headerRef = useRef()
   const { colorMode, setColorMode } = useColorModes('coreui-free-react-admin-template-theme')
 
@@ -65,45 +69,75 @@ const AppHeader = () => {
         {/*  <CIcon icon={cilMenu} size="lg" />*/}
         {/*</CHeaderToggler>*/}
         <CHeaderNav className="d-none d-md-flex">
+
+    {
+      (auth) ? 
+        <> 
+        {/* 로그인 O*/}
+
+        <CNavItem>
+            <CNavLink onClick={() => {navigator('/logout')}} style={{cursor: 'pointer'}}>로그아웃</CNavLink>
+          </CNavItem>
+
           <CNavItem>
             <CNavLink to="/dashboard" as={NavLink}>
-              Dashboard
+              마이페이지
             </CNavLink>
           </CNavItem>
+
           <CNavItem>
-            <CNavLink href="#">Users</CNavLink>
+            <CNavLink href="#">장바구니</CNavLink>
           </CNavItem>
+
           <CNavItem>
-            <CNavLink href="#">Settings</CNavLink>
+            <CNavLink href="#">좋아요</CNavLink>
           </CNavItem>
-          <CNavItem>
-            <CNavLink onClick={() => {navigator('/signup')}} style={{cursor: 'pointer'}}>SignUp</CNavLink>
-          </CNavItem>
-            <CNavItem>
-                <CNavLink onClick={() => {navigator('/signin')}} style={{cursor: 'pointer'}}>SignIn</CNavLink>
-            </CNavItem>
+
           <CNavItem>
             <CButton onClick={change_mode}><CIcon icon={cilSync} size="lg" />{mode}</CButton>
           </CNavItem>
+          </>
+            :
+
+        // 로그인 X
+
+            <>
+            
+            <CNavItem>
+            <CNavLink onClick={() => {navigator('/signup')}} style={{cursor: 'pointer'}}>SignUp</CNavLink>
+          </CNavItem>
+
+            <CNavItem>
+                <CNavLink onClick={() => {navigator('/signin')}} style={{cursor: 'pointer'}}>SignIn</CNavLink>
+            </CNavItem>
+
+          <CNavItem>
+            <CButton onClick={change_mode}><CIcon icon={cilSync} size="lg" />{mode}</CButton>
+          </CNavItem>
+
+          </>
+
+        }
+
+        
+
         </CHeaderNav>
         <CHeaderNav className="ms-auto">
           <CNavItem>
             <CNavLink href="#">
-              <CIcon icon={cilBell} size="lg" />
+              <CIcon icon={cilCart} className="text-primary" size="xl" />
             </CNavLink>
           </CNavItem>
           <CNavItem>
             <CNavLink href="#">
-              <CIcon icon={cilList} size="lg" />
+              <CIcon icon={cilHeart} style={{'--ci-primary-color': 'red'}} size="xl" />
             </CNavLink>
           </CNavItem>
-          <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilEnvelopeOpen} size="lg" />
-            </CNavLink>
-          </CNavItem>
+          
         </CHeaderNav>
-        {/*<CHeaderNav>*/}
+
+        
+        {/* <CHeaderNav>*/}
         {/*  <li className="nav-item py-1">*/}
         {/*    <div className="vr h-100 mx-2 text-body text-opacity-75"></div>*/}
         {/*  </li>*/}
@@ -152,7 +186,7 @@ const AppHeader = () => {
         {/*    <div className="vr h-100 mx-2 text-body text-opacity-75"></div>*/}
         {/*  </li>*/}
         {/*  <AppHeaderDropdown />*/}
-        {/*</CHeaderNav>*/}
+        {/*</CHeaderNav> */}
       </CContainer>
       <CContainer className="px-4" fluid>
         <AppBreadcrumb />

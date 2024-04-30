@@ -6,8 +6,10 @@ import com.shop.back.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Entity
 public class Cart extends BaseEntity {
 	@Id
@@ -25,5 +27,11 @@ public class Cart extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")
 	private Member member;
-
+	
+	 public static Cart createCart(Member member){
+	        Cart cart = new Cart();
+	        cart.setMember(member);
+	        return cart;
+	    }
+	
 }

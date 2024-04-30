@@ -56,6 +56,12 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 // admin
 
+// 회원
+// 회원 목록
+const AdminUserList = React.lazy(() => import('./views/admin/member/UserList'))
+const AdminAdminList = React.lazy(() => import('./views/admin/member/AdminList'))
+const AdminUnregisterList = React.lazy(() => import('./views/admin/member/UnregisterList'))
+
 //  카테고리
 const AdminCategory = React.lazy(() => import('./views/admin/category/AdminCategory'))
 
@@ -136,6 +142,9 @@ const routes = [
   { path: '/notifications/modals', name: 'Modals', element: Modals },
   { path: '/notifications/toasts', name: 'Toasts', element: Toasts },
   { path: '/widgets', name: 'Widgets', element: Widgets },
+  { path: '/admin/member/userList', name:'AdminUserList', element: AdminUserList},
+  { path: '/admin/member/adminList', name:'AdminAdminList', element: AdminAdminList},
+  { path: '/admin/member/unregisterList', name:'AdminUnregisterList', element: AdminUnregisterList},
   { path: '/admin/category', name: 'Admin', element: AdminCategory },
   { path: '/admin/item/form', name: '상품 등록', element: AdminItemForm },
   { path: '/admin/item/color/form', name: 'Admin', element: AdminItemColor },

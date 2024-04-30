@@ -38,7 +38,6 @@ public class AdminMemberController {
 
     //USER 검색
 
-
     //ADMIN 리스트
     @GetMapping("/adminList")
     public ResponseEntity<List<Member>> adminList() {

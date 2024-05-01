@@ -147,4 +147,15 @@ public class TestController {
 
 		return ResponseEntity.ok(parent);
 	}
+
+	@GetMapping("/item/index")
+	public ResponseEntity<?> mainPage() {
+		List<ItemGroup> list = itemGroupRepository.findAll();
+		for(ItemGroup itemGroup : list) {
+			for(Item item : itemGroup.getItems()) {
+				item.setItemGroup(null);
+			}
+		}
+		return ResponseEntity.ok(list);
+	}
 }

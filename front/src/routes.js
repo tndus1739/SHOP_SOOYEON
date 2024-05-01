@@ -92,6 +92,9 @@ const SearchItem = React.lazy(() => import('./views/user/item/SearchItems'))
 //  상품 상세
 const Item = React.lazy(() => import('./views/user/item/Item'))
 
+//  주문 페이지
+const Order = React.lazy(() => import('./views/user/item/order/Orders'))
+
 //  회원가입
 const Signup = React.lazy(() => import('./views/user/member/Signup'))
 
@@ -164,7 +167,9 @@ const routes = [
   { path: '/base/NewAccordion', name: 'Accordion', element: NewAccordion },
   { path: '/signup', name: '회원가입', element: Signup},
   { path: '/signin', name: '로그인', element: Signin},
-  { path: '/logout', name: '로그아웃', element: Logout}
+  { path: '/logout', name: '로그아웃', element: Logout},
+  { path: '/order/:orderId', name: '주문', element: Order},
+  { path: '/order', name: '주문', element: Order}
 ]
 
 export default routes

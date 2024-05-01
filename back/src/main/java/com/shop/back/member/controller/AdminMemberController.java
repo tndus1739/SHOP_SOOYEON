@@ -42,14 +42,17 @@ public class AdminMemberController {
         List<Member> userList = service.getMemberbyRole(Role.USER);
         return new ResponseEntity<>(userList, HttpStatus.OK);
     }
-
     //USER 수정
     @PutMapping("/userDetail/{id}")
     public ResponseEntity<Member> updateUser(@PathVariable Long id, @RequestBody AdminMemberUpdateRequest req) {
         return updateMember(id, req);
     }
-
     //USER 검색
+    @GetMapping("/userList/search")
+    public ResponseEntity<List<Member>> getUserListBySearchOption(@RequestParam String searchType, @RequestParam String keyword) {
+        List<Member> userList = service.getMemberListBySearchOption(Role.USER, searchType, keyword);
+        return new ResponseEntity<>(userList, HttpStatus.OK);
+    }
 
     //ADMIN 리스트
     @GetMapping("/adminList")
@@ -58,14 +61,17 @@ public class AdminMemberController {
         System.out.println("adminList: " + adminList);
         return new ResponseEntity<>(adminList, HttpStatus.OK);
     }
-
     //ADMIN 수정
     @PutMapping("/adminDetail/{id}")
     public ResponseEntity<Member> updateAdmin(@PathVariable Long id, @RequestBody AdminMemberUpdateRequest req) {
         return updateMember(id, req);
     }
-
     //ADMIN 검색
+    @GetMapping("/adminList/search")
+    public ResponseEntity<List<Member>> getAdminListBySearchOption(@RequestParam String searchType, @RequestParam String keyword) {
+        List<Member> userList = service.getMemberListBySearchOption(Role.ADMIN, searchType, keyword);
+        return new ResponseEntity<>(userList, HttpStatus.OK);
+    }
 
     //UNREGISTER 리스트
     @GetMapping("/unregisterList")
@@ -81,6 +87,11 @@ public class AdminMemberController {
     }
 
     //UNREGISTER 검색
+    @GetMapping("/unregisterList/search")
+    public ResponseEntity<List<Member>> getUnregisterListBySearchOption(@RequestParam String searchType, @RequestParam String keyword) {
+        List<Member> userList = service.getMemberListBySearchOption(Role.UNREGISTER, searchType, keyword);
+        return new ResponseEntity<>(userList, HttpStatus.OK);
+    }
 
     //MemberUpdate
     private ResponseEntity<Member> updateMember(Long id, AdminMemberUpdateRequest req) {

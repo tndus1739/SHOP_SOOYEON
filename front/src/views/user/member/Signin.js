@@ -39,7 +39,10 @@ const Signin = () => {
             // Refresh Token은 쿠키에 저장
             document.cookie = `refreshToken=${refreshToken}; Secure; HttpOnly; SameSite=Strict`
             localStorage.setItem('email', email)
-            navigator('/')
+            
+            location.reload(true)
+            //navigator('/')
+            
             }
 
         }).catch((err) => {
@@ -50,8 +53,11 @@ const Signin = () => {
     }
 
     useEffect(() => {
-
-    }, []);
+      //  로그인 후 메인 페이지로 이동
+      if (localStorage.getItem('accessToken')) {
+        navigator('/');
+    }
+    }, [navigator]);
 
     return (
         <CRow className="justify-content-center">

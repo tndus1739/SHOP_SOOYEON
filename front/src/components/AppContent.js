@@ -24,6 +24,7 @@ const AppContent = () => {
             )
           })}
           <Route path="/" element={<Navigate to="items" replace />} />
+          
         </Routes>
       </Suspense>
     </CContainer>

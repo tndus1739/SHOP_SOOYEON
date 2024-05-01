@@ -37,6 +37,8 @@ public class Member extends BaseEntity {
 
 	private String phone;            //  휴대폰 번호
 
+	private String address;			//주소
+
 
 	public Member() {
 		this.role = Role.USER;

@@ -103,10 +103,10 @@ function UserList() {
                       <CTableDataCell style={{width: '20%'}}>{user.nickname}</CTableDataCell>
                       <CTableDataCell style={{width: '10%'}}>{user.role}</CTableDataCell>
                       <CTableDataCell style={{width: '20%'}}>
-                        {/*<Link to={`/admin/member/unregisterDetail/${id}`}>*/}
+                        <Link to={`/admin/member/userDetail/${user.id}`}>
                         <CButton color="primary" variant="outline"
                                  style={{height: '30px', lineHeight: '10px'}}>관리</CButton>
-                        {/*</Link>*/}
+                        </Link>
                       </CTableDataCell>
                     </CTableRow>
                   ))}

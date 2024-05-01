@@ -71,8 +71,8 @@ const AppHeader = () => {
         <CHeaderNav className="d-none d-md-flex">
 
     {
-      (auth) ? 
-        <> 
+      (auth) ?
+        <>
         {/* 로그인 O*/}
 
         <CNavItem>
@@ -102,7 +102,7 @@ const AppHeader = () => {
         // 로그인 X
 
             <>
-            
+
             <CNavItem>
             <CNavLink onClick={() => {navigator('/signup')}} style={{cursor: 'pointer'}}>SignUp</CNavLink>
           </CNavItem>
@@ -119,7 +119,7 @@ const AppHeader = () => {
 
         }
 
-        
+
 
         </CHeaderNav>
         <CHeaderNav className="ms-auto">
@@ -133,10 +133,10 @@ const AppHeader = () => {
               <CIcon icon={cilHeart} style={{'--ci-primary-color': 'red'}} size="xl" />
             </CNavLink>
           </CNavItem>
-          
+
         </CHeaderNav>
 
-        
+
         {/* <CHeaderNav>*/}
         {/*  <li className="nav-item py-1">*/}
         {/*    <div className="vr h-100 mx-2 text-body text-opacity-75"></div>*/}

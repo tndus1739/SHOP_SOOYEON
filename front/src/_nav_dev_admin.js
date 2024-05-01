@@ -21,9 +21,26 @@ const _nav_dev_admin = [
     name: 'ADMIN',
   },
   {
-    component: CNavItem,
+    component: CNavGroup,
     name: '회원',
-    to: '/admin/member',
+    // to: '/admin/member',
+    items: [
+      {
+        component: CNavItem,
+        name: '회원 목록',
+        to: '/admin/member/userList',
+      },
+      {
+        component: CNavItem,
+        name: '관리자 목록',
+        to: '/admin/member/adminList',
+      },
+      {
+        component: CNavItem,
+        name: '탈퇴 목록',
+        to: '/admin/member/unregisterList',
+      },
+    ]
   },
   {
     component: CNavItem,
@@ -39,6 +56,11 @@ const _nav_dev_admin = [
         component: CNavItem,
         name: '상품 등록',
         to: '/admin/item/form',
+      },
+      {
+        component: CNavItem,
+        name: '상품 리스트',
+        to: '/admin/item/list',
       },
     ]
   },

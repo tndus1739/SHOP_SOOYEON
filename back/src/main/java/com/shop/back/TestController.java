@@ -6,6 +6,7 @@ import com.shop.back.item.dto.ItemFormDto;
 import com.shop.back.item.entity.Item;
 import com.shop.back.item.entity.ItemGroup;
 import com.shop.back.item.repository.ItemGroupRepository;
+import com.shop.back.like.entity.Likes;
 import com.shop.back.member.dto.request.JoinRequest;
 import com.shop.back.member.dto.response.JoinResponse;
 import jakarta.validation.Valid;
@@ -105,5 +106,45 @@ public class TestController {
 		System.out.println(itemGroup);
 
 		return ResponseEntity.ok(itemGroup);
+	}
+
+	@PostMapping("/test/likes/{itemGroupId}")
+	public ResponseEntity<?> likeTest(@PathVariable("itemGroupId") Long itemGroupId) {
+		ItemGroup itemGroup = itemGroupRepository.findById(itemGroupId).get();
+//		Optional<Likes> op = likeRepository.findByItemGroup(itemGroup);
+//		Likes like = null;
+//		if(op.isPresent()) {
+//			like = op.get();
+//		    if(like.getDel() == 1) {
+//			    like.setDel(0);
+//		        likeRepository.save(like);
+//		    }
+//		} else {
+//		    여기서 insert?
+//	    }
+
+		return ResponseEntity.ok(itemGroup);
+	}
+
+	@GetMapping("/admin/items/test")
+	public ResponseEntity<?> adminItemsTest() {
+		System.out.println("=====================================================");
+
+		List<ItemGroup> itemGroupList = itemGroupRepository.findAll();
+		for(ItemGroup itemGroup : itemGroupList) {
+			for(Item item : itemGroup.getItems()) {
+				item.setItemGroup(null);
+			}
+		}
+
+		return ResponseEntity.ok(itemGroupList);
+	}
+
+	@GetMapping("/admin/category/parent/{categoryId}")
+	public ResponseEntity<?> adminCategoryTest(@PathVariable("categoryId") Long categoryId) {
+		Category child = categoryRepository.findById(categoryId).get();
+		Category parent = child.getParentCategory();
+
+		return ResponseEntity.ok(parent);
 	}
 }

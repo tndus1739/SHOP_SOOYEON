@@ -13,19 +13,24 @@ import {
 } from "@coreui/react";
 import axios from "axios";
 import {Link} from "react-router-dom";
+import AdminMemberService from "src/services/AdminMemberService";
 
 function UserList() {
   const [userList, setUserList] = useState([]);
+
+  // 검색
+  const [searchType, setSearchType] = useState('');
+  const [keyword, setKeyword] = useState('');
 
   // 페이지네이션
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
   useEffect(() => {
-    // 관리자 목록을 가져오는 함수
+    // 회원 목록을 가져오는 함수
     const fetchUserList = async () => {
       try {
-        const response = await axios.get('http://localhost:3011/admin/userList');
+        const response = await AdminMemberService.getAdminUserList();
         // 받은 데이터가 배열이 아닌 경우에는 배열로 변환
         setUserList(Array.isArray(response.data) ? response.data : [response.data]);
       } catch (error) {
@@ -48,6 +53,22 @@ function UserList() {
     return userList.slice(startIndex, endIndex);
   }
 
+  //검색
+  const handleSearch = async () => {
+    try {
+      const form = document.getElementById('searchForm');
+
+      const searchType = form.searchType.value;
+      const keyword = form.keyword.value;
+
+      const response = await AdminMemberService.searchAdminUser(searchType, keyword);
+
+      setUserList(Array.isArray(response.data) ? response.data : [response.data]);
+    } catch (error) {
+      console.error('Error searching user:', error);
+    }
+  };
+
   return (
     <CRow>
       <CCol xs={12}>
@@ -59,24 +80,43 @@ function UserList() {
           <CCardBody>
 
             {/*검색*/}
-            <div style={{marginBottom: '20px', marginTop: '25px'}}>
-              <CForm className="d-flex justify-content-end">
+            <div style={{marginBottom: '25px', marginTop: '40px'}}>
+              <CForm className="d-flex justify-content-end" id="searchForm">
                 <CFormSelect
+                  id="searchType"
+                  name="searchType"
                   aria-label="Default select example"
-                  options={[
-                    '검색 옵션 선택',
-                    {label: '이름', value: 'name'},
-                    {label: '닉네임', value: 'nickname'},
-                    {label: '이메일', value: 'email'},
-                    {label: '생년월일', value: 'birth'},
-                    {label: '전화번호', value: 'phone'}
-                  ]}
+                  onChange={(e) => setSearchType(e.target.value)}
                   style={{width: 'fit-content'}}
                   className="me-2"
+                >
+                  <option value="">검색 옵션 선택</option>
+                  <option value="name">이름</option>
+                  <option value="nickname">닉네임</option>
+                  <option value="email">이메일</option>
+                  <option value="phone">전화번호</option>
+                </CFormSelect>
+                <CFormInput
+                  type="text"
+                  id="keyword"
+                  name="keyword"
+                  className="me-2"
+                  placeholder="검색어를 입력하세요"
+                  style={{width: '200px'}}
+                  onChange={(e) => setKeyword(e.target.value)}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      handleSearch();
+                    }
+                  }}
                 />
-                <CFormInput type="search" className="me-2" placeholder="Search" style={{width: '200px'}}/>
-                <CButton type="submit" color="primary" variant="outline">
-                  Search
+                <CButton
+                  type="button"
+                  onClick={handleSearch}
+                  color="primary"
+                  variant="outline"
+                >
+                  검색
                 </CButton>
               </CForm>
             </div>

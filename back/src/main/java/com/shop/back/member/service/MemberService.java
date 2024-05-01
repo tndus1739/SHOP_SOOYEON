@@ -31,6 +31,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -205,6 +206,25 @@ public class MemberService {
     }
 
     // 관리자 페이지 검색
+    public List<Member> getMemberListBySearchOption(Role role, String searchType, String keyword) {
+        List<Member> memberList;
+        if (searchType.equals("name")) {
+            memberList = memberRepository.findByRoleAndNameContaining(role, keyword);
+            System.out.println("이름으로 검색: " + keyword + memberList);
+        } else if (searchType.equals("nickname")) {
+            memberList = memberRepository.findByRoleAndNicknameContaining(role, keyword);
+            System.out.println("닉네임으로 검색: " + keyword + memberList);
+        } else if (searchType.equals("email")) {
+            memberList = memberRepository.findByRoleAndEmailContaining(role, keyword);
+            System.out.println("이메일으로 검색: " + keyword + memberList);
+        } else if (searchType.equals("phone")) {
+            memberList = memberRepository.findByRoleAndPhoneContaining(role, keyword);
+            System.out.println("전화번호로 검색: " + keyword + memberList);
+        } else {
+            memberList = memberRepository.findByRole(role);
+        }
+        return memberList;
+    }
 
 
 }

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   CButton,
   CCard,
@@ -12,6 +12,7 @@ import {
 import {useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 import {number} from "prop-types";
+import AdminMemberService from "src/services/AdminMemberService";
 
 
 function UserDetail() {
@@ -23,7 +24,7 @@ function UserDetail() {
     const fetchUserData = async () => {
       try {
         if (!id) return;
-        const response = await axios.get(`http://localhost:3011/admin/${id}`)
+        const response = await AdminMemberService.getAdminMember(id);
 
         // 생년월일 YYYYMMDD 형식으로 변환
         const birth = response.data.birth.replace(/-/g, '');
@@ -67,9 +68,10 @@ function UserDetail() {
 
       // 생년월일을 YYYYMMDD 형식에서 Date 객체로 변환
       const year = updatedUserData.birth.substring(0, 4);
-      const month = updatedUserData.birth.substring(4, 6) - 1; // JavaScript의 월은 0부터 시작하므로 1을 빼줍니다.
+      const month = parseInt(updatedUserData.birth.substring(4, 6)) -1;
       const day = updatedUserData.birth.substring(6, 8);
-      const birthDate = new Date(year, month, day);
+      const birthDate = new Date(Date.UTC(year, month, day));
+
       if (!isNaN(birthDate.getTime())) {
         // ISO 형식으로 변환하여 새로운 객체에 반영
         updatedUserData.birth = birthDate.toISOString();
@@ -79,17 +81,26 @@ function UserDetail() {
       }
 
       // 수정된 userData를 서버로 전송
-      const response = await axios.put(`http://localhost:3011/admin/userDetail/${id}`, updatedUserData);
-
-      console.log("userData: ", updatedUserData);
+      const response = await AdminMemberService.updateAdminUser(id, updatedUserData);
 
       if (response.status === 200) {
         navigate('/admin/member/userList');
       }
+      console.log("userData: ", updatedUserData);
+
     } catch (error) {
       console.error('Error', error);
     }
   };
+
+  const handleChange = (field, value) => {
+    setUserData(preUserData => ({
+      ...preUserData,
+      [field]: value // 변경된 값으로 업데이트
+    }))
+  }
+
+
 
   if (!userData) {
     return <div>Loading ...</div>;
@@ -131,7 +142,9 @@ function UserDetail() {
                   type={'password'}
                   // onInput={pwd}
                   required
-                  defaultValue={userData.pwd}
+                  value={userData ? userData.pwd : ''}
+                  // defaultValue={userData.pwd}
+                  onChange={(e) => handleChange('pwd', e.target.value)}
                 />
               </CCol>
             </CRow>
@@ -147,7 +160,9 @@ function UserDetail() {
                   type={'name'}
                   // onInput={name}
                   required
-                  defaultValue={userData.name}
+                  value={userData ? userData.name : ''}
+                  // defaultValue={userData.name}
+                  onChange={(e) => handleChange('name', e.target.value)}
                 />
               </CCol>
             </CRow>
@@ -163,7 +178,9 @@ function UserDetail() {
                   type={'nickname'}
                   // onInput={nickname}
                   required
-                  defaultValue={userData.nickname}
+                  value={userData ? userData.nickname : ''}
+                  // defaultValue={userData.nickname}
+                  onChange={(e) => handleChange('nickname', e.target.value)}
                 />
               </CCol>
             </CRow>
@@ -180,7 +197,9 @@ function UserDetail() {
                   maxLength={13}
                   onInput={phone}
                   required
-                  defaultValue={userData.phone}
+                  value={userData ? userData.phone : ''}
+                  // defaultValue={userData.phone}
+                  onChange={(e) => handleChange('phone', e.target.value)}
                 />
               </CCol>
             </CRow>
@@ -197,7 +216,9 @@ function UserDetail() {
                   maxLength={13}
                   // onInput={address}
                   required
-                  defaultValue={userData.address}
+                  value={userData ? userData.address : ''}
+                  // defaultValue={userData.address}
+                  onChange={(e) => handleChange('address', e.target.value)}
                 />
               </CCol>
             </CRow>
@@ -206,9 +227,9 @@ function UserDetail() {
             <CRow className="mb-3">
               <CFormLabel htmlFor="inputGender" className="col-sm-2 col-form-label">성별</CFormLabel>
               <CCol sm={10}>
-                <CFormCheck inline type="radio" name="gender" id="inlineCheckbox1" value={'X'} label="선택안함" defaultChecked={userData.gender === 'X'} />
-                <CFormCheck inline type="radio" name="gender" id="inlineCheckbox2" value={'M'} label="남" defaultChecked={userData.gender === 'M'} />
-                <CFormCheck inline type="radio" name="gender" id="inlineCheckbox3" value={'W'} label="여" defaultChecked={userData.gender === 'W'} />
+                <CFormCheck inline type="radio" name="gender" id="inlineCheckbox1" value={'X'} label="선택안함" checked={userData ? userData.gender === 'X' : ''} onChange={(e) => handleChange('gender', e.target.value)}/>
+                <CFormCheck inline type="radio" name="gender" id="inlineCheckbox2" value={'M'} label="남" checked={userData ? userData.gender === 'M' : ''} onChange={(e) => handleChange('gender', e.target.value)}/>
+                <CFormCheck inline type="radio" name="gender" id="inlineCheckbox3" value={'W'} label="여" checked={userData ? userData.gender === 'W' : ''} onChange={(e) => handleChange('gender', e.target.value)}/>
               </CCol>
             </CRow>
 
@@ -223,7 +244,9 @@ function UserDetail() {
                   maxLength={8}
                   onChange={number}
                   required
-                  defaultValue={userData.birth}
+                  value={userData ? userData.birth : ''}
+                  // defaultValue={userData.birth}
+                  onChange={(e) => handleChange('birth', e.target.value)}
                 />
               </CCol>
             </CRow>
@@ -241,20 +264,14 @@ function UserDetail() {
                   ]}
                   style={{ width: 'fit-content' }}
                   className="me-2"
-                  value={userData.role} // 상태값과 연결
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setUserData(prevUserData => ({
-                      ...prevUserData,
-                      role: value // 변경된 값으로 업데이트
-                    }));
-                  }}
+                  value={userData ? userData.role : ''} // 상태값과 연결
+                  onChange={(e) => handleChange('role', e.target.value)}
                 />
               </CCol>
             </CRow>
 
             <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-              <CButton color="primary" className="me-md-2" onClick={handleUpdate}>수정</CButton>
+              <CButton type="submit" color="primary" className="me-md-2" onClick={handleUpdate}>수정</CButton>
               <CButton color="primary" variant="outline" onClick={handleCancel}>취소</CButton>
             </div>
           </CCardBody>

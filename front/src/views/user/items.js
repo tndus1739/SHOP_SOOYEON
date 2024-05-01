@@ -7,6 +7,8 @@ import VueImg from "src/assets/images/vue.jpg";
 import {useParams} from "react-router-dom";
 import { freeSet } from '@coreui/icons'
 import CIcon from "@coreui/icons-react";
+import axios from "axios";
+import ItemList from "src/views/user/item/ItemList";
 
 function Items({props}) {
     const [items, setItems] = useState([])
@@ -29,37 +31,42 @@ function Items({props}) {
     }
 
     const getItems = () => {
-
         // 테스트
-        let mock = []
-        let mock_idx = 0;
-        while (25 > mock.length) {
-            mock.push(
-                {
-                    id: mock_idx,
-                    images: [
-                        {
-                            url: img1,
-                            isMain: 1
-                        },
-                        {
-                            url: img2,
-                            isMain: 0
-                        },
-                        {
-                            url: img3,
-                            isMain: 0
-                        }
-                    ],
-                    name: '상품1',
-                    isDisCounted: (mock.length + 1) % 2,
-                    defaultPrice: 30000,
-                    salePrice: (mock.length + 1) % 2 ? 25000 : 30000,
-                    Like: (mock.length + 1) % 2 % 2,
-                    basket: (mock.length + 1) % 2 % 2
-                },)
-        }
-        setItems(mock)
+        // let mock = []
+        // let mock_idx = 0;
+        // while (25 > mock.length) {
+        //     mock.push(
+        //         {
+        //             id: mock_idx,
+        //             images: [
+        //                 {
+        //                     url: img1,
+        //                     isMain: 1
+        //                 },
+        //                 {
+        //                     url: img2,
+        //                     isMain: 0
+        //                 },
+        //                 {
+        //                     url: img3,
+        //                     isMain: 0
+        //                 }
+        //             ],
+        //             name: '상품1',
+        //             isDisCounted: (mock.length + 1) % 2,
+        //             defaultPrice: 30000,
+        //             salePrice: (mock.length + 1) % 2 ? 25000 : 30000,
+        //             Like: (mock.length + 1) % 2 % 2,
+        //             basket: (mock.length + 1) % 2 % 2
+        //         },)
+        // }
+        // setItems(mock)
+
+      axios.get('http://localhost:3011/item/index').then((res) => {
+        setItems(res.data)
+        console.log(res.data)
+      })
+
     }
 
     useEffect(() => {
@@ -83,74 +90,7 @@ function Items({props}) {
             <CRow>
                 {
                     items.map((it, index) => (
-                        <CCol xs={2} key={index} onClick={() => toItemDetail(it.id)} style={{cursor: 'pointer'}}>
-                            <CCard className="mb-4">
-                                <CCardBody>
-                                    <CCarousel transition="crossfade" interval={4000}>
-                                        {
-                                            it.images.map((img, img_idx) => (
-                                                <CCarouselItem key={img_idx}>
-                                                    <img className="d-block w-100" src={img.url}
-                                                         alt={img.isMain ? "slide 1" : "slide " + img_idx + 1}
-                                                         height={200}/>
-                                                </CCarouselItem>
-                                            ))
-                                        }
-                                    </CCarousel>
-                                    <CRow>
-                                        <CCol xs={8}>
-                                            <CCardText style={overflow_ellipsis}>
-                                                {it.name}
-                                            </CCardText>
-                                        </CCol>
-                                        <CCol style={{textAlign: 'right'}}>
-                                            <strong
-                                                style={basketIcon}
-                                                onMouseEnter={() => setIsBaskHovered(true)}
-                                                onMouseLeave={() => setIsBaskHovered(false)}
-                                            >
-                                                <CIcon icon={freeSet['cilBasket']} size={isBaskHovered ? 'lg' : 'sm'}/>
-                                            </strong>
-                                            <strong
-                                                style={likeIcon}
-                                                onMouseEnter={() => setIsLikeHovered(true)}
-                                                onMouseLeave={() => setIsLikeHovered(false)}
-                                            >
-                                                <CIcon icon={freeSet['cilHeart']} size={isLikeHovered ? 'lg' : 'sm'}/>
-                                            </strong>
-                                        </CCol>
-                                    </CRow>
-                                    {
-                                        it.isDisCounted ?
-                                            <>
-                                                <CRow>
-                                                    <CCol style={{textDecoration: 'line-through'}}>
-                                                        {addCommas(it.defaultPrice)}
-                                                    </CCol>
-                                                </CRow>
-                                                <CRow>
-                                                    <CCol xs={6}>
-                                                        {
-                                                            (it.salePrice / it.defaultPrice * 100).toFixed(1) + '%'
-                                                        }
-                                                    </CCol>
-                                                    <CCol xs={6} style={{textAlign: 'right'}}>
-                                                        {addCommas(it.salePrice)}
-                                                    </CCol>
-                                                </CRow>
-                                            </>
-                                            :
-                                            <>
-                                                <CRow>
-                                                    <CCol>
-                                                        {addCommas(it.salePrice)}
-                                                    </CCol>
-                                                </CRow>
-                                            </>
-                                    }
-                                </CCardBody>
-                            </CCard>
-                        </CCol>
+                        <ItemList item={it} key={index} />
                     ))
                 }
             </CRow>

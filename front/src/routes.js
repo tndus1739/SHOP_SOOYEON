@@ -169,7 +169,7 @@ const routes = [
   { path: '/signin', name: '로그인', element: Signin},
   { path: '/logout', name: '로그아웃', element: Logout},
   { path: '/order/:orderId', name: '주문', element: Order},
-  { path: '/order', name: '주문', element: Order}
+  { path: '/order', name: '주문', element: Order},
 ]
 
 export default routes

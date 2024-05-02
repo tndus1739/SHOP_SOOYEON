@@ -8,6 +8,7 @@ import com.shop.back.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,12 @@ public class AdminMemberController {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
+    //ROLE == 'ADMIN'
+    @GetMapping("/page")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> adminPage() {
+        return new ResponseEntity<>("관리자 페이지에 오신 걸 환영합니다.", HttpStatus.OK);
+    }
 
     // 회원 조회
     @GetMapping("/{id}")

@@ -50,11 +50,11 @@ public class MemberCreateTest {
 
         for (int i = 0; i < 20; i++) {
             Member member = new Member();
-            member.setName("User" + i);
+            member.setName("Admin" + i);
             member.setNickname("nickname" + i);
-            member.setEmail("user" + i + "@example.com"); // 랜덤한 이메일 생성
+            member.setEmail("admin" + i + "@example.com"); // 랜덤한 이메일 생성
             member.setPwd("1234");
-            member.setRole(Role.USER);
+            member.setRole(Role.ADMIN);
             member.setGender(random.nextBoolean() ? "M" : "W"); // 랜덤한 성별 선택
             member.setBirth(LocalDateTime.now());
 

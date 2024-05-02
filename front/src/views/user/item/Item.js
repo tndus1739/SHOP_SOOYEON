@@ -165,7 +165,14 @@ function Item() {
   }
 
   const basket = () => {
-    const items = selectedItem
+    const items = []
+    for(const sel of selectedItem) {
+      const item = {}
+      item['email'] = localStorage.getItem('email')
+      item['count'] = sel.count
+      item['itemId'] = sel.id
+      items.push(item)
+    }
     console.log(items)
   }
 

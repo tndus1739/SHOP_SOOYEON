@@ -40,7 +40,7 @@ public class CartService {
 //    	}
 //    }
 	
-	  // 기존에 장바구니에 등록하는 제품이 cartItem 테이블에 존재하는지 확인
+	  // 기존에 에 등록하는 제품이 cartItem 테이블에 존재하는지 확인
 	
 //	CartItem savedCartItem = cartItemRepository.findByCartIdAndItemId(cart.getId(), item.getId());
 //

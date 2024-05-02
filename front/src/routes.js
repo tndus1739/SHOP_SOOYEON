@@ -1,5 +1,6 @@
 import React from 'react'
 import {useParams} from "react-router-dom";
+import MyPageTabs from "src/views/user/mypage/MyPageTabs";
 
 
 const Login_my = React.lazy(() => import('./views/base/login_my/My_page'))
@@ -66,6 +67,9 @@ const AdminUserDetail = React.lazy(() => import('./views/admin/member/UserDetail
 const AdminAdminDetail = React.lazy(() => import('./views/admin/member/AdminDetail'))
 const AdminUnregisterDetail = React.lazy(() => import('./views/admin/member/UnregisterDetail'))
 
+// 주문내역
+
+
 
 //  카테고리
 const AdminCategory = React.lazy(() => import('./views/admin/category/AdminCategory'))
@@ -101,6 +105,11 @@ const Signin = React.lazy(() => import('./views/user/member/Signin'))
 // 로그아웃
 const Logout = React.lazy(() => import('./views/user/Logout'))
 
+// 마이페이지
+//마이페이지 홈
+const Mypage = React.lazy(() => import('./views/user/mypage/MyPageTabs'))
+//정보수정
+const Myinfo = React.lazy(() => import('./views/user/mypage/MyInfo'))
 
 const routes = [
   { path: '/items', exact: true, element: Index },
@@ -164,7 +173,9 @@ const routes = [
   { path: '/base/NewAccordion', name: 'Accordion', element: NewAccordion },
   { path: '/signup', name: '회원가입', element: Signup},
   { path: '/signin', name: '로그인', element: Signin},
-  { path: '/logout', name: '로그아웃', element: Logout}
+  { path: '/logout', name: '로그아웃', element: Logout},
+  { path: '/user/mypage/MyPageTabs', name: '마이페이지', element: Mypage},
+  { path: '/user/mypage/MyInfo', name: '정보수정', element: Myinfo}
 ]
 
 export default routes

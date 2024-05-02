@@ -22,7 +22,7 @@ const _nav_dev_admin = [
   },
   {
     component: CNavGroup,
-    name: '회원',
+    name: '회원 관리',
     // to: '/admin/member',
     items: [
       {
@@ -41,6 +41,11 @@ const _nav_dev_admin = [
         to: '/admin/member/unregisterList',
       },
     ]
+  },
+  {
+    component: CNavItem,
+    name: '주문내역',
+    to: '/admin/order/orderList',
   },
   {
     component: CNavItem,

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   CButton,
   CCard,
@@ -15,13 +15,13 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import AdminMemberService from "src/services/AdminMemberService";
 
-function UserDetail() {
+function MemberDetail({ type }) {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [userData, setUserData] = useState(null);
+  const [memberData, setMemberData] = useState(null);
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchMemberData = async () => {
       try {
         if (!id) return;
         const response = await AdminMemberService.getAdminMember(id);
@@ -29,14 +29,14 @@ function UserDetail() {
         // 생년월일 YYYYMMDD 형식으로 변환
         const birth = response.data.birth.replace(/-/g, '');
         response.data.birth = birth.substring(0, 8);
-        setUserData(response.data);
+        setMemberData(response.data);
       } catch (error) {
         console.error('Error', error);
       }
     };
 
     if (id) {
-      fetchUserData();
+      fetchMemberData();
     }
   }, [id]);
 
@@ -56,37 +56,50 @@ function UserDetail() {
   }
 
   const handleCancel = () => {
-    navigate(`/admin/member/userList`);
+    navigate(`/admin/member/${type}List`);
   }
 
   const handleUpdate = async () => {
     try {
-      if (!userData) return;
+      if (!memberData) return;
 
-      // userData를 수정한 후에 새로운 객체에 복사
-      const updatedUserData = { ...userData };
+      // memberData를 수정한 후에 새로운 객체에 복사
+      const updatedMemberData = { ...memberData };
 
       // 생년월일을 YYYYMMDD 형식에서 Date 객체로 변환
-      const year = updatedUserData.birth.substring(0, 4);
-      const month = parseInt(updatedUserData.birth.substring(4, 6)) - 1;
-      const day = updatedUserData.birth.substring(6, 8);
+      const year = updatedMemberData.birth.substring(0, 4);
+      const month = parseInt(updatedMemberData.birth.substring(4, 6)) - 1;
+      const day = updatedMemberData.birth.substring(6, 8);
       const birthDate = new Date(Date.UTC(year, month, day));
 
       if (!isNaN(birthDate.getTime())) {
         // ISO 형식으로 변환하여 새로운 객체에 반영
-        updatedUserData.birth = birthDate.toISOString();
+        updatedMemberData.birth = birthDate.toISOString();
       } else {
-        console.error('Invalid birth date:', updatedUserData.birth);
+        console.error('Invalid birth date:', updatedMemberData.birth);
         return;
       }
 
-      // 수정된 userData를 서버로 전송
-      const response = await AdminMemberService.updateAdminUser(id, updatedUserData);
+      // 수정된 memberData를 서버로 전송
+      let response;
+      switch (type) {
+        case 'user':
+          response = await AdminMemberService.updateAdminUser(id, updatedMemberData);
+          break;
+        case 'admin':
+          response = await AdminMemberService.updateAdminAdmin(id, updatedMemberData);
+          break;
+        case 'unregister':
+          response = await AdminMemberService.updateAdminUnregister(id, updatedMemberData);
+          break;
+        default:
+          break;
+      }
 
       if (response && response.status === 200) {
-        navigate(`/admin/member/userList`);
+        navigate(`/admin/member/${type}List`);
       }
-      console.log("userData: ", updatedUserData);
+      console.log("memberData: ", updatedMemberData);
 
     } catch (error) {
       console.error('Error', error);
@@ -94,13 +107,13 @@ function UserDetail() {
   };
 
   const handleChange = (field, value) => {
-    setUserData(preUserData => ({
-      ...preUserData,
+    setMemberData(preMemberData => ({
+      ...preMemberData,
       [field]: value // 변경된 값으로 업데이트
     }))
   }
 
-  if (!userData) {
+  if (!memberData) {
     return <div>Loading ...</div>;
   }
 
@@ -109,7 +122,7 @@ function UserDetail() {
       <CCol xs={12}>
         <CCard className="mb-4">
           <CCardHeader>
-            <strong>회원 수정</strong>
+            <strong>{`${type === 'user' ? '회원' : type === 'admin' ? '관리자' : '탈퇴 회원'} 수정`}</strong>
           </CCardHeader>
           <CCardBody>
             {/*이메일: 수정 불가*/}
@@ -123,7 +136,7 @@ function UserDetail() {
                   name={'email'}
                   type={'email'}
                   required
-                  defaultValue={userData.email}
+                  defaultValue={memberData.email}
                 />
               </CCol>
             </CRow>
@@ -138,7 +151,7 @@ function UserDetail() {
                   name={'pwd'}
                   type={'password'}
                   required
-                  value={userData ? userData.pwd : ''}
+                  value={memberData ? memberData.pwd : ''}
                   onChange={(e) => handleChange('pwd', e.target.value)}
                 />
               </CCol>
@@ -149,12 +162,12 @@ function UserDetail() {
               <CFormLabel htmlFor="inputName" className="col-sm-2 col-form-label">이름</CFormLabel>
               <CCol sm={10}>
                 <CFormInput
-                  placeholder={'회원 이름'}
+                  placeholder={`${type === 'user' ? '회원' : type === 'admin' ? '관리자' : '탈퇴 회원'} 이름`}
                   autoComplete="name"
                   name={'name'}
                   type={'name'}
                   required
-                  value={userData ? userData.name : ''}
+                  value={memberData ? memberData.name : ''}
                   onChange={(e) => handleChange('name', e.target.value)}
                 />
               </CCol>
@@ -165,12 +178,12 @@ function UserDetail() {
               <CFormLabel htmlFor="inputNickname" className="col-sm-2 col-form-label">닉네임</CFormLabel>
               <CCol sm={10}>
                 <CFormInput
-                  placeholder={'회원 닉네임'}
+                  placeholder={`${type === 'user' ? '회원' : type === 'admin' ? '관리자' : '탈퇴 회원'} 닉네임`}
                   autoComplete="nickname"
                   name={'nickname'}
                   type={'nickname'}
                   required
-                  value={userData ? userData.nickname : ''}
+                  value={memberData ? memberData.nickname : ''}
                   onChange={(e) => handleChange('nickname', e.target.value)}
                 />
               </CCol>
@@ -188,7 +201,7 @@ function UserDetail() {
                   maxLength={13}
                   onInput={phone}
                   required
-                  value={userData ? userData.phone : ''}
+                  value={memberData ? memberData.phone : ''}
                   onChange={(e) => handleChange('phone', e.target.value)}
                 />
               </CCol>
@@ -205,7 +218,7 @@ function UserDetail() {
                   type={'address'}
                   maxLength={13}
                   required
-                  value={userData ? userData.address : ''}
+                  value={memberData ? memberData.address : ''}
                   onChange={(e) => handleChange('address', e.target.value)}
                 />
               </CCol>
@@ -215,9 +228,9 @@ function UserDetail() {
             <CRow className="mb-3">
               <CFormLabel htmlFor="inputGender" className="col-sm-2 col-form-label">성별</CFormLabel>
               <CCol sm={10}>
-                <CFormCheck inline type="radio" name="gender" id="inlineCheckbox1" value={'X'} label="선택안함" checked={userData ? userData.gender === 'X' : ''} onChange={(e) => handleChange('gender', e.target.value)} />
-                <CFormCheck inline type="radio" name="gender" id="inlineCheckbox2" value={'M'} label="남" checked={userData ? userData.gender === 'M' : ''} onChange={(e) => handleChange('gender', e.target.value)} />
-                <CFormCheck inline type="radio" name="gender" id="inlineCheckbox3" value={'W'} label="여" checked={userData ? userData.gender === 'W' : ''} onChange={(e) => handleChange('gender', e.target.value)} />
+                <CFormCheck inline type="radio" name="gender" id="inlineCheckbox1" value={'X'} label="선택안함" checked={memberData ? memberData.gender === 'X' : ''} onChange={(e) => handleChange('gender', e.target.value)} />
+                <CFormCheck inline type="radio" name="gender" id="inlineCheckbox2" value={'M'} label="남" checked={memberData ? memberData.gender === 'M' : ''} onChange={(e) => handleChange('gender', e.target.value)} />
+                <CFormCheck inline type="radio" name="gender" id="inlineCheckbox3" value={'W'} label="여" checked={memberData ? memberData.gender === 'W' : ''} onChange={(e) => handleChange('gender', e.target.value)} />
               </CCol>
             </CRow>
 
@@ -226,13 +239,13 @@ function UserDetail() {
               <CFormLabel htmlFor="inputBirth" className="col-sm-2 col-form-label">생년월일</CFormLabel>
               <CCol sm={10}>
                 <CFormInput
-                  placeholder={'회원 생년월일'}
+                  placeholder={`${type === 'user' ? '회원' : type === 'admin' ? '관리자' : '탈퇴 회원'} 생년월일`}
                   autoComplete="birth"
                   name={'birth'}
                   maxLength={8}
                   onChange={number}
                   required
-                  value={userData ? userData.birth : ''}
+                  value={memberData ? memberData.birth : ''}
                   onChange={(e) => handleChange('birth', e.target.value)}
                 />
               </CCol>
@@ -251,7 +264,7 @@ function UserDetail() {
                   ]}
                   style={{ width: 'fit-content' }}
                   className="me-2"
-                  value={userData ? userData.role : ''} // 상태값과 연결
+                  value={memberData ? memberData.role : ''} // 상태값과 연결
                   onChange={(e) => handleChange('role', e.target.value)}
                 />
               </CCol>
@@ -268,4 +281,4 @@ function UserDetail() {
   );
 }
 
-export default UserDetail;
+export default MemberDetail;

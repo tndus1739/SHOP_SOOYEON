@@ -178,7 +178,7 @@ const routes = [
   { path: '/signin', name: '로그인', element: Signin},
   { path: '/logout', name: '로그아웃', element: Logout},
   { path: '/user/mypage/MyPageTabs', name: '마이페이지', element: Mypage},
-  { path: '/user/mypage/MyInfo', name: '정보수정', element: Myinfo}
+  { path: '/user/mypage/MyInfo', name: '정보수정', element: Myinfo},
   { path: '/order/:orderId', name: '주문', element: Order},
   { path: '/order', name: '주문', element: Order},
 ]
